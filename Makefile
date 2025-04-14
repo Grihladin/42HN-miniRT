@@ -6,7 +6,7 @@
 #    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/14 10:36:24 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/14 11:05:25 by psenko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CFLAGS=-Wall -Wextra -Werror -Ofast -ffast-math -flto -march=native
 LIBS=-ldl -lglfw -pthread -lm libft/libft.a MLX42/build/libmlx42.a
 # CFLAGS_TEST=-Wall -Wextra -Werror -g -fsanitize=address
 
-SOURCES=miniRT.c info.c read_parameters.c
+SOURCES=miniRT.c info.c read_parameters.c hooks.c
 
 OBJECTS=$(SOURCES:.c=.o)
 

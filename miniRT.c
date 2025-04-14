@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 10:34:40 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/14 11:09:06 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ static int	preparations(int argc, char **argv, struct s_vars *vars)
 	if ((vars->image == NULL)
 		|| (mlx_image_to_window(vars->wind, vars->image, 0, 0) < 0))
 		return (perror("Output image"), 1);
-	// mlx_key_hook(vars->wind, key_hook, vars);
-	// mlx_loop_hook(vars->wind, main_hook, vars);
+	mlx_key_hook(vars->wind, key_hook, vars);
+	mlx_loop_hook(vars->wind, main_hook, vars);
 	// mlx_scroll_hook(vars->wind, scroll_hook, vars);
-	// mlx_resize_hook(vars->wind, resize_hook, vars);
-	// mlx_close_hook(vars->wind, close_hook, vars);
+	mlx_resize_hook(vars->wind, resize_hook, vars);
+	mlx_close_hook(vars->wind, close_hook, vars);
 	return (0);
 }
 

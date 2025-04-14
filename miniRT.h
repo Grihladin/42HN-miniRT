@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 10:35:49 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/14 11:06:32 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,12 @@ typedef struct s_vars
 
 int				print_info(void);
 int				read_parameters(int argc, char **argv, t_vars *vars);
+
+void			main_hook(void *param);
+void			key_hook(mlx_key_data_t keydata, void *param);
+// void			scroll_hook(double xdelta, double ydelta, void *param);
+void			close_hook(void *param);
+// void			cursor_hook(double xpos, double ypos, void *param);
+void			resize_hook(int width, int height, void *param);
 
 #endif

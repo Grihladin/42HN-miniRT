@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 11:09:06 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/14 13:11:32 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	init_vars(struct s_vars *vars)
 	vars->width = DEFAULT_WIDTH;
 	vars->height = DEFAULT_HEIGHT;
 	vars->need_redraw = 1;
+	vars->fd = -1;
 }
 
 void	before_exit(void *param)

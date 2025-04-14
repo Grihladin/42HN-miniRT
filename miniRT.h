@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 11:40:14 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:01:19 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@
 # define PLANE 5
 # define CYLINDER 6
 
+# define ERROR_FATAL 2
+
 # include <math.h>
 # include "libft/ft_printf.h"
 # include "MLX42/include/MLX42/MLX42.h"
 # include <stdio.h>
+# include <fcntl.h>
+# include "get_next_line/get_next_line_bonus.h"
 
 typedef struct s_colors
 {
@@ -97,10 +101,13 @@ typedef struct s_vars
 	unsigned int	height;
 	char			need_redraw;
 	t_list			*elements;
+	int				fd;
 }				t_vars;
 
 int				print_info(void);
 int				read_parameters(int argc, char **argv, t_vars *vars);
+t_list			*rt_split(char *str);
+int				read_element(t_vars *vars, t_list *element_params);
 
 void			main_hook(void *param);
 void			key_hook(mlx_key_data_t keydata, void *param);

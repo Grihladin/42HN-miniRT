@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:01:02 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 11:08:48 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/14 13:05:20 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	main_hook(void *param)
 	vars = param;
 	if (vars->need_redraw == 1)
 	{
-		printf("Redraw\n");
+		//Need to be deleted
+		ft_printf("Redraw\n");
 		vars->need_redraw = 0;
 	}
 }

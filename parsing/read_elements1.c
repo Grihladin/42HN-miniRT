@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_elements1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:10 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 16:04:40 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/15 16:30:02 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_sphere	*read_sphere(t_list *element_params)
 	new_sphere->diameter = ft_atof(element_params->content);
 	element_params = element_params->next;
 	new_sphere->colors = read_colors(element_params->content);
+	new_sphere->radius = new_sphere->diameter / 2;
 	return (new_sphere);
 }
 

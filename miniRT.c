@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 13:13:04 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/15 16:34:35 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	init_vars(struct s_vars *vars)
 
 void	before_exit(void *param)
 {
-	t_vars		*vars;
+	t_vars	*vars;
 
 	vars = param;
 	if (vars->wind != NULL)
@@ -47,10 +47,10 @@ static int	preparations(int argc, char **argv, struct s_vars *vars)
 	if (vars->wind == NULL)
 		return (perror("Create window"), 1);
 	vars->image = mlx_new_image(vars->wind, vars->width, vars->height);
-	ft_memset(vars->image->pixels, 255, vars->image->width
-		* vars->image->height * sizeof(int32_t));
-	if ((vars->image == NULL)
-		|| (mlx_image_to_window(vars->wind, vars->image, 0, 0) < 0))
+	ft_memset(vars->image->pixels, 255, vars->image->width * vars->image->height
+		* sizeof(int32_t));
+	if ((vars->image == NULL) || (mlx_image_to_window(vars->wind, vars->image,
+				0, 0) < 0))
 		return (perror("Output image"), 1);
 	mlx_key_hook(vars->wind, key_hook, vars);
 	mlx_loop_hook(vars->wind, main_hook, vars);
@@ -62,7 +62,7 @@ static int	preparations(int argc, char **argv, struct s_vars *vars)
 
 int	main(int argc, char **argv)
 {
-	t_vars		vars;
+	t_vars	vars;
 
 	if (preparations(argc, argv, &vars) == 1)
 	{

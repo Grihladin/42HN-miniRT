@@ -6,23 +6,23 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:02:25 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 17:36:18 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/15 20:05:20 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-t_colors	read_colors(const char *str)
+t_color	read_colors(const char *str)
 {
 	char		**colors_arr;
-	t_colors	colors;
+	t_color	color;
 
 	colors_arr = ft_split(str, ',');
-	colors.red = (unsigned char) ft_atoi(colors_arr[0]);
-	colors.green = (unsigned char) ft_atoi(colors_arr[1]);
-	colors.blue = (unsigned char) ft_atoi(colors_arr[2]);
+	color.x = (unsigned char) ft_atoi(colors_arr[0]);
+	color.y = (unsigned char) ft_atoi(colors_arr[1]);
+	color.z = (unsigned char) ft_atoi(colors_arr[2]);
 	free_arr_of_str(&colors_arr);
-	return (colors);
+	return (color);
 }
 
 t_point	read_point(const char *str)
@@ -47,7 +47,7 @@ static t_ambient_lightning	*read_ambient_lightning(t_list *element_params)
 		return (NULL);
 	new_amb_light->amb_light_rate = ft_atof(element_params->content);
 	element_params = element_params->next;
-	new_amb_light->colors = read_colors(element_params->content);
+	new_amb_light->color = read_colors(element_params->content);
 	return (new_amb_light);
 }
 

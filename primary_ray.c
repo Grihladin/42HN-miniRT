@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/15 19:06:20 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/15 20:08:22 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,24 @@ bool	intersect_sphere(t_ray *ray, t_sphere *sphere, float *t,
 	*hit_point = vec3_sum(ray->origin, vec3_multiply(ray->direction, *t));
 	*hit_normalized = vec3_normalize(vec3_subtract(*hit_point,
 				sphere->coord_center));
+}
+
+bool	is_in_shadow(t_sphere *sphere, t_ray *ray, t_list *elements,
+		float light_distance)
+{
+	float		t;
+	t_point		hit_point;
+	t_vector3	hit_normalized;
+
+	intersect_sphere(ray, sphere, &t, &hit_point, &hit_normalized);
+	if (t < light_distance)
+		return (true);
+	retrun(false);
+}
+
+t_color	calculate_lightning(t_vars *vars, t_point hit_point,
+		t_point hit_normalized, t_ray view_ray)
+{
+	t_color color = color_scale(vars->ambient_light.color, 0.1f);
+	t_
 }

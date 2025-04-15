@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 17:19:51 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/15 17:25:16 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 
 typedef struct s_colors
 {
-	unsigned char red; //[0-255]
+	unsigned char	red; //[0-255]
 	unsigned char	green;
 	unsigned char	blue;
 }					t_colors;
@@ -49,7 +49,7 @@ typedef struct s_point
 	float			x;
 	float			y;
 	float			z;
-} t_vector3, t_point;
+} t_vector3,	t_point;
 
 typedef struct s_ray
 {
@@ -59,21 +59,21 @@ typedef struct s_ray
 
 typedef struct s_ambient_lightning
 {
-	float amb_light_rate; //[0.0 , 1.0]
+	float			amb_light_rate; //[0.0 , 1.0]
 	t_colors		colors;
 }					t_ambient_lightning;
 
 typedef struct s_camera
 {
-	t_point		view_point;
-	t_vector3 orient_vector;             // [-1,1]
-	unsigned char horizont_field_degree; //[0,180]
+	t_point			view_point;
+	t_vector3		orient_vector;		// [-1,1]
+	unsigned char	horizont_field_degree; //[0,180]
 }					t_camera;
 
 typedef struct s_light
 {
 	t_point			light_point;
-	float light_brightness; //[0.0 , 1.0]
+	float			light_brightness; //[0.0 , 1.0]
 }					t_light;
 
 typedef struct s_sphere
@@ -87,14 +87,14 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_point			coord_point;
-	t_vector3 normal_vector; // [-1,1]
+	t_vector3		normal_vector; // [-1,1]
 	t_colors		colors;
 }					t_plane;
 
 typedef struct s_cylinder
 {
 	t_point			coord_center;
-	t_vector3 normal_vector_axis_cyl; // [-1,1]
+	t_vector3		normal_vector_axis_cyl; // [-1,1]
 	float			diameter;
 	float			height;
 	t_colors		colors;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_elements.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:02:25 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 16:04:11 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/15 17:36:18 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ static t_camera	*read_camera(t_list *element_params)
 	element_params = element_params->next;
 	new_camera->horizont_field_degree = (unsigned char)
 		ft_atoi(element_params->content);
+	new_camera->up = vec3_create(0, 1, 0);
 	return (new_camera);
 }
 

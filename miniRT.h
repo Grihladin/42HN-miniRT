@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 17:25:16 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/15 17:56:08 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_ambient_lightning
 typedef struct s_camera
 {
 	t_point			view_point;
+	t_vector3		up;
 	t_vector3		orient_vector;		// [-1,1]
 	unsigned char	horizont_field_degree; //[0,180]
 }					t_camera;
@@ -114,6 +115,7 @@ typedef struct s_vars
 	unsigned int	height;
 	char			need_redraw;
 	unsigned int	time_to_redraw;
+	float 			aspect_ratio;
 	t_list			*elements;
 	int				fd;
 }					t_vars;
@@ -141,7 +143,7 @@ t_cylinder			*read_cylinder(t_list *element_params);
 
 // vector_operations
 t_vector3			vec3_create(float x, float y, float z);
-t_vector3			vec3_add(t_vector3 a, t_vector3 b);
+t_vector3			vec3_sum(t_vector3 a, t_vector3 b);
 t_vector3			vec3_subtract(t_vector3 a, t_vector3 b);
 t_vector3			vec3_multiply(t_vector3 v, float scalar);
 t_vector3			vec3_divide(t_vector3 v, float scalar);

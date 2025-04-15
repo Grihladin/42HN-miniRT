@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_elements.c                                    :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/14 13:02:25 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 14:13:22 by psenko           ###   ########.fr       */
+/*   Created: 2025/04/15 09:55:21 by psenko            #+#    #+#             */
+/*   Updated: 2025/04/15 09:55:52 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "libft.h"
 
-int	read_element(t_vars *vars, t_list *element_params)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	ft_printf("Read next element - %s\n", element_params->content);
-	vars->elements = NULL;
-	return (0);
+	while ((*s1 != '\0') && (*s2 != '\0') && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char) *s1 - (unsigned char) *s2);
 }

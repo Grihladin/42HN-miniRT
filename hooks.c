@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:01:02 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 13:05:20 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/15 12:59:00 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,16 @@ void	main_hook(void *param)
 	t_vars		*vars;
 
 	vars = param;
-	if (vars->need_redraw == 1)
+	if ((vars->need_redraw == 1) && (vars->time_to_redraw
+			>= TIMEOUT_BEFORE_UPDATE))
 	{
-		//Need to be deleted
+		// paint_fractal(vars);
 		ft_printf("Redraw\n");
 		vars->need_redraw = 0;
+		vars->time_to_redraw = 0;
 	}
+	else if (vars->time_to_redraw < TIMEOUT_BEFORE_UPDATE)
+		vars->time_to_redraw++;
 }
 
 void	key_hook(mlx_key_data_t keydata, void *param)
@@ -30,8 +34,10 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	t_vars		*vars;
 
 	vars = param;
-	if (keydata.key == MLX_KEY_ESCAPE)
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(vars->wind);
+	if (keydata.key == MLX_KEY_ENTER && keydata.action == MLX_PRESS)
+		vars->need_redraw = 1;
 }
 
 // void	scroll_hook(double xdelta, double ydelta, void *param)

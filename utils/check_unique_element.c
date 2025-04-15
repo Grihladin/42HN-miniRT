@@ -1,20 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   info.c                                             :+:      :+:    :+:   */
+/*   check_unique_element.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/14 10:23:41 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 13:03:44 by psenko           ###   ########.fr       */
+/*   Created: 2025/04/15 13:02:54 by psenko            #+#    #+#             */
+/*   Updated: 2025/04/15 13:26:03 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../miniRT.h"
 
-int	print_info(void)
+int	check_unique_element(t_list *elements, int type)
 {
-	ft_printf("Error\n");
-	ft_printf("Usage of command:\n./miniRT [filename]\n");
+	t_element	*element;
+
+	if ((type == AMBIENT_LIGHTNING) || (type == CAMERA)  || (type == LIGHT))
+	{
+		while (elements != NULL)
+		{
+			element = elements->content;
+			if (element->type == type)
+				return (1);
+			elements = elements->next;
+		}
+	}
 	return (0);
 }

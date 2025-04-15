@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 13:11:32 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/15 13:13:04 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	init_vars(struct s_vars *vars)
 	vars->width = DEFAULT_WIDTH;
 	vars->height = DEFAULT_HEIGHT;
 	vars->need_redraw = 1;
+	vars->elements = NULL;
 	vars->fd = -1;
 }
 
@@ -39,7 +40,7 @@ static int	preparations(int argc, char **argv, struct s_vars *vars)
 {
 	init_vars(vars);
 	if (argc == 1)
-		return (print_info(), 1);
+		return (print_error(NULL, ERROR_COUNT_ARGUMENTS), 1);
 	if (read_parameters(argc, argv, vars) == 1)
 		return (1);
 	vars->wind = mlx_init(vars->width, vars->height, WINDOW_TITLE, 1);

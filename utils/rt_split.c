@@ -6,11 +6,11 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 09:48:55 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 14:13:04 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/15 09:37:16 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../miniRT.h"
 
 static int	is_space(char str)
 {

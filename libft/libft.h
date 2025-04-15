@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 17:53:24 by psenko            #+#    #+#             */
-/*   Updated: 2024/12/03 14:24:28 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/15 09:56:10 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char		*ft_strdup(const char *s);
 size_t		ft_strlcat(char *dst, const char *src, size_t size);
 size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t		ft_strlen(const char *s);
+int			ft_strcmp(const char *s1, const char *s2);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 char		*ft_strnstr(const char *big, const char *lit, size_t len);
 char		*ft_strrchr(const char *s, int c);

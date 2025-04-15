@@ -6,7 +6,7 @@
 #    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/14 14:09:29 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/15 13:22:24 by psenko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,21 @@ LIBMLX=MLX42/build/libmlx42.a
 HEADER=miniRT.h
 GETNEXTLINE=get_next_line/get_next_line.a
 LIBFT=libft/libft.a
-CFLAGS=-Wall -Wextra -Werror -Ofast -ffast-math -flto -march=native
+CFLAGS=-g -fsanitize=address -Wall -Wextra -Werror -Ofast -ffast-math -flto -march=native
 # -g -fsanitize=address
 LIBS=-ldl -lglfw -pthread -lm $(LIBFT) $(GETNEXTLINE) MLX42/build/libmlx42.a
 # CFLAGS_TEST=-Wall -Wextra -Werror -g -fsanitize=address
 
-SOURCES=miniRT.c info.c read_parameters.c hooks.c read_elements.c \
-	rt_split.c
+SOURCES=miniRT.c hooks.c \
+	utils/errors.c \
+	utils/rt_split.c \
+	utils/ft_atof.c \
+	utils/frees.c \
+	utils/print_elements.c \
+	utils/check_unique_element.c \
+	parsing/read_parameters.c \
+	parsing/read_elements.c \
+	parsing/read_elements1.c
 
 OBJECTS=$(SOURCES:.c=.o)
 
@@ -33,7 +41,7 @@ clean:
 
 fclean: clean
 	make -C libft fclean
-	make -C getnextline fclean
+	make -C get_next_line fclean
 #	make -C MLX42/build clean
 	rm -rf MLX42/build/*
 	rm -f $(OBJECTS)

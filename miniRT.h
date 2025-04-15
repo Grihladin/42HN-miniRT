@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/14 14:01:19 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/15 13:19:22 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define DEFAULT_WIDTH 1200
 # define DEFAULT_HEIGHT 1200
+# define TIMEOUT_BEFORE_UPDATE 10
 # define WINDOW_TITLE "One more COOL miniRT"
 # define AMBIENT_LIGHTNING 1
 # define CAMERA 2
@@ -23,7 +24,11 @@
 # define PLANE 5
 # define CYLINDER 6
 
+# define ERROR_GENERAL 1
 # define ERROR_FATAL 2
+# define ERROR_COUNT_ARGUMENTS 14
+# define ERROR_ELEMENT_NOT_UNIQUE 22
+# define ERROR_ALLOCATE_MEMORY 122
 
 # include <math.h>
 # include "libft/ft_printf.h"
@@ -76,6 +81,7 @@ typedef struct s_plane
 {
 	t_point			coord_point;
 	t_point			normal_vector;	// [-1,1]
+	t_colors		colors;
 }				t_plane;
 
 typedef struct s_cylinder
@@ -100,20 +106,37 @@ typedef struct s_vars
 	unsigned int	width;
 	unsigned int	height;
 	char			need_redraw;
+	unsigned int	time_to_redraw;
 	t_list			*elements;
 	int				fd;
 }				t_vars;
 
-int				print_info(void);
-int				read_parameters(int argc, char **argv, t_vars *vars);
-t_list			*rt_split(char *str);
-int				read_element(t_vars *vars, t_list *element_params);
-
+void			print_error(char *str, int type);
 void			main_hook(void *param);
+
+//hooks
 void			key_hook(mlx_key_data_t keydata, void *param);
 // void			scroll_hook(double xdelta, double ydelta, void *param);
 void			close_hook(void *param);
 // void			cursor_hook(double xpos, double ypos, void *param);
 void			resize_hook(int width, int height, void *param);
+
+//parsing
+int				read_parameters(int argc, char **argv, t_vars *vars);
+int				read_element(t_vars *vars, t_list *element_params);
+t_point			read_point(const char *str);
+t_colors		read_colors(const char *str);
+t_light			*read_light(t_list *element_params);
+t_sphere		*read_sphere(t_list *element_params);
+t_plane			*read_plane(t_list *element_params);
+t_cylinder		*read_cylinder(t_list *element_params);
+
+//utils
+t_list			*rt_split(char *str);
+float			ft_atof(const char *nptr);
+void			free_arr_of_str(char ***strings);
+void			delete_element(void *element);
+void			print_elements(t_list *elements);
+int				check_unique_element(t_list *elements, int type);
 
 #endif

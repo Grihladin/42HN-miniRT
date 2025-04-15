@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 13:19:22 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/15 16:03:18 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_point
 	float		x;
 	float		y;
 	float		z;
-}				t_point;
+}			t_vector,	t_point;
 
 typedef struct s_ambient_lightning
 {
@@ -59,8 +59,8 @@ typedef struct s_ambient_lightning
 
 typedef struct s_camera
 {
-	t_point			view_point;
-	t_point			orient_vector;			// [-1,1]
+	t_vector		view_point;
+	t_vector		orient_vector;			// [-1,1]
 	unsigned char	horizont_field_degree;	//[0,180]
 }				t_camera;
 
@@ -80,14 +80,14 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_point			coord_point;
-	t_point			normal_vector;	// [-1,1]
+	t_vector		normal_vector;	// [-1,1]
 	t_colors		colors;
 }				t_plane;
 
 typedef struct s_cylinder
 {
 	t_point			coord_center;
-	t_point			normal_vector_axis_cyl;		// [-1,1]
+	t_vector		normal_vector_axis_cyl;		// [-1,1]
 	float			diameter;
 	float			height;
 	t_colors		colors;
@@ -125,6 +125,7 @@ void			resize_hook(int width, int height, void *param);
 int				read_parameters(int argc, char **argv, t_vars *vars);
 int				read_element(t_vars *vars, t_list *element_params);
 t_point			read_point(const char *str);
+t_vector		read_vector(const char *str);
 t_colors		read_colors(const char *str);
 t_light			*read_light(t_list *element_params);
 t_sphere		*read_sphere(t_list *element_params);

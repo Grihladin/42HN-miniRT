@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/15 20:08:22 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/16 17:02:55 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ bool	intersect_sphere(t_ray *ray, t_sphere *sphere, float *t,
 				sphere->coord_center));
 }
 
-bool	is_in_shadow(t_sphere *sphere, t_ray *ray, t_list *elements,
-		float light_distance)
+bool	is_in_shadow(t_sphere *sphere, t_ray *ray, float light_distance)
 {
 	float		t;
 	t_point		hit_point;
@@ -88,8 +87,35 @@ bool	is_in_shadow(t_sphere *sphere, t_ray *ray, t_list *elements,
 }
 
 t_color	calculate_lightning(t_vars *vars, t_point hit_point,
-		t_point hit_normalized, t_ray view_ray)
+		t_point hit_normalized, t_ray view_ray, t_sphere *sphere)
 {
-	t_color color = color_scale(vars->ambient_light.color, 0.1f);
-	t_
+	t_colorf	color;
+	t_vector3	light_dir;
+	float		light_distance;
+	t_ray		shadow_ray;
+	float		diffuse_factor;
+	t_vector3	reflection_dir;
+
+	color = color_scale(vars->scene.amb_light->color,
+			vars->scene.amb_light->amb_light_rate);
+	light_dir = vec3_subtract(vars->scene.light->light_point, hit_point);
+	light_distance = vec3_length(light_dir);
+	light_dir = vec3_normalize(light_dir);
+	shadow_ray.origin = hit_point;
+	shadow_ray.direction = light_dir;
+	if (!is_in_shadow(sphere, &shadow_ray, light_distance))
+	{
+		diffuse_factor = fmaxf(0.0f, vec3_dot(hit_normalized, light_dir));
+		reflection_dir = vec3_subtract(vec3_multiply(hit_normalized, 2.0f
+					* vec3_dot(hit_normalized, light_dir)), light_dir);
+		t_vector3	view_dir = vec3_normalize(vec3_multiply(view_ray.direction, -1.0f));
+		float		specular_factor = powf(fmaxf(0.0f,
+					vec3_dot(view_dir, reflection_dir)), 20.0f);
+		float		attenuation = vars->scene.light->light_brightness
+			/ (light_distance * light_distance);
+		
+		t_colorf	diffuse = color_multiply(vars->scene.,
+				sphere->color);
+	}
+	
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 11:37:44 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:33:00 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,6 @@ typedef struct s_vars
 	t_list				*elements;
 	t_scene				scene;
 	int					fd;
-	t_ambient_lightning	ambient_light;
 }					t_vars;
 
 void				print_error(char *str, int type);

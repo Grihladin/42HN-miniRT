@@ -6,19 +6,19 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:16:19 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/15 16:22:20 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/16 20:39:00 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_vector3	vec3_cross(t_vector3 a, t_vector3 b)
+t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
 {
 	return (vec3_create(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y
 			- a.y * b.x));
 }
 
-t_vector3	vec3_normalize(t_vector3 v)
+t_vec3	vec3_normalize(t_vec3 v)
 {
 	float	length;
 
@@ -28,20 +28,20 @@ t_vector3	vec3_normalize(t_vector3 v)
 	return (v);
 }
 
-float	vec3_length(t_vector3 v)
+float	vec3_length(t_vec3 v)
 {
 	return (sqrtf(vec3_dot(v, v)));
 }
 
-float	calculate_distance(t_vector3 a, t_vector3 b)
+float	calculate_distance(t_vec3 a, t_vec3 b)
 {
-	t_vector3	diff;
+	t_vec3	diff;
 
 	diff = vec3_subtract(a, b);
 	return (vec3_length(diff));
 }
 
-float	vec3_dot(t_vector3 a, t_vector3 b)
+float	vec3_dot(t_vec3 a, t_vec3 b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }

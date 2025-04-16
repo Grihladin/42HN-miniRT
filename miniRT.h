@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 17:36:20 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/16 20:39:00 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,88 +39,94 @@
 
 typedef struct s_color
 {
-	unsigned char	red; //[0-255]
-	unsigned char	green;
-	unsigned char	blue;
-}					t_color;
-
-typedef struct s_colorf
-{
-	float			red;
-	float			green;
-	float			blue;
-}					t_colorf;
+	unsigned char red; //[0-255]
+	unsigned char		green;
+	unsigned char		blue;
+}						t_color;
 
 typedef struct s_point
 {
-	float			x;
-	float			y;
-	float			z;
-} t_vector3,		t_point;
+	float				x;
+	float				y;
+	float				z;
+} t_vec3, t_point, t_color3;
+
+typedef struct s_material
+{
+	t_color3			color;
+	float				reflectivity;
+}						t_material;
 
 typedef struct s_ray
 {
-	t_point			origin;
-	t_vector3		direction;
-}					t_ray;
+	t_point				origin;
+	t_vec3			direction;
+}						t_ray;
 
 typedef struct s_ambient_lightning
 {
-	float			amb_light_rate; //[0.0 , 1.0]
-	t_color			color;
-}					t_ambient_lightning;
+	float amb_light_rate; //[0.0 , 1.0]
+	t_color				color;
+}						t_ambient_lightning;
 
 typedef struct s_camera
 {
-	t_point			view_point;
-	t_vector3		up;
-	t_vector3		orient_vector;		// [-1,1]
-	unsigned char	horizont_field_degree; //[0,180]
-}					t_camera;
+	t_point				view_point;
+	t_vec3			up;
+	t_vec3 orient_vector;             // [-1,1]
+	unsigned char horizont_field_degree; //[0,180]
+}						t_camera;
 
 typedef struct s_light
 {
-	t_point			light_point;
-	float			light_brightness; //[0.0 , 1.0]
-	t_color			color;
-}					t_light;
+	t_point				light_point;
+	float light_brightness; //[0.0 , 1.0]
+	t_color				color;
+}						t_light;
 
 typedef struct s_scene
 {
-	t_ambient_lightning		*amb_light;
-	t_camera				*camera;
-	t_light					*light;
-}					t_scene;
+	t_ambient_lightning	*amb_light;
+	t_camera			*camera;
+	t_light				*light;
+}						t_scene;
 
 typedef struct s_sphere
 {
-	t_point			coord_center;
-	float			diameter;
-	float			radius;
-	t_color			color;
-}					t_sphere;
+	t_point				coord_center;
+	float				diameter;
+	float				radius;
+	t_color				color;
+}						t_sphere;
 
+// that waht i use
+typedef struct s_sphere
+{
+	t_point3			center;
+	float				radius;
+	t_material			material;
+}						t_sphere;
 typedef struct s_plane
 {
-	t_point			coord_point;
-	t_vector3		normal_vector; // [-1,1]
-	t_color			color;
-}					t_plane;
+	t_point				coord_point;
+	t_vec3 normal_vector; // [-1,1]
+	t_color				color;
+}						t_plane;
 
 typedef struct s_cylinder
 {
-	t_point			coord_center;
-	t_vector3		normal_vector_axis_cyl; // [-1,1]
-	float			diameter;
-	float			height;
-	t_color			color;
-}					t_cylinder;
+	t_point				coord_center;
+	t_vec3 normal_vector_axis_cyl; // [-1,1]
+	float				diameter;
+	float				height;
+	t_color				color;
+}						t_cylinder;
 
 typedef struct s_element
 {
-	char			type;
-	void			*params;
-}					t_element;
+	char				type;
+	void				*params;
+}						t_element;
 
 typedef struct s_vars
 {
@@ -134,56 +140,127 @@ typedef struct s_vars
 	t_list				*elements;
 	t_scene				scene;
 	int					fd;
-}					t_vars;
+}						t_vars;
 
-void				print_error(char *str, int type);
-void				main_hook(void *param);
+void					print_error(char *str, int type);
+void					main_hook(void *param);
 
 // hooks
-void				key_hook(mlx_key_data_t keydata, void *param);
+void					key_hook(mlx_key_data_t keydata, void *param);
 // void			scroll_hook(double xdelta, double ydelta, void *param);
-void				close_hook(void *param);
+void					close_hook(void *param);
 // void			cursor_hook(double xpos, double ypos, void *param);
-void				resize_hook(int width, int height, void *param);
+void					resize_hook(int width, int height, void *param);
 
 // parsing
-int					read_parameters(int argc, char **argv, t_vars *vars);
-int					read_element(t_vars *vars, t_list *element_params);
-t_point				read_point(const char *str);
-t_vector3			read_vector(const char *str);
-t_color				read_colors(const char *str);
-t_light				*read_light(t_list *element_params);
-t_sphere			*read_sphere(t_list *element_params);
-t_plane				*read_plane(t_list *element_params);
-t_cylinder			*read_cylinder(t_list *element_params);
+int						read_parameters(int argc, char **argv, t_vars *vars);
+int						read_element(t_vars *vars, t_list *element_params);
+t_point					read_point(const char *str);
+t_vec3				read_vector(const char *str);
+t_color					read_colors(const char *str);
+t_light					*read_light(t_list *element_params);
+t_sphere				*read_sphere(t_list *element_params);
+t_plane					*read_plane(t_list *element_params);
+t_cylinder				*read_cylinder(t_list *element_params);
 
 // vector_operations
-t_vector3			vec3_create(float x, float y, float z);
-t_vector3			vec3_sum(t_vector3 a, t_vector3 b);
-t_vector3			vec3_subtract(t_vector3 a, t_vector3 b);
-t_vector3			vec3_multiply(t_vector3 v, float scalar);
-t_vector3			vec3_divide(t_vector3 v, float scalar);
-t_vector3			vec3_cross(t_vector3 a, t_vector3 b);
-t_vector3			vec3_normalize(t_vector3 v);
-float				vec3_dot(t_vector3 a, t_vector3 b);
-float				vec3_length(t_vector3 v);
-float				calculate_distance(t_vector3 a, t_vector3 b);
+t_vec3				vec3_create(float x, float y, float z);
+t_vec3				vec3_sum(t_vec3 a, t_vec3 b);
+t_vec3				vec3_subtract(t_vec3 a, t_vec3 b);
+t_vec3				vec3_multiply(t_vec3 v, float scalar);
+t_vec3				vec3_divide(t_vec3 v, float scalar);
+t_vec3				vec3_cross(t_vec3 a, t_vec3 b);
+t_vec3				vec3_normalize(t_vec3 v);
+float					vec3_dot(t_vec3 a, t_vec3 b);
+float					vec3_length(t_vec3 v);
+float					calculate_distance(t_vec3 a, t_vec3 b);
 
 // colors
-t_colorf			color_multiply(t_colorf a, t_colorf b);
-t_colorf			color_scale(t_colorf c, float factor);
-t_colorf			color_sum(t_colorf a, t_colorf b);
+t_colorf				color_multiply(t_colorf a, t_colorf b);
+t_colorf				color_scale(t_colorf c, float factor);
+t_colorf				color_sum(t_colorf a, t_colorf b);
 
 // utils
-t_list				*rt_split(char *str);
-float				ft_atof(const char *nptr);
-void				free_arr_of_str(char ***strings);
-void				delete_element(void *element);
-int					check_unique_element(t_vars *vars, int type);
-void				free_scene(t_scene *scene);
+t_list					*rt_split(char *str);
+float					ft_atof(const char *nptr);
+void					free_arr_of_str(char ***strings);
+void					delete_element(void *element);
+int						check_unique_element(t_vars *vars, int type);
+void					free_scene(t_scene *scene);
 
-//Debug functions
-void				print_elements(t_list *elements);
-void				print_scene(t_scene *scene);
+// Debug functions
+void					print_elements(t_list *elements);
+void					print_scene(t_scene *scene);
 
 #endif
+
+
+// typedef struct s_color
+// {
+// 	unsigned char red; //[0-255]
+// 	unsigned char	green;
+// 	unsigned char	blue;
+// }					t_color;
+
+// typedef struct s_point
+// {
+// 	float			x;
+// 	float			y;
+// 	float			z;
+// } t_vec3, t_point3, t_color3;
+
+// typedef struct s_ray
+// {
+// 	t_point3		origin;
+// 	t_vec3			direction;
+// }					t_ray;
+
+// typedef struct s_material
+// {
+// 	t_color3		color;
+// 	float			reflectivity;
+// }					t_material;
+
+// typedef struct s_sphere
+// {
+// 	t_point3		center;
+// 	float			radius;
+// 	t_material		material;
+// }					t_sphere;
+
+// typedef struct s_light
+// {
+// 	t_point3		position;
+// 	t_color3		color;
+// 	float			intensity;
+// }					t_light;
+
+// typedef struct s_scene
+// {
+// 	t_light			*light;
+// 	t_sphere		*sphere;
+// 	t_color3		ambient_light;
+// }					t_scene;
+
+// typedef struct s_camera
+// {
+// 	t_point3		position;
+// 	t_vec3			direction;
+// 	t_vec3			up;
+// 	float			aspect_ratio;
+// 	float			fov;
+// }					t_camera;
+
+// typedef struct s_vars
+// {
+// 	mlx_t			*wind;
+// 	mlx_image_t		*image;
+// 	int				width;
+// 	int				height;
+// 	char			need_redraw;
+// 	unsigned int	time_to_redraw;
+// 	t_scene			scene;
+// 	int				fd;
+// 	t_light			*light;
+// 	t_camera		*camera;
+// }					t_vars;

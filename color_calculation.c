@@ -6,34 +6,24 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 19:55:50 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/16 16:40:21 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/16 20:32:30 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_colorf	colorf_create(float red, float green, float blue)
+t_color3	color_multiply(t_color3 a, t_color3 b)
 {
-	t_colorf	c;
-
-	c.red = red;
-	c.green = green;
-	c.blue = blue;
-	return (c);
+	return (vec3_create(a.x * b.x, a.y * b.y, a.z * b.z));
 }
 
-t_colorf	color_multiply(t_colorf a, t_colorf b)
+t_color3	color_scale(t_color3 c, float factor)
 {
-	return (colorf_create(a.red * b.red, a.green * b.green, a.blue * b.blue));
+	return (vec3_create(c.x * factor, c.y * factor, c.z * factor));
 }
 
-t_colorf	color_scale(t_colorf c, float factor)
+t_color3	color_sum(t_color3 a, t_color3 b)
 {
-	return (colorf_create(c.red * factor, c.green * factor, c.blue * factor));
-}
-
-t_colorf	color_sum(t_colorf a, t_colorf b)
-{
-	return (colorf_create(fminf(a.red + b.red, 1.0f), fminf(a.green + b.green,
-				1.0f), fminf(a.blue + b.blue, 1.0f)));
+	return (vec3_create(fminf(a.x + b.x, 1.0f), fminf(a.y + b.y, 1.0f),
+			fminf(a.z + b.z, 1.0f)));
 }

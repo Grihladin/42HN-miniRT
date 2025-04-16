@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:10 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 11:33:25 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/16 17:17:18 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ t_light	*read_light(t_list *element_params)
 	new_light->light_point = read_point(element_params->content);
 	element_params = element_params->next;
 	new_light->light_brightness = ft_atof(element_params->content);
+	element_params = element_params->next;
+	new_light->color = read_colors(element_params->content);
 	return (new_light);
 }
 

@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:19:07 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 10:55:37 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/16 11:37:11 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,11 @@ void	free_arr_of_str(char ***strings)
 		strings1++;
 	}
 	free(*strings);
+}
+
+void	free_scene(t_scene *scene)
+{
+	free(scene->amb_light);
+	free(scene->camera);
+	free(scene->light);
 }

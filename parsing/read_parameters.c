@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:29:23 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 13:22:04 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/16 11:36:16 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	read_parameters(int argc, char **argv, t_vars *vars)
 	}
 	else
 		return (print_error(NULL, ERROR_GENERAL), 1);
+	print_scene(&(vars->scene));
 	print_elements(vars->elements);
 	ft_lstclear(&(vars->elements), delete_element);
 	return (0);

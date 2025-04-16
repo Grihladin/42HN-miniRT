@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 17:41:46 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/16 11:38:06 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ static void	init_vars(struct s_vars *vars)
 	vars->need_redraw = 1;
 	vars->elements = NULL;
 	vars->fd = -1;
+	vars->scene.amb_light = NULL;
+	vars->scene.camera = NULL;
+	vars->scene.light = NULL;
 	vars->aspect_ratio = vars->width / vars->height;
 }
 
@@ -29,6 +32,7 @@ void	before_exit(void *param)
 	t_vars	*vars;
 
 	vars = param;
+	free_scene(&(vars->scene));
 	if (vars->wind != NULL)
 	{
 		if (vars->image != NULL)

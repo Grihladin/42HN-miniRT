@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:29:57 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 11:40:40 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/16 11:39:17 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 //Forbidden function
 #include <stdio.h>
 
-static void	print_colors(t_colors *colors)
+static void	print_colors(t_color *colors)
 {
 	printf("Colors:  ");
 	printf("R: %u  G: %u  B: %u\n", colors->red, colors->green, colors->blue);
@@ -29,7 +29,7 @@ static void	print_point(t_point *point)
 static void	print_ambient_lightning(t_ambient_lightning *element)
 {
 	printf("Ambient light rate: %f\n", element->amb_light_rate);
-	print_colors(&(element->colors));
+	print_colors(&(element->color));
 }
 
 static void	print_camera(t_camera *element)
@@ -54,7 +54,7 @@ static void	print_sphere(t_sphere *element)
 	print_point(&(element->coord_center));
 	printf("Diameter: %f\n", element->diameter);
 	printf("Sphere colors: ");
-	print_colors(&(element->colors));
+	print_colors(&(element->color));
 }
 
 static void	print_plane(t_plane *element)
@@ -64,7 +64,7 @@ static void	print_plane(t_plane *element)
 	printf("Normal vector: ");
 	print_point(&(element->normal_vector));
 	printf("Plane colors: ");
-	print_colors(&(element->colors));
+	print_colors(&(element->color));
 }
 
 static void	print_cylinder(t_cylinder *element)
@@ -76,18 +76,18 @@ static void	print_cylinder(t_cylinder *element)
 	printf("Diameter: %f\n", element->diameter);
 	printf("Height: %f\n", element->height);
 	printf("Cylinder colors: ");
-	print_colors(&(element->colors));
+	print_colors(&(element->color));
 }
 
 static void	print_element(t_element *element)
 {
-	if (element->type == AMBIENT_LIGHTNING)
-		print_ambient_lightning(element->params);
-	else if (element->type == CAMERA)
-		print_camera(element->params);
-	else if (element->type == LIGHT)
-		print_light(element->params);
-	else if (element->type == SPHERE)
+	// if (element->type == AMBIENT_LIGHTNING)
+	// 	print_ambient_lightning(element->params);
+	// else if (element->type == CAMERA)
+	// 	print_camera(element->params);
+	// else if (element->type == LIGHT)
+	// 	print_light(element->params);
+	if (element->type == SPHERE)
 		print_sphere(element->params);
 	else if (element->type == PLANE)
 		print_plane(element->params);
@@ -97,10 +97,21 @@ static void	print_element(t_element *element)
 
 void	print_elements(t_list *elements)
 {
+	printf("Print Elements:\n");
 	while (elements != NULL)
 	{
 		print_element(elements->content);
 		elements = elements->next;
 		printf("\n");
 	}
+}
+void	print_scene(t_scene *scene)
+{
+	printf("Print Scene:\n");
+	print_ambient_lightning(scene->amb_light);
+	printf("\n");
+	print_camera(scene->camera);
+	printf("\n");
+	print_light(scene->light);
+	printf("\n");
 }

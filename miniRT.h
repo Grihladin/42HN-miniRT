@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 20:05:28 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/16 11:37:44 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,26 @@
 # include <math.h>
 # include <stdio.h>
 
-typedef struct s_colors
+typedef struct s_color
 {
-	unsigned char red; //[0-255]
+	unsigned char	red; //[0-255]
 	unsigned char	green;
 	unsigned char	blue;
-}					t_colors;
+}					t_color;
+
+typedef struct s_colorf
+{
+	float			red;
+	float			green;
+	float			blue;
+}					t_colorf;
 
 typedef struct s_point
 {
 	float			x;
 	float			y;
 	float			z;
-} t_vector3, t_point, t_color;
+} t_vector3,		t_point;
 
 typedef struct s_ray
 {
@@ -59,46 +66,53 @@ typedef struct s_ray
 
 typedef struct s_ambient_lightning
 {
-	float amb_light_rate; //[0.0 , 1.0]
-	t_color		color;
+	float			amb_light_rate; //[0.0 , 1.0]
+	t_color			color;
 }					t_ambient_lightning;
 
 typedef struct s_camera
 {
 	t_point			view_point;
 	t_vector3		up;
-	t_vector3 orient_vector;             // [-1,1]
-	unsigned char horizont_field_degree; //[0,180]
+	t_vector3		orient_vector;		// [-1,1]
+	unsigned char	horizont_field_degree; //[0,180]
 }					t_camera;
 
 typedef struct s_light
 {
 	t_point			light_point;
-	float light_brightness; //[0.0 , 1.0]
+	float			light_brightness; //[0.0 , 1.0]
 }					t_light;
+
+typedef struct s_scene
+{
+	t_ambient_lightning		*amb_light;
+	t_camera				*camera;
+	t_light					*light;
+}					t_scene;
 
 typedef struct s_sphere
 {
 	t_point			coord_center;
 	float			diameter;
 	float			radius;
-	t_colors		colors;
+	t_color			color;
 }					t_sphere;
 
 typedef struct s_plane
 {
 	t_point			coord_point;
-	t_vector3 normal_vector; // [-1,1]
-	t_colors		colors;
+	t_vector3		normal_vector; // [-1,1]
+	t_color			color;
 }					t_plane;
 
 typedef struct s_cylinder
 {
 	t_point			coord_center;
-	t_vector3 normal_vector_axis_cyl; // [-1,1]
+	t_vector3		normal_vector_axis_cyl; // [-1,1]
 	float			diameter;
 	float			height;
-	t_colors		colors;
+	t_color			color;
 }					t_cylinder;
 
 typedef struct s_element
@@ -109,15 +123,16 @@ typedef struct s_element
 
 typedef struct s_vars
 {
-	mlx_t			*wind;
-	mlx_image_t		*image;
-	unsigned int	width;
-	unsigned int	height;
-	char			need_redraw;
-	unsigned int	time_to_redraw;
-	float			aspect_ratio;
-	t_list			*elements;
-	int				fd;
+	mlx_t				*wind;
+	mlx_image_t			*image;
+	unsigned int		width;
+	unsigned int		height;
+	char				need_redraw;
+	unsigned int		time_to_redraw;
+	float				aspect_ratio;
+	t_list				*elements;
+	t_scene				scene;
+	int					fd;
 	t_ambient_lightning	ambient_light;
 }					t_vars;
 
@@ -136,7 +151,7 @@ int					read_parameters(int argc, char **argv, t_vars *vars);
 int					read_element(t_vars *vars, t_list *element_params);
 t_point				read_point(const char *str);
 t_vector3			read_vector(const char *str);
-t_colors			read_colors(const char *str);
+t_color				read_colors(const char *str);
 t_light				*read_light(t_list *element_params);
 t_sphere			*read_sphere(t_list *element_params);
 t_plane				*read_plane(t_list *element_params);
@@ -155,16 +170,20 @@ float				vec3_length(t_vector3 v);
 float				calculate_distance(t_vector3 a, t_vector3 b);
 
 // colors
-t_color	color_multiply(t_color a, t_color b);
-t_color	color_scale(t_color c, float factor);
-t_color	color_sum(t_color a, t_color b);
+t_colorf			color_multiply(t_colorf a, t_colorf b);
+t_colorf			color_scale(t_colorf c, float factor);
+t_colorf			color_sum(t_colorf a, t_colorf b);
 
 // utils
 t_list				*rt_split(char *str);
 float				ft_atof(const char *nptr);
 void				free_arr_of_str(char ***strings);
 void				delete_element(void *element);
+int					check_unique_element(t_vars *vars, int type);
+void				free_scene(t_scene *scene);
+
+//Debug functions
 void				print_elements(t_list *elements);
-int					check_unique_element(t_list *elements, int type);
+void				print_scene(t_scene *scene);
 
 #endif

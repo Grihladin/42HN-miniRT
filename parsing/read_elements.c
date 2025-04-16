@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_elements.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:02:25 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 20:05:20 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/16 11:32:50 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 t_color	read_colors(const char *str)
 {
 	char		**colors_arr;
-	t_color	color;
+	t_color		color;
 
 	colors_arr = ft_split(str, ',');
-	color.x = (unsigned char) ft_atoi(colors_arr[0]);
-	color.y = (unsigned char) ft_atoi(colors_arr[1]);
-	color.z = (unsigned char) ft_atoi(colors_arr[2]);
+	color.red = (unsigned char) ft_atoi(colors_arr[0]);
+	color.green = (unsigned char) ft_atoi(colors_arr[1]);
+	color.blue = (unsigned char) ft_atoi(colors_arr[2]);
 	free_arr_of_str(&colors_arr);
 	return (color);
 }
@@ -106,16 +106,35 @@ int	read_element(t_vars *vars, t_list *element_params)
 	}
 	if (new_element->type != 0)
 	{
-		if (check_unique_element(vars->elements, new_element->type))
+		if (check_unique_element(vars, new_element->type))
 		{
 			free(new_element);
 			return (print_error(element_params->content, ERROR_ELEMENT_NOT_UNIQUE), 1);
 		}
-		new_el = ft_calloc(sizeof (t_list), 1);
-		if (new_el == NULL)
-			return (1);
-		new_el->content = new_element;
-		ft_lstadd_back(&(vars->elements), new_el);
+		if (new_element->type == AMBIENT_LIGHTNING)
+		{
+			vars->scene.amb_light = new_element->params;
+			free(new_element);
+		}
+		else if (new_element->type == CAMERA)
+		{
+			vars->scene.camera = new_element->params;
+			free(new_element);
+		}
+		else if (new_element->type == LIGHT)
+		{
+			vars->scene.light = new_element->params;
+			free(new_element);
+		}
+		else
+		{
+			new_el = ft_calloc(sizeof (t_list), 1);
+			if (new_el == NULL)
+				return (1);
+			new_el->content = new_element;
+			ft_lstadd_back(&(vars->elements), new_el);
+		}
+
 	}
 	return (0);
 }

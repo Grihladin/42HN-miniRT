@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_elements1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:10 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 16:30:02 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/16 11:33:25 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_sphere	*read_sphere(t_list *element_params)
 	element_params = element_params->next;
 	new_sphere->diameter = ft_atof(element_params->content);
 	element_params = element_params->next;
-	new_sphere->colors = read_colors(element_params->content);
+	new_sphere->color = read_colors(element_params->content);
 	new_sphere->radius = new_sphere->diameter / 2;
 	return (new_sphere);
 }
@@ -52,7 +52,7 @@ t_plane	*read_plane(t_list *element_params)
 	element_params = element_params->next;
 	new_plane->normal_vector = read_point(element_params->content);
 	element_params = element_params->next;
-	new_plane->colors = read_colors(element_params->content);
+	new_plane->color = read_colors(element_params->content);
 	return (new_plane);
 }
 
@@ -71,6 +71,6 @@ t_cylinder	*read_cylinder(t_list *element_params)
 	element_params = element_params->next;
 	new_cylinder->height = ft_atof(element_params->content);
 	element_params = element_params->next;
-	new_cylinder->colors = read_colors(element_params->content);
+	new_cylinder->color = read_colors(element_params->content);
 	return (new_cylinder);
 }

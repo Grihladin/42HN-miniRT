@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 11:38:06 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/16 11:53:46 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	before_exit(void *param)
 
 	vars = param;
 	free_scene(&(vars->scene));
+	ft_lstclear(&(vars->elements), delete_element);
 	if (vars->wind != NULL)
 	{
 		if (vars->image != NULL)

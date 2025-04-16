@@ -6,13 +6,13 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/16 17:02:55 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/16 17:40:33 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	primary_ray(t_vars *vars, t_camera *camera, int i, int j)
+t_ray	primary_ray(t_vars *vars, t_camera *camera, int i, int j)
 {
 	t_ray		ray;
 	t_vector3	forward;
@@ -86,7 +86,7 @@ bool	is_in_shadow(t_sphere *sphere, t_ray *ray, float light_distance)
 	retrun(false);
 }
 
-t_color	calculate_lightning(t_vars *vars, t_point hit_point,
+t_colorf	calculate_lightning(t_vars *vars, t_point hit_point,
 		t_point hit_normalized, t_ray view_ray, t_sphere *sphere)
 {
 	t_colorf	color;
@@ -95,6 +95,10 @@ t_color	calculate_lightning(t_vars *vars, t_point hit_point,
 	t_ray		shadow_ray;
 	float		diffuse_factor;
 	t_vector3	reflection_dir;
+	t_vector3	view_dir;
+	float		specular_factor;
+	float		attenuation;
+	t_colorf	diffuse;
 
 	color = color_scale(vars->scene.amb_light->color,
 			vars->scene.amb_light->amb_light_rate);
@@ -108,14 +112,86 @@ t_color	calculate_lightning(t_vars *vars, t_point hit_point,
 		diffuse_factor = fmaxf(0.0f, vec3_dot(hit_normalized, light_dir));
 		reflection_dir = vec3_subtract(vec3_multiply(hit_normalized, 2.0f
 					* vec3_dot(hit_normalized, light_dir)), light_dir);
-		t_vector3	view_dir = vec3_normalize(vec3_multiply(view_ray.direction, -1.0f));
-		float		specular_factor = powf(fmaxf(0.0f,
-					vec3_dot(view_dir, reflection_dir)), 20.0f);
-		float		attenuation = vars->scene.light->light_brightness
-			/ (light_distance * light_distance);
-		
-		t_colorf	diffuse = color_multiply(vars->scene.,
-				sphere->color);
+		view_dir = vec3_normalize(vec3_multiply(view_ray.direction, -1.0f));
+		specular_factor = powf(fmaxf(0.0f, vec3_dot(view_dir, reflection_dir)),
+				20.0f);
+		attenuation = vars->scene.light->light_brightness / (light_distance
+				* light_distance);
+		diffuse = color_multiply(vars->scene., sphere->color);
 	}
-	
+}
+
+void	raytrace(t_camera *camera, t_vars *vars, t_colorf *framebuffer)
+{
+	int		i;
+	int		j;
+	t_ray	p_ray;
+	float	min_dist;
+	t_point	hit_point;
+	t_point	hit_normalized;
+	bool	found_intersection;
+	float	t;
+	t_point	p_hit;
+	t_point	n_hit;
+
+	i = 0;
+	j = 0;
+	while (j < vars->height)
+	{
+		while (i < vars->width)
+		{
+			p_ray = primary_ray(vars, camera, i, j);
+			min_dist = INFINITY;
+			found_intersection = false;
+			if (intersect_sphere(&p_ray, vars->sphere, &t, &p_hit, &n_hit))
+			{
+				if (t < min_dist)
+				{
+					min_dist = t;
+					hit_point = p_hit;
+					hit_normalized = n_hit;
+					found_intersection = true;
+				}
+			}
+			if (found_intersection)
+			{
+				framebuffer[j * vars->width + i] = calculate_lightning(vars,
+						hit_point, hit_normalized, p_ray, vars->sphere);
+			}
+			else
+			{
+				framebuffer[j * vars->width + i] = colorf_create(0.0f, 0.0f,
+						0.0f);
+			}
+			i++;
+		}
+		j++;
+	}
+}
+
+void	draw_image(t_vars *vars, t_colorf *framebuffer)
+{
+	int				i;
+	int				j;
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+
+	i = 0;
+	j = 0;
+	while (j < vars->height)
+	{
+		while (i < vars->width)
+		{
+			r = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, framebuffer[j
+							* vars->width + i].red)));
+			g = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, framebuffer[j
+							* vars->width + i].green)));
+			b = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, framebuffer[j
+							* vars->width + i].blue)));
+			mlx_put_pixel(vars->image, i, j,);
+			i++;
+		}
+		j++;
+	}
 }

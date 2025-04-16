@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:29:57 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 17:19:13 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/16 17:37:53 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 //Forbidden function
 #include <stdio.h>
 
-static void	print_colors(t_colorf *colors)
+static void	print_colors(t_color *colors)
 {
-	printf("R: %f  G: %f  B: %f\n", colors->red, colors->green, colors->blue);
+	printf("R: %u  G: %u  B: %u\n", colors->red, colors->green, colors->blue);
 }
 
 static void	print_point(t_point *point)

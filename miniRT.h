@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 17:17:10 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/16 17:36:20 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@
 # include <math.h>
 # include <stdio.h>
 
-// typedef struct s_color
-// {
-// 	unsigned char	red; //[0-255]
-// 	unsigned char	green;
-// 	unsigned char	blue;
-// }					t_color;
+typedef struct s_color
+{
+	unsigned char	red; //[0-255]
+	unsigned char	green;
+	unsigned char	blue;
+}					t_color;
 
 typedef struct s_colorf
 {
@@ -67,7 +67,7 @@ typedef struct s_ray
 typedef struct s_ambient_lightning
 {
 	float			amb_light_rate; //[0.0 , 1.0]
-	t_colorf		color;
+	t_color			color;
 }					t_ambient_lightning;
 
 typedef struct s_camera
@@ -82,7 +82,7 @@ typedef struct s_light
 {
 	t_point			light_point;
 	float			light_brightness; //[0.0 , 1.0]
-	t_colorf		color;
+	t_color			color;
 }					t_light;
 
 typedef struct s_scene
@@ -97,14 +97,14 @@ typedef struct s_sphere
 	t_point			coord_center;
 	float			diameter;
 	float			radius;
-	t_colorf		color;
+	t_color			color;
 }					t_sphere;
 
 typedef struct s_plane
 {
 	t_point			coord_point;
 	t_vector3		normal_vector; // [-1,1]
-	t_colorf		color;
+	t_color			color;
 }					t_plane;
 
 typedef struct s_cylinder
@@ -113,7 +113,7 @@ typedef struct s_cylinder
 	t_vector3		normal_vector_axis_cyl; // [-1,1]
 	float			diameter;
 	float			height;
-	t_colorf		color;
+	t_color			color;
 }					t_cylinder;
 
 typedef struct s_element
@@ -151,7 +151,7 @@ int					read_parameters(int argc, char **argv, t_vars *vars);
 int					read_element(t_vars *vars, t_list *element_params);
 t_point				read_point(const char *str);
 t_vector3			read_vector(const char *str);
-t_colorf			read_colors(const char *str);
+t_color				read_colors(const char *str);
 t_light				*read_light(t_list *element_params);
 t_sphere			*read_sphere(t_list *element_params);
 t_plane				*read_plane(t_list *element_params);

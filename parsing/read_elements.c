@@ -6,21 +6,21 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:02:25 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 17:15:31 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/16 17:37:13 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-t_colorf	read_colors(const char *str)
+t_color	read_colors(const char *str)
 {
 	char			**colors_arr;
-	t_colorf		color;
+	t_color			color;
 
 	colors_arr = ft_split(str, ',');
-	color.red = (float) ft_atoi(colors_arr[0]);
-	color.green = (float) ft_atoi(colors_arr[1]);
-	color.blue = (float) ft_atoi(colors_arr[2]);
+	color.red = (unsigned char) ft_atoi(colors_arr[0]);
+	color.green = (unsigned char) ft_atoi(colors_arr[1]);
+	color.blue = (unsigned char) ft_atoi(colors_arr[2]);
 	free_arr_of_str(&colors_arr);
 	return (color);
 }

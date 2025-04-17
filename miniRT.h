@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 11:52:05 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 12:29:17 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 
 # define ERROR_GENERAL 1
 # define ERROR_FATAL 2
+# define ERROR_WRONG_FILE_EXT 78
 # define ERROR_COUNT_ARGUMENTS 14
 # define ERROR_ELEMENT_NOT_UNIQUE 22
 # define ERROR_ALLOCATE_MEMORY 122

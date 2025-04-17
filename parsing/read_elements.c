@@ -6,29 +6,29 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:02:25 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 17:37:13 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 12:15:25 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-t_color	read_colors(const char *str)
+t_color3	read_colors(const char *str)
 {
 	char			**colors_arr;
-	t_color			color;
+	t_color3		color;
 
 	colors_arr = ft_split(str, ',');
-	color.red = (unsigned char) ft_atoi(colors_arr[0]);
-	color.green = (unsigned char) ft_atoi(colors_arr[1]);
-	color.blue = (unsigned char) ft_atoi(colors_arr[2]);
+	color.x = ((float) ft_atoi(colors_arr[0])) / 255;
+	color.y = ((float) ft_atoi(colors_arr[1])) / 255;
+	color.z = ((float) ft_atoi(colors_arr[2])) / 255;
 	free_arr_of_str(&colors_arr);
 	return (color);
 }
 
-t_point	read_point(const char *str)
+t_point3	read_point(const char *str)
 {
 	char		**point_arr;
-	t_point		point;
+	t_point3	point;
 
 	point_arr = ft_split(str, ',');
 	point.x = ft_atof(point_arr[0]);
@@ -58,11 +58,11 @@ static t_camera	*read_camera(t_list *element_params)
 	new_camera = ft_calloc(1, sizeof (t_camera));
 	if (new_camera == NULL)
 		return (NULL);
-	new_camera->view_point = read_point(element_params->content);
+	new_camera->position = read_point(element_params->content);
 	element_params = element_params->next;
-	new_camera->orient_vector = read_point(element_params->content);
+	new_camera->direction = read_point(element_params->content);
 	element_params = element_params->next;
-	new_camera->horizont_field_degree = (unsigned char)
+	new_camera->field_of_view = (float)
 		ft_atoi(element_params->content);
 	new_camera->up = vec3_create(0, 1, 0);
 	return (new_camera);

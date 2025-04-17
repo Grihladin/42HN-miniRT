@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:29:57 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 17:37:53 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 11:45:33 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 //Forbidden function
 #include <stdio.h>
 
-static void	print_colors(t_color *colors)
+static void	print_colors(t_color3 *colors)
 {
-	printf("R: %u  G: %u  B: %u\n", colors->red, colors->green, colors->blue);
+	printf("R: %f  G: %f  B: %f\n", colors->x, colors->y, colors->z);
 }
 
-static void	print_point(t_point *point)
+static void	print_point(t_point3 *point)
 {
-	// ft_printf("Point \\ Vector:\n");
 	printf("%f  %f  %f\n", point->x, point->y, point->z);
 }
 
@@ -34,26 +33,26 @@ static void	print_ambient_lightning(t_ambient_lightning *element)
 static void	print_camera(t_camera *element)
 {
 	printf("Camera view point: ");
-	print_point(&(element->view_point));
+	print_point(&(element->position));
 	printf("Orient vector: ");
-	print_point(&(element->orient_vector));
-	printf("Horizont field degree: %u\n", element->horizont_field_degree);
+	print_point(&(element->direction));
+	printf("Horizont field degree: %f\n", element->field_of_view);
 }
 
 static void	print_light(t_light *element)
 {
 	printf("Light point: ");
-	print_point(&(element->light_point));
-	printf("Light brightness: %f\n", element->light_brightness);
+	print_point(&(element->position));
+	printf("Light brightness: %f\n", element->brightness);
 }
 
 static void	print_sphere(t_sphere *element)
 {
 	printf("Sphere coord center: ");
-	print_point(&(element->coord_center));
-	printf("Diameter: %f\n", element->diameter);
+	print_point(&(element->center));
+	printf("Radius: %f\n", element->radius);
 	printf("Sphere colors: ");
-	print_colors(&(element->color));
+	print_colors(&(element->material.color));
 }
 
 static void	print_plane(t_plane *element)

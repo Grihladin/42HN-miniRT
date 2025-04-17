@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   primary_ray.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/16 20:27:44 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/17 12:15:42 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 t_ray	primary_ray(t_vars *vars, int i, int j)
 {
-	t_ray	ray;
+	t_ray		ray;
 	t_vec3	forward;
 	t_vec3	right;
 	t_vec3	up;
-	float	fov_scale;
-	float	pixel_x;
-	float	pixel_y;
+	float		fov_scale;
+	float		pixel_x;
+	float		pixel_y;
 
-	forward = vec3_normalize(vars->camera->direction);
-	right = vec3_normalize(vec3_cross(forward, vars->camera->up));
+	forward = vec3_normalize(vars->scene.camera->direction);
+	right = vec3_normalize(vec3_cross(forward, vars->scene.camera->up));
 	up = vec3_cross(right, forward);
-	fov_scale = tanf(vars->camera->fov * 0.5f * M_PI / 180.0f);
+	fov_scale = tanf(vars->scene.camera->field_of_view * 0.5f * M_PI / 180.0f);
 	pixel_x = (2.0f * ((i + 0.5f) / vars->width) - 1.0f) * fov_scale
-		* vars->camera->aspect_ratio;
+		* vars->aspect_ratio;
 	pixel_y = (1.0f - 2.0f * ((j + 0.5f) / vars->height)) * fov_scale;
-	ray.origin = vars->camera->position;
+	ray.origin = vars->scene.camera->position;
 	ray.direction = vec3_normalize(vec3_sum(forward,
 				vec3_sum(vec3_multiply(right, pixel_x), vec3_multiply(up,
 						pixel_y))));
@@ -40,12 +40,12 @@ bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 		t_point3 *hit_point, t_point3 *hit_normal)
 {
 	t_vec3	oc;
-	float	a;
-	float	b;
-	float	c;
-	float	discriminant;
-	float	t0;
-	float	t1;
+	float		a;
+	float		b;
+	float		c;
+	float		discriminant;
+	float		t0;
+	float		t1;
 
 	oc = vec3_subtract(ray.origin, sphere->center);
 	a = vec3_dot(ray.direction, ray.direction);
@@ -75,13 +75,13 @@ bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 	return (true);
 }
 
-bool	is_in_shadow(t_ray shadow_ray, t_scene scene, float max_t)
+bool	is_in_shadow(t_ray shadow_ray, t_sphere *sphere, float max_t)
 {
 	float		t;
 	t_point3	hit_point;
 	t_point3	hit_normal;
 
-	if (intersect_sphere(shadow_ray, scene.sphere, &t, &hit_point, &hit_normal))
+	if (intersect_sphere(shadow_ray, sphere, &t, &hit_point, &hit_normal))
 	{
 		if (t < max_t)
 		{
@@ -91,30 +91,30 @@ bool	is_in_shadow(t_ray shadow_ray, t_scene scene, float max_t)
 	return (false);
 }
 
-t_color3	calculate_lighting(t_scene scene, t_point3 hit_point,
+t_color3	calculate_lighting(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
 		t_point3 hit_normal, t_material material, t_ray view_ray)
 {
 	t_color3	color;
 	t_light		light;
-	t_vec3		light_dir;
+	t_vec3	light_dir;
 	float		light_distance;
 	t_ray		shadow_ray;
 	float		diffuse_factor;
-	t_vec3		reflection_dir;
-	t_vec3		view_dir;
+	t_vec3	reflection_dir;
+	t_vec3	view_dir;
 	float		specular_factor;
 	float		attenuation;
 	t_color3	diffuse;
 	t_color3	specular;
 
-	color = color_scale(scene.ambient_light, 0.1f);
-	light = *scene.light;
+	color = color_scale(vars->scene.amb_light->color, 0.1f);
+	light = *(vars->scene.light);
 	light_dir = vec3_subtract(light.position, hit_point);
 	light_distance = vec3_length(light_dir);
 	light_dir = vec3_normalize(light_dir);
 	shadow_ray.origin = hit_point;
 	shadow_ray.direction = light_dir;
-	if (!is_in_shadow(shadow_ray, scene, light_distance))
+	if (!is_in_shadow(shadow_ray, sphere, light_distance))
 	{
 		diffuse_factor = fmaxf(0.0f, vec3_dot(hit_normal, light_dir));
 		reflection_dir = vec3_subtract(vec3_multiply(hit_normal, 2.0f
@@ -122,7 +122,7 @@ t_color3	calculate_lighting(t_scene scene, t_point3 hit_point,
 		view_dir = vec3_normalize(vec3_multiply(view_ray.direction, -1.0f));
 		specular_factor = powf(fmaxf(0.0f, vec3_dot(view_dir, reflection_dir)),
 				20.0f);
-		attenuation = light.intensity / (light_distance * light_distance);
+		attenuation = light.brightness / (light_distance * light_distance);
 		diffuse = color_scale(color_multiply(light.color, material.color),
 				diffuse_factor * attenuation);
 		specular = color_scale(light.color, specular_factor * attenuation
@@ -132,7 +132,7 @@ t_color3	calculate_lighting(t_scene scene, t_point3 hit_point,
 	return (color);
 }
 
-void	raytrace(t_vars *vars, t_scene scene, t_color3 *framebuffer)
+void	raytrace(t_vars *vars, t_sphere *sphere)
 {
 	t_ray		p_ray;
 	float		min_dist;
@@ -154,52 +154,54 @@ void	raytrace(t_vars *vars, t_scene scene, t_color3 *framebuffer)
 			// Initialize closest intersection
 			min_dist = INFINITY;
 			found_intersection = false;
-			if (intersect_sphere(p_ray, vars->scene.sphere, &t, &p_hit, &n_hit))
+			if (intersect_sphere(p_ray, sphere, &t, &p_hit, &n_hit))
 			{
 				if (t < min_dist)
 				{
 					min_dist = t;
 					hit_point = p_hit;
 					hit_normal = n_hit;
-					hit_material = vars->scene.sphere->material;
+					hit_material = sphere->material;
 					found_intersection = true;
 				}
 			}
 			if (found_intersection)
 			{
-				framebuffer[j * vars->width + i] = calculate_lighting(scene,
+				vars->framebuffer[j * vars->width + i] = calculate_lighting(vars, sphere,
 						hit_point, hit_normal, hit_material, p_ray);
 			}
 			else
 			{
-				framebuffer[j * vars->width + i] = vec3_create(0.0f, 0.0f,
+				vars->framebuffer[j * vars->width + i] = vec3_create(0.0f, 0.0f,
 						0.0f);
 			}
 		}
 	}
 }
 
-void	save_image(t_vars *vars, t_color3 *framebuffer)
+void	out_image(t_vars *vars)
 {
 	unsigned char	r;
 	unsigned char	g;
 	unsigned char	b;
+	uint32_t		color;
 
 	// Write pixel data
+	color = 0;
 	for (int j = 0; j < vars->height; j++)
 	{
 		for (int i = 0; i < vars->width; i++)
 		{
 			// Convert floating-point color to byte
-			r = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, framebuffer[j
+			r = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, vars->framebuffer[j
 							* vars->width + i].x)));
-			g = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, framebuffer[j
+			g = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, vars->framebuffer[j
 							* vars->width + i].y)));
-			b = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, framebuffer[j
+			b = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, vars->framebuffer[j
 							* vars->width + i].z)));
-			mlx_put_pixel(vars->image, i, j,
-				(uint32_t)(r << 16) | (g << 8) | b);
+			color = ((((color | r) << 8) | g) << 8) | b;
+			mlx_put_pixel(vars->image, i, j, color);
+				// (uint32_t)(r << 16) | (g << 8) | b);
 		}
 	}
-	vars->need_redraw = 1;
 }

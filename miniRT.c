@@ -6,13 +6,13 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 11:53:46 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 11:38:51 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-static void	init_vars(struct s_vars *vars)
+static int	init_vars(struct s_vars *vars)
 {
 	vars->wind = NULL;
 	vars->image = NULL;
@@ -25,6 +25,14 @@ static void	init_vars(struct s_vars *vars)
 	vars->scene.camera = NULL;
 	vars->scene.light = NULL;
 	vars->aspect_ratio = vars->width / vars->height;
+	vars->framebuffer = ft_calloc((vars->width * vars->height),
+			sizeof(t_color3));
+	if (vars->framebuffer == NULL)
+	{
+		print_error(NULL, ERROR_ALLOCATE_MEMORY);
+		return (1);
+	}
+	return (0);
 }
 
 void	before_exit(void *param)
@@ -32,6 +40,7 @@ void	before_exit(void *param)
 	t_vars	*vars;
 
 	vars = param;
+	free(vars->framebuffer);
 	free_scene(&(vars->scene));
 	ft_lstclear(&(vars->elements), delete_element);
 	if (vars->wind != NULL)
@@ -44,7 +53,8 @@ void	before_exit(void *param)
 
 static int	preparations(int argc, char **argv, struct s_vars *vars)
 {
-	init_vars(vars);
+	if (init_vars(vars))
+		return (1);
 	if (argc == 1)
 		return (print_error(NULL, ERROR_COUNT_ARGUMENTS), 1);
 	if (read_parameters(argc, argv, vars) == 1)

@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:01:02 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 12:59:00 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 12:02:19 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ void	main_hook(void *param)
 	if ((vars->need_redraw == 1) && (vars->time_to_redraw
 			>= TIMEOUT_BEFORE_UPDATE))
 	{
-		// paint_fractal(vars);
-		ft_printf("Redraw\n");
+		redraw_image(vars);
 		vars->need_redraw = 0;
 		vars->time_to_redraw = 0;
 	}
@@ -63,6 +62,10 @@ void	resize_hook(int width, int height, void *param)
 	mlx_resize_image(vars->image, width, height);
 	vars->width = width;
 	vars->height = height;
+	vars->aspect_ratio = vars->width / vars->height;
+	free(vars->framebuffer);
+	vars->framebuffer = ft_calloc((vars->width * vars->height),
+			sizeof(t_color3));
 	vars->need_redraw = 1;
 	return ;
 }

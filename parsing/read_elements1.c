@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:10 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/16 17:17:18 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 11:57:13 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ t_light	*read_light(t_list *element_params)
 	new_light = ft_calloc(1, sizeof (t_light));
 	if (new_light == NULL)
 		return (NULL);
-	new_light->light_point = read_point(element_params->content);
+	new_light->position = read_point(element_params->content);
 	element_params = element_params->next;
-	new_light->light_brightness = ft_atof(element_params->content);
+	new_light->brightness = ft_atof(element_params->content) * 100;
 	element_params = element_params->next;
 	new_light->color = read_colors(element_params->content);
 	return (new_light);
@@ -34,12 +34,13 @@ t_sphere	*read_sphere(t_list *element_params)
 	new_sphere = ft_calloc(1, sizeof (t_sphere));
 	if (new_sphere == NULL)
 		return (NULL);
-	new_sphere->coord_center = read_point(element_params->content);
+	new_sphere->center = read_point(element_params->content);
 	element_params = element_params->next;
 	new_sphere->diameter = ft_atof(element_params->content);
 	element_params = element_params->next;
-	new_sphere->color = read_colors(element_params->content);
+	new_sphere->material.color = read_colors(element_params->content);
 	new_sphere->radius = new_sphere->diameter / 2;
+	new_sphere->material.reflectivity = 1.0f;
 	return (new_sphere);
 }
 

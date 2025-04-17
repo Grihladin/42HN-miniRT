@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 12:29:17 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 14:01:05 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@
 // 	unsigned char		green;
 // 	unsigned char		blue;
 // }						t_color;
+
+typedef union t_color_int
+{
+	unsigned char		bytes[4];
+	uint32_t			intgr;
+}			t_color_int;
 
 typedef struct s_point
 {
@@ -143,7 +149,7 @@ void					main_hook(void *param);
 
 // hooks
 void					key_hook(mlx_key_data_t keydata, void *param);
-// void			scroll_hook(double xdelta, double ydelta, void *param);
+void					scroll_hook(double xdelta, double ydelta, void *param);
 void					close_hook(void *param);
 // void			cursor_hook(double xpos, double ypos, void *param);
 void					resize_hook(int width, int height, void *param);

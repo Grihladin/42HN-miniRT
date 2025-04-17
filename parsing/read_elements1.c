@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:10 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 11:57:13 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 13:38:47 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_sphere	*read_sphere(t_list *element_params)
 	element_params = element_params->next;
 	new_sphere->material.color = read_colors(element_params->content);
 	new_sphere->radius = new_sphere->diameter / 2;
-	new_sphere->material.reflectivity = 1.0f;
+	new_sphere->material.reflectivity = 0.1f;
 	return (new_sphere);
 }
 

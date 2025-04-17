@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/17 12:15:42 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 14:03:20 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,10 +184,10 @@ void	out_image(t_vars *vars)
 	unsigned char	r;
 	unsigned char	g;
 	unsigned char	b;
-	uint32_t		color;
+	t_color_int		color;
 
 	// Write pixel data
-	color = 0;
+	color.intgr = 0;
 	for (int j = 0; j < vars->height; j++)
 	{
 		for (int i = 0; i < vars->width; i++)
@@ -199,9 +199,11 @@ void	out_image(t_vars *vars)
 							* vars->width + i].y)));
 			b = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, vars->framebuffer[j
 							* vars->width + i].z)));
-			color = ((((color | r) << 8) | g) << 8) | b;
-			mlx_put_pixel(vars->image, i, j, color);
-				// (uint32_t)(r << 16) | (g << 8) | b);
+			color.bytes[0] = r;
+			color.bytes[1] = g;
+			color.bytes[2] = b;
+			color.bytes[3] = 0xFF;
+			mlx_put_pixel(vars->image, i, j, color.intgr);
 		}
 	}
 }

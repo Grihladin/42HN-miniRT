@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:01:02 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 12:02:19 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 13:45:47 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,21 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		vars->need_redraw = 1;
 }
 
-// void	scroll_hook(double xdelta, double ydelta, void *param)
-// {
-// 	t_vars		*vars;
+void	scroll_hook(double xdelta, double ydelta, void *param)
+{
+	int			x;
+	int			y;
+	t_vars		*vars;
 
-// 	vars = param;
-// 	mlx_get_mouse_pos(vars->wind, &x, &y);
-// 	get_coordinats(x, y, &z1, vars);
-// 	if (ydelta > 0)
-// 		vars->scale *= SCALE_OFFSET;
-// 	else if (ydelta < 0)
-// 		vars->scale /= SCALE_OFFSET;
-// 	get_coordinats(x, y, &z2, vars);
-// 	set_redraw(vars);
-// }
+	vars = param;
+	xdelta = 0;
+	mlx_get_mouse_pos(vars->wind, &x, &y);
+	if (ydelta > 0)
+		(vars->scene.camera->position.z)++;
+	else if (ydelta < 0)
+		(vars->scene.camera->position.z)--;
+	vars->need_redraw = 1;
+}
 
 void	resize_hook(int width, int height, void *param)
 {

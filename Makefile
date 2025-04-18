@@ -6,7 +6,7 @@
 #    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/18 13:21:06 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/18 15:53:17 by psenko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ LIBS=-ldl -lglfw -pthread -lm $(LIBFT) $(GETNEXTLINE) MLX42/build/libmlx42.a
 SOURCES=miniRT.c \
 	hooks/hooks.c \
 	hooks/mouse_hooks.c \
+	utils/utils1.c \
 	utils/errors.c \
 	utils/rt_split.c \
 	utils/ft_atof.c \

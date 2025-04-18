@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:29:23 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 12:29:51 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 16:09:25 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int	read_parameters(int argc, char **argv, t_vars *vars)
 	{
 		filename = ft_split(argv[1], '.');
 		if (ft_strcmp(filename[1], "rt"))
-			return (print_error(argv[1], ERROR_WRONG_FILE_EXT), 1);
+			return (print_error(argv[1], ERR_WRNG_FL_EXT), 1);
 		vars->fd = open(argv[1], O_RDONLY);
 		if (vars->fd < 0)
-			return (print_error(NULL, ERROR_FATAL), 1);
+			return (print_error(NULL, ERR_FATAL), 1);
 		nextstr = get_next_line(vars->fd);
 		while (nextstr)
 		{
@@ -39,7 +39,7 @@ int	read_parameters(int argc, char **argv, t_vars *vars)
 		close(vars->fd);
 	}
 	else
-		return (print_error(NULL, ERROR_GENERAL), 1);
+		return (print_error(NULL, ERR_GEN), 1);
 	print_scene(&(vars->scene));
 	print_elements(vars->elements);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 13:31:37 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 16:08:13 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	init_vars(struct s_vars *vars)
 			sizeof(t_color3));
 	if (vars->framebuffer == NULL)
 	{
-		print_error(NULL, ERROR_ALLOCATE_MEMORY);
+		print_error(NULL, ERR_ALC_MEM);
 		return (1);
 	}
 	return (0);
@@ -59,7 +59,7 @@ static int	preparations(int argc, char **argv, struct s_vars *vars)
 	if (init_vars(vars))
 		return (1);
 	if (argc == 1)
-		return (print_error(NULL, ERROR_COUNT_ARGUMENTS), 1);
+		return (print_error(NULL, ERR_CNT_ARG), 1);
 	if (read_parameters(argc, argv, vars) == 1)
 		return (1);
 	vars->wind = mlx_init(vars->width, vars->height, WINDOW_TITLE, 1);

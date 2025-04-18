@@ -6,25 +6,40 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:08:32 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 12:30:45 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 16:18:38 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
+void	print_str(char *str, int fd)
+{
+	if (str != NULL)
+		write(fd, str, ft_strlen(str));
+}
+
 void	print_error(char *str, int type)
 {
-	ft_printf("Error\n");
+	print_str("Error\n", 2);
 	if (str == NULL)
 		str = NULL;
-	if (type == ERROR_COUNT_ARGUMENTS)
-		ft_printf("Usage of command:\n./miniRT [filename]\n");
-	else if (type == ERROR_ALLOCATE_MEMORY)
-		ft_printf("Error allocate memory!\n");
-	else if (type == ERROR_FATAL)
-		ft_printf("Fatal Error!\n");
-	else if (type == ERROR_WRONG_FILE_EXT)
-		ft_printf("%s: Wrong file extension!\n", str);
-	else if (type == ERROR_ELEMENT_NOT_UNIQUE)
-		ft_printf("Element %s is not unique!\n", str);
+	if (type == ERR_CNT_ARG)
+		print_str("Usage of command:\n./miniRT [filename]\n", 2);
+	else if (type == ERR_ALC_MEM)
+		print_str("Error allocate memory!\n", 2);
+	else if (type == ERR_FATAL)
+		print_str("Fatal Error!\n", 2);
+	else if (type == ERR_WRNG_FL_EXT)
+	{
+		print_str(str, 2);
+		print_str(": Wrong file extension!\n", 2);
+	}
+	else if (type == ERR_CRT_EL)
+		print_str("Error create elements!\n", 2);
+	else if (type == ERR_EL_NOT_UNIQ)
+	{
+		print_str("Element ", 2);
+		print_str(str, 2);
+		print_str(" is not unique!\n", 2);
+	}
 }

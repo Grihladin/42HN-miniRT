@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 13:34:48 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 16:31:07 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@
 # define PLANE 5
 # define CYLINDER 6
 
-# define ERROR_GENERAL 1
-# define ERROR_FATAL 2
-# define ERROR_WRONG_FILE_EXT 78
-# define ERROR_COUNT_ARGUMENTS 14
-# define ERROR_ELEMENT_NOT_UNIQUE 22
-# define ERROR_ALLOCATE_MEMORY 122
+# define ERR_GEN 1
+# define ERR_FATAL 2
+# define ERR_CNT_ARG 14
+# define ERR_EL_NOT_UNIQ 22
+# define ERR_WRNG_FL_EXT 78
+# define ERR_CRT_EL 79
+# define ERR_ALC_MEM 122
 
 # include "MLX42/include/MLX42/MLX42.h"
 # include "get_next_line/get_next_line_bonus.h"
@@ -166,9 +167,9 @@ void					resize_hook(int width, int height, void *param);
 // parsing
 int						read_parameters(int argc, char **argv, t_vars *vars);
 int						read_element(t_vars *vars, t_list *element_params);
-t_point3				read_point(const char *str);
+int						read_point(const char *str, t_point3 *point);
 t_vec3					read_vector(const char *str);
-t_color3				read_colors(const char *str);
+int						read_colors(const char *str, t_color3 *color);
 t_light					*read_light(t_list *element_params);
 t_sphere				*read_sphere(t_list *element_params);
 t_plane					*read_plane(t_list *element_params);
@@ -193,6 +194,7 @@ t_color3				color_scale(t_color3 c, float factor);
 t_color3				color_sum(t_color3 a, t_color3 b);
 
 // utils
+int						arr_size(char **arr);
 t_list					*rt_split(char *str);
 float					ft_atof(const char *nptr);
 void					free_arr_of_str(char ***strings);

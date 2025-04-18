@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:56:23 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 11:29:03 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 16:37:08 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	redraw_image(t_vars *vars)
 	t_cylinder	*cylinder;
 
 	elements = vars->elements;
-	ft_printf("Redraw\n");
 	while (elements != NULL)
 	{
 		element = elements->content;

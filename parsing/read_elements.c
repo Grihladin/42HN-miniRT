@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:02:25 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 12:15:25 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/17 14:10:13 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static t_camera	*read_camera(t_list *element_params)
 	element_params = element_params->next;
 	new_camera->field_of_view = (float)
 		ft_atoi(element_params->content);
-	new_camera->up = vec3_create(0, 1, 0);
+	new_camera->up = vec3_create(0.0f, 1.0f, 0.0f);
 	return (new_camera);
 }
 

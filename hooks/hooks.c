@@ -6,11 +6,11 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:01:02 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 13:45:47 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 13:34:25 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../miniRT.h"
 
 void	main_hook(void *param)
 {
@@ -35,24 +35,36 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	vars = param;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(vars->wind);
-	if (keydata.key == MLX_KEY_ENTER && keydata.action == MLX_PRESS)
+	if ((keydata.action == MLX_PRESS) || (keydata.action == MLX_REPEAT))
+	{
+		if (keydata.key == MLX_KEY_W)
+			zoom(vars->scene.camera, 1.0f);
+		if (keydata.key == MLX_KEY_S)
+			zoom(vars->scene.camera, -1.0f);
+		if (keydata.key == MLX_KEY_S)
+			zoom(vars->scene.camera, -1.0f);
+		if (keydata.key == MLX_KEY_UP)
+			rotate_camera_vert(vars->scene.camera, ROTATE_ANGLE);
+		if (keydata.key == MLX_KEY_DOWN)
+			rotate_camera_vert(vars->scene.camera, -ROTATE_ANGLE);
+		if (keydata.key == MLX_KEY_LEFT)
+			rotate_camera_hor(vars->scene.camera, -ROTATE_ANGLE);
+		if (keydata.key == MLX_KEY_RIGHT)
+			rotate_camera_hor(vars->scene.camera, ROTATE_ANGLE);
+		if (keydata.key == MLX_KEY_A)
+			move_camera_side(vars->scene.camera, -MOVE_DISTANCE);
+		if (keydata.key == MLX_KEY_D)
+			move_camera_side(vars->scene.camera, MOVE_DISTANCE);
+		if (keydata.key == MLX_KEY_M)
+			vars->mouse_rotate ^= 1;
+	}
+	if (((keydata.key == MLX_KEY_UP) || (keydata.key == MLX_KEY_DOWN)
+			|| (keydata.key == MLX_KEY_LEFT) || (keydata.key == MLX_KEY_RIGHT)
+			|| (keydata.key == MLX_KEY_W) || (keydata.key == MLX_KEY_S)
+			|| (keydata.key == MLX_KEY_A) || (keydata.key == MLX_KEY_D)
+			|| (keydata.key == MLX_KEY_ENTER))
+		&& ((keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)))
 		vars->need_redraw = 1;
-}
-
-void	scroll_hook(double xdelta, double ydelta, void *param)
-{
-	int			x;
-	int			y;
-	t_vars		*vars;
-
-	vars = param;
-	xdelta = 0;
-	mlx_get_mouse_pos(vars->wind, &x, &y);
-	if (ydelta > 0)
-		(vars->scene.camera->position.z)++;
-	else if (ydelta < 0)
-		(vars->scene.camera->position.z)--;
-	vars->need_redraw = 1;
 }
 
 void	resize_hook(int width, int height, void *param)
@@ -60,13 +72,15 @@ void	resize_hook(int width, int height, void *param)
 	t_vars		*vars;
 
 	vars = param;
-	mlx_resize_image(vars->image, width, height);
 	vars->width = width;
 	vars->height = height;
-	vars->aspect_ratio = vars->width / vars->height;
+	vars->aspect_ratio = (float) vars->width / (float) vars->height;
 	free(vars->framebuffer);
 	vars->framebuffer = ft_calloc((vars->width * vars->height),
 			sizeof(t_color3));
+	mlx_resize_image(vars->image, width, height);
+	// Delete printf
+	printf("New aspect %f\n", vars->aspect_ratio);
 	vars->need_redraw = 1;
 	return ;
 }

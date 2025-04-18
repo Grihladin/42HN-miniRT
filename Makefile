@@ -6,7 +6,7 @@
 #    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/17 11:47:26 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/18 13:21:06 by psenko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ CFLAGS=-g -fsanitize=address -Wall -Wextra -Werror -Ofast -ffast-math -flto -mar
 LIBS=-ldl -lglfw -pthread -lm $(LIBFT) $(GETNEXTLINE) MLX42/build/libmlx42.a
 # CFLAGS_TEST=-Wall -Wextra -Werror -g -fsanitize=address
 
-SOURCES=miniRT.c hooks.c \
+SOURCES=miniRT.c \
+	hooks/hooks.c \
+	hooks/mouse_hooks.c \
 	utils/errors.c \
 	utils/rt_split.c \
 	utils/ft_atof.c \
@@ -32,9 +34,14 @@ SOURCES=miniRT.c hooks.c \
 	parsing/read_elements.c \
 	parsing/read_elements1.c \
 	drawing/redraw.c \
+	moving/zoom.c \
+	moving/rotate.c \
+	moving/move.c \
 	vector_operations.c \
 	vector_operations1.c \
-	primary_ray.c \
+	vector_operations2.c \
+	sphere_calculations.c \
+	cylinder_calculation.c \
 	color_calculation.c
 
 OBJECTS=$(SOURCES:.c=.o)

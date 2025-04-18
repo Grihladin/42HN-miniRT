@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   primary_ray.c                                      :+:      :+:    :+:   */
+/*   sphere_calculations.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/17 14:03:20 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 11:43:01 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 t_ray	primary_ray(t_vars *vars, int i, int j)
 {
 	t_ray		ray;
-	t_vec3	forward;
-	t_vec3	right;
-	t_vec3	up;
+	t_vec3		forward;
+	t_vec3		right;
+	t_vec3		up;
 	float		fov_scale;
 	float		pixel_x;
 	float		pixel_y;
@@ -37,9 +37,9 @@ t_ray	primary_ray(t_vars *vars, int i, int j)
 }
 
 bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
-		t_point3 *hit_point, t_point3 *hit_normal)
+			t_point3 *hit_point, t_point3 *hit_normal)
 {
-	t_vec3	oc;
+	t_vec3		oc;
 	float		a;
 	float		b;
 	float		c;
@@ -75,7 +75,7 @@ bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 	return (true);
 }
 
-bool	is_in_shadow(t_ray shadow_ray, t_sphere *sphere, float max_t)
+bool	is_in_shadow_sphere(t_ray shadow_ray, t_sphere *sphere, float max_t)
 {
 	float		t;
 	t_point3	hit_point;
@@ -96,12 +96,12 @@ t_color3	calculate_lighting(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
 {
 	t_color3	color;
 	t_light		light;
-	t_vec3	light_dir;
+	t_vec3		light_dir;
 	float		light_distance;
 	t_ray		shadow_ray;
 	float		diffuse_factor;
-	t_vec3	reflection_dir;
-	t_vec3	view_dir;
+	t_vec3		reflection_dir;
+	t_vec3		view_dir;
 	float		specular_factor;
 	float		attenuation;
 	t_color3	diffuse;
@@ -114,7 +114,7 @@ t_color3	calculate_lighting(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
 	light_dir = vec3_normalize(light_dir);
 	shadow_ray.origin = hit_point;
 	shadow_ray.direction = light_dir;
-	if (!is_in_shadow(shadow_ray, sphere, light_distance))
+	if (!is_in_shadow_sphere(shadow_ray, sphere, light_distance))
 	{
 		diffuse_factor = fmaxf(0.0f, vec3_dot(hit_normal, light_dir));
 		reflection_dir = vec3_subtract(vec3_multiply(hit_normal, 2.0f
@@ -132,7 +132,7 @@ t_color3	calculate_lighting(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
 	return (color);
 }
 
-void	raytrace(t_vars *vars, t_sphere *sphere)
+void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 {
 	t_ray		p_ray;
 	float		min_dist;
@@ -175,35 +175,6 @@ void	raytrace(t_vars *vars, t_sphere *sphere)
 				vars->framebuffer[j * vars->width + i] = vec3_create(0.0f, 0.0f,
 						0.0f);
 			}
-		}
-	}
-}
-
-void	out_image(t_vars *vars)
-{
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
-	t_color_int		color;
-
-	// Write pixel data
-	color.intgr = 0;
-	for (int j = 0; j < vars->height; j++)
-	{
-		for (int i = 0; i < vars->width; i++)
-		{
-			// Convert floating-point color to byte
-			r = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, vars->framebuffer[j
-							* vars->width + i].x)));
-			g = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, vars->framebuffer[j
-							* vars->width + i].y)));
-			b = (unsigned char)(255.0f * fminf(1.0f, fmaxf(0.0f, vars->framebuffer[j
-							* vars->width + i].z)));
-			color.bytes[0] = r;
-			color.bytes[1] = g;
-			color.bytes[2] = b;
-			color.bytes[3] = 0xFF;
-			mlx_put_pixel(vars->image, i, j, color.intgr);
 		}
 	}
 }

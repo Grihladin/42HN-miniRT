@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 14:01:05 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 13:34:48 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,12 @@
 
 # define DEFAULT_WIDTH 600
 # define DEFAULT_HEIGHT 600
-# define TIMEOUT_BEFORE_UPDATE 10
+# define TIMEOUT_BEFORE_UPDATE 3
 # define WINDOW_TITLE "One more COOL miniRT"
+# define DEFAULT_REFLECTIVITY 0.1f
+# define ROTATE_ANGLE 0.1f
+# define MOUSE_ROTATE_ANGLE 0.05f
+# define MOVE_DISTANCE 1.0f
 # define AMBIENT_LIGHTNING 1
 # define CAMERA 2
 # define LIGHT 3
@@ -111,7 +115,8 @@ typedef struct s_plane
 {
 	t_point3			coord_point;
 	t_vec3				normal_vector; // [-1,1]
-	t_color3			color;
+	// t_color3			color;
+	t_material			material;
 }						t_plane;
 
 typedef struct s_cylinder
@@ -120,7 +125,8 @@ typedef struct s_cylinder
 	t_vec3				normal_vector_axis_cyl; // [-1,1]
 	float				diameter;
 	float				height;
-	t_color3			color;
+	// t_color3			color;
+	t_material			material;
 }						t_cylinder;
 
 typedef struct s_element
@@ -142,6 +148,9 @@ typedef struct s_vars
 	t_scene				scene;
 	int					fd;
 	t_color3			*framebuffer;
+	double				cursor_xpos;
+	double				cursor_ypos;
+	int					mouse_rotate;
 }						t_vars;
 
 void					print_error(char *str, int type);
@@ -176,6 +185,7 @@ t_vec3					vec3_normalize(t_vec3 v);
 float					vec3_dot(t_vec3 a, t_vec3 b);
 float					vec3_length(t_vec3 v);
 float					calculate_distance(t_vec3 a, t_vec3 b);
+void					vec3_reverse(t_vec3 *vec);
 
 // colors
 t_color3				color_multiply(t_color3 a, t_color3 b);
@@ -196,9 +206,20 @@ void					print_scene(t_scene *scene);
 
 //Drawing
 int						redraw_image(t_vars *vars);
-
-void					raytrace(t_vars *vars, t_sphere *sphere);
 void					out_image(t_vars *vars);
+
+//Moving
+void					zoom(t_camera *camera, float scale);
+void					rotate_camera_vert(t_camera *camera, float angle);
+void					rotate_camera_hor(t_camera *camera, float angle);
+void					move_camera_side(t_camera *camera, float distance);
+void					cursor_hook(double xpos, double ypos, void *param);
+
+t_ray					primary_ray(t_vars *vars, int i, int j);
+void					raytrace_cylinder(t_vars *vars, t_cylinder *cylinder);
+void					raytrace_sphere(t_vars *vars, t_sphere *sphere);
+
+void					before_exit(void *param);
 
 #endif
 

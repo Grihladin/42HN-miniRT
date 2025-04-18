@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:10 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 13:38:47 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 11:03:18 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_light	*read_light(t_list *element_params)
 		return (NULL);
 	new_light->position = read_point(element_params->content);
 	element_params = element_params->next;
-	new_light->brightness = ft_atof(element_params->content) * 100;
+	new_light->brightness = ft_atof(element_params->content) * 1000;
 	element_params = element_params->next;
 	new_light->color = read_colors(element_params->content);
 	return (new_light);
@@ -40,7 +40,7 @@ t_sphere	*read_sphere(t_list *element_params)
 	element_params = element_params->next;
 	new_sphere->material.color = read_colors(element_params->content);
 	new_sphere->radius = new_sphere->diameter / 2;
-	new_sphere->material.reflectivity = 0.1f;
+	new_sphere->material.reflectivity = DEFAULT_REFLECTIVITY;
 	return (new_sphere);
 }
 
@@ -55,7 +55,8 @@ t_plane	*read_plane(t_list *element_params)
 	element_params = element_params->next;
 	new_plane->normal_vector = read_point(element_params->content);
 	element_params = element_params->next;
-	new_plane->color = read_colors(element_params->content);
+	new_plane->material.color = read_colors(element_params->content);
+	new_plane->material.reflectivity = DEFAULT_REFLECTIVITY;
 	return (new_plane);
 }
 
@@ -74,6 +75,7 @@ t_cylinder	*read_cylinder(t_list *element_params)
 	element_params = element_params->next;
 	new_cylinder->height = ft_atof(element_params->content);
 	element_params = element_params->next;
-	new_cylinder->color = read_colors(element_params->content);
+	new_cylinder->material.color = read_colors(element_params->content);
+	new_cylinder->material.reflectivity = DEFAULT_REFLECTIVITY;
 	return (new_cylinder);
 }

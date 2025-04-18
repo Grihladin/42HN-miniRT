@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:29:57 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 11:45:33 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 11:03:47 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	print_plane(t_plane *element)
 	printf("Normal vector: ");
 	print_point(&(element->normal_vector));
 	printf("Plane colors: ");
-	print_colors(&(element->color));
+	print_colors(&(element->material.color));
 }
 
 static void	print_cylinder(t_cylinder *element)
@@ -74,7 +74,7 @@ static void	print_cylinder(t_cylinder *element)
 	printf("Diameter: %f\n", element->diameter);
 	printf("Height: %f\n", element->height);
 	printf("Cylinder colors: ");
-	print_colors(&(element->color));
+	print_colors(&(element->material.color));
 }
 
 static void	print_element(t_element *element)

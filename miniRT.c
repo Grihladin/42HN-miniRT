@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/17 13:45:44 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/18 13:31:37 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ static int	init_vars(struct s_vars *vars)
 	vars->scene.amb_light = NULL;
 	vars->scene.camera = NULL;
 	vars->scene.light = NULL;
+	vars->cursor_xpos = 0;
+	vars->cursor_ypos = 0;
+	vars->mouse_rotate = 0;
 	vars->aspect_ratio = vars->width / vars->height;
 	vars->framebuffer = ft_calloc((vars->width * vars->height),
 			sizeof(t_color3));
@@ -72,6 +75,7 @@ static int	preparations(int argc, char **argv, struct s_vars *vars)
 	mlx_loop_hook(vars->wind, main_hook, vars);
 	mlx_scroll_hook(vars->wind, scroll_hook, vars);
 	mlx_resize_hook(vars->wind, resize_hook, vars);
+	mlx_cursor_hook(vars->wind, cursor_hook, vars);
 	mlx_close_hook(vars->wind, close_hook, vars);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/21 17:34:49 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/21 19:38:47 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,7 @@ void					vec3_reverse(t_vec3 *vec);
 t_color3				color_multiply(t_color3 a, t_color3 b);
 t_color3				color_scale(t_color3 c, float factor);
 t_color3				color_sum(t_color3 a, t_color3 b);
+void					raytrace_plane(t_vars *vars, t_cylinder *cylinder);
 
 // utils
 int						arr_size(char **arr);

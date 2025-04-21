@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/18 11:43:01 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 14:57:45 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 	float		t0;
 	float		t1;
 
-	oc = vec3_subtract(ray.origin, sphere->center);
+	oc = vec3_substract(ray.origin, sphere->center);
 	a = vec3_dot(ray.direction, ray.direction);
 	b = 2.0f * vec3_dot(oc, ray.direction);
 	c = vec3_dot(oc, oc) - sphere->radius * sphere->radius;
@@ -71,7 +71,7 @@ bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 		return (false);
 	}
 	*hit_point = vec3_sum(ray.origin, vec3_multiply(ray.direction, *t));
-	*hit_normal = vec3_normalize(vec3_subtract(*hit_point, sphere->center));
+	*hit_normal = vec3_normalize(vec3_substract(*hit_point, sphere->center));
 	return (true);
 }
 
@@ -109,7 +109,7 @@ t_color3	calculate_lighting(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
 
 	color = color_scale(vars->scene.amb_light->color, 0.1f);
 	light = *(vars->scene.light);
-	light_dir = vec3_subtract(light.position, hit_point);
+	light_dir = vec3_substract(light.position, hit_point);
 	light_distance = vec3_length(light_dir);
 	light_dir = vec3_normalize(light_dir);
 	shadow_ray.origin = hit_point;
@@ -117,7 +117,7 @@ t_color3	calculate_lighting(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
 	if (!is_in_shadow_sphere(shadow_ray, sphere, light_distance))
 	{
 		diffuse_factor = fmaxf(0.0f, vec3_dot(hit_normal, light_dir));
-		reflection_dir = vec3_subtract(vec3_multiply(hit_normal, 2.0f
+		reflection_dir = vec3_substract(vec3_multiply(hit_normal, 2.0f
 					* vec3_dot(hit_normal, light_dir)), light_dir);
 		view_dir = vec3_normalize(vec3_multiply(view_ray.direction, -1.0f));
 		specular_factor = powf(fmaxf(0.0f, vec3_dot(view_dir, reflection_dir)),

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_operations1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:16:19 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/16 20:39:00 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/21 14:57:48 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ float	calculate_distance(t_vec3 a, t_vec3 b)
 {
 	t_vec3	diff;
 
-	diff = vec3_subtract(a, b);
+	diff = vec3_substract(a, b);
 	return (vec3_length(diff));
 }
 

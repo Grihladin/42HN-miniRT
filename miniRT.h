@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/21 13:53:50 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 14:57:46 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ int						add_element_to_list(t_vars *vars,
 // vector_operations
 t_vec3					vec3_create(float x, float y, float z);
 t_vec3					vec3_sum(t_vec3 a, t_vec3 b);
-t_vec3					vec3_subtract(t_vec3 a, t_vec3 b);
+t_vec3					vec3_substract(t_vec3 a, t_vec3 b);
 t_vec3					vec3_multiply(t_vec3 v, float scalar);
 t_vec3					vec3_divide(t_vec3 v, float scalar);
 t_vec3					vec3_cross(t_vec3 a, t_vec3 b);

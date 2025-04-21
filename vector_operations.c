@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:06:26 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/17 11:41:36 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 14:57:45 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_vec3	vec3_sum(t_vec3 a, t_vec3 b)
 	return (vec3_create(a.x + b.x, a.y + b.y, a.z + b.z));
 }
 
-t_vec3	vec3_subtract(t_vec3 a, t_vec3 b)
+t_vec3	vec3_substract(t_vec3 a, t_vec3 b)
 {
 	return (vec3_create(a.x - b.x, a.y - b.y, a.z - b.z));
 }

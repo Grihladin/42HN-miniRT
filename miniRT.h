@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/21 14:57:46 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 17:34:49 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,23 @@
 
 typedef struct s_color
 {
-	int			red; //[0-255]
-	int			green;
-	int			blue;
+	int red; //[0-255]
+	int					green;
+	int					blue;
 }						t_color;
 
 typedef union t_color_int
 {
 	unsigned char		bytes[4];
 	uint32_t			intgr;
-}			t_color_int;
+}						t_color_int;
 
 typedef struct s_point
 {
 	float				x;
 	float				y;
 	float				z;
-} t_vec3, t_point3,	t_color3;
+} t_vec3, t_point3, t_color3;
 
 typedef struct s_material
 {
@@ -80,25 +80,33 @@ typedef struct s_ray
 	t_vec3				direction;
 }						t_ray;
 
+typedef struct s_hit_info
+{
+	bool				hit;
+	float				t;
+	t_point3			point;
+	t_vec3				normal;
+}						t_hit_info;
+
 typedef struct s_ambient_lightning
 {
-	float				amb_light_rate; //[0.0 , 1.0]
+	float amb_light_rate; //[0.0 , 1.0]
 	t_color3			color;
 }						t_ambient_lightning;
 
 typedef struct s_camera
 {
 	t_point3			position;
-	t_vec3				direction; // [-1,1]
-	float				field_of_view; //[0,180]
-	t_vec3				up;	//???What is it???
-	// float				fov;
+	t_vec3 direction;    // [-1,1]
+	float field_of_view; //[0,180]
+	t_vec3 up;           //???What is it???
+							// float				fov;
 }						t_camera;
 
 typedef struct s_light
 {
 	t_point3			position;
-	float				brightness; //[0.0 , 1.0]
+	float brightness; //[0.0 , 1.0]
 	t_color3			color;
 }						t_light;
 
@@ -120,7 +128,7 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_point3			coord_point;
-	t_vec3				normal_vector; // [-1,1]
+	t_vec3 normal_vector; // [-1,1]
 	// t_color3			color;
 	t_material			material;
 }						t_plane;
@@ -128,7 +136,7 @@ typedef struct s_plane
 typedef struct s_cylinder
 {
 	t_point3			coord_center;
-	t_vec3				norm_vec_axis_cyl; // [-1,1]
+	t_vec3 norm_vec_axis_cyl; // [-1,1]
 	float				diameter;
 	float				height;
 	// t_color3			color;
@@ -218,11 +226,11 @@ int						is_float_digit(char *str);
 void					print_elements(t_list *elements);
 void					print_scene(t_scene *scene);
 
-//Drawing
+// Drawing
 int						redraw_image(t_vars *vars);
 void					out_image(t_vars *vars);
 
-//Moving
+// Moving
 void					zoom(t_camera *camera, float scale);
 void					rotate_camera_vert(t_camera *camera, float angle);
 void					rotate_camera_hor(t_camera *camera, float angle);

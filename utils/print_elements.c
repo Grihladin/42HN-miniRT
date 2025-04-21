@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:29:57 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 11:03:47 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 12:20:28 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	print_cylinder(t_cylinder *element)
 	printf("Cylinder coord center: ");
 	print_point(&(element->coord_center));
 	printf("Normal vector axis cyl: ");
-	print_point(&(element->normal_vector_axis_cyl));
+	print_point(&(element->norm_vec_axis_cyl));
 	printf("Diameter: %f\n", element->diameter);
 	printf("Height: %f\n", element->height);
 	printf("Cylinder colors: ");

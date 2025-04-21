@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 16:31:07 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 13:49:38 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@
 # define ERR_EL_NOT_UNIQ 22
 # define ERR_WRNG_FL_EXT 78
 # define ERR_CRT_EL 79
+# define ERR_CLR 80
+# define ERR_CNT_PARAMS 81
+# define ERR_VAL_NOT_IN_RANGE 82
+# define ERR_PRM_NOT_NUMB 83
+# define ERR_WRNG_EL 84
 # define ERR_ALC_MEM 122
 
 # include "MLX42/include/MLX42/MLX42.h"
@@ -43,12 +48,12 @@
 # include <math.h>
 # include <stdio.h>
 
-// typedef struct s_color
-// {
-// 	unsigned char		red; //[0-255]
-// 	unsigned char		green;
-// 	unsigned char		blue;
-// }						t_color;
+typedef struct s_color
+{
+	int			red; //[0-255]
+	int			green;
+	int			blue;
+}						t_color;
 
 typedef union t_color_int
 {
@@ -123,7 +128,7 @@ typedef struct s_plane
 typedef struct s_cylinder
 {
 	t_point3			coord_center;
-	t_vec3				normal_vector_axis_cyl; // [-1,1]
+	t_vec3				norm_vec_axis_cyl; // [-1,1]
 	float				diameter;
 	float				height;
 	// t_color3			color;
@@ -155,6 +160,7 @@ typedef struct s_vars
 }						t_vars;
 
 void					print_error(char *str, int type);
+void					print_str(char *str, int fd);
 void					main_hook(void *param);
 
 // hooks
@@ -168,12 +174,16 @@ void					resize_hook(int width, int height, void *param);
 int						read_parameters(int argc, char **argv, t_vars *vars);
 int						read_element(t_vars *vars, t_list *element_params);
 int						read_point(const char *str, t_point3 *point);
-t_vec3					read_vector(const char *str);
+int						read_vector(const char *str, t_point3 *point);
 int						read_colors(const char *str, t_color3 *color);
 t_light					*read_light(t_list *element_params);
 t_sphere				*read_sphere(t_list *element_params);
 t_plane					*read_plane(t_list *element_params);
 t_cylinder				*read_cylinder(t_list *element_params);
+t_ambient_lightning		*read_ambient_lightning(t_list *element_params);
+t_camera				*read_camera(t_list *element_params);
+int						add_element_to_list(t_vars *vars,
+							t_list *element_params, t_element *new_element);
 
 // vector_operations
 t_vec3					vec3_create(float x, float y, float z);
@@ -201,6 +211,8 @@ void					free_arr_of_str(char ***strings);
 void					delete_element(void *element);
 int						check_unique_element(t_vars *vars, int type);
 void					free_scene(t_scene *scene);
+int						is_digits(char *str);
+int						is_float_digit(char *str);
 
 // Debug functions
 void					print_elements(t_list *elements);

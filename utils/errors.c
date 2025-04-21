@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:08:32 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 16:18:38 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 13:50:34 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,21 @@ void	print_str(char *str, int fd)
 		write(fd, str, ft_strlen(str));
 }
 
+static void	print_error1(int type)
+{
+	if (type == ERR_CLR)
+		print_str("Wrong color!\n", 2);
+	else if (type == ERR_VAL_NOT_IN_RANGE)
+		print_str("Value not in range!\n", 2);
+	else if (type == ERR_PRM_NOT_NUMB)
+		print_str("Parameter is not correct number!\n", 2);
+	else if (type == ERR_WRNG_EL)
+		print_str("Wrong element if file!\n", 2);
+}
+
 void	print_error(char *str, int type)
 {
 	print_str("Error\n", 2);
-	if (str == NULL)
-		str = NULL;
 	if (type == ERR_CNT_ARG)
 		print_str("Usage of command:\n./miniRT [filename]\n", 2);
 	else if (type == ERR_ALC_MEM)
@@ -42,4 +52,8 @@ void	print_error(char *str, int type)
 		print_str(str, 2);
 		print_str(" is not unique!\n", 2);
 	}
+	else if (type == ERR_CNT_PARAMS)
+		print_str("Wrong count of parameters!\n", 2);
+	else
+		print_error1(type);
 }

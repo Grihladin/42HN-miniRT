@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 21:13:52 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/18 11:42:56 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 12:20:28 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static bool	intersect_cylinder(t_ray ray, t_cylinder *cylinder, float *t,
 
 	oc = vec3_subtract(ray.origin, cylinder->coord_center);
 	a = vec3_dot(ray.direction, ray.direction) - powf(vec3_dot(ray.direction,
-				cylinder->normal_vector_axis_cyl), 2);
+				cylinder->norm_vec_axis_cyl), 2);
 	b = 2.0f * (vec3_dot(oc, ray.direction) - vec3_dot(oc,
-				cylinder->normal_vector_axis_cyl) * vec3_dot(ray.direction,
-				cylinder->normal_vector_axis_cyl));
-	c = vec3_dot(oc, oc) - powf(vec3_dot(oc, cylinder->normal_vector_axis_cyl),
+				cylinder->norm_vec_axis_cyl) * vec3_dot(ray.direction,
+				cylinder->norm_vec_axis_cyl));
+	c = vec3_dot(oc, oc) - powf(vec3_dot(oc, cylinder->norm_vec_axis_cyl),
 			2) - powf(cylinder->diameter / 2, 2);
 	discriminant = b * b - 4 * a * c;
 	if (discriminant < 0)

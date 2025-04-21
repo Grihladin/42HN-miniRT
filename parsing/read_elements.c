@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:02:25 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 16:36:43 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 13:51:18 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,22 @@
 int	read_colors(const char *str, t_color3 *color)
 {
 	char			**colors_arr;
+	t_color			color_int;
 
 	colors_arr = ft_split(str, ',');
 	if (arr_size(colors_arr) < 3)
-		return (free_arr_of_str(&colors_arr), 1);
+		return (print_error(NULL, ERR_CLR), free_arr_of_str(&colors_arr), 1);
+	if ((is_digits(colors_arr[0]) && is_digits(colors_arr[0])
+			&& is_digits(colors_arr[0])) == 0)
+		return (free_arr_of_str(&colors_arr),
+			print_error(NULL, ERR_PRM_NOT_NUMB), 1);
+	color_int.red = ft_atoi(colors_arr[0]);
+	color_int.green = ft_atoi(colors_arr[1]);
+	color_int.blue = ft_atoi(colors_arr[2]);
+	if ((color_int.red < 0) || (color_int.red > 255)
+		|| (color_int.green < 0) || (color_int.green > 255)
+		|| (color_int.blue < 0) || (color_int.blue > 255))
+		return (free_arr_of_str(&colors_arr), print_error(NULL, ERR_CLR), 1);
 	color->x = ((float) ft_atoi(colors_arr[0])) / 255;
 	color->y = ((float) ft_atoi(colors_arr[1])) / 255;
 	color->z = ((float) ft_atoi(colors_arr[2])) / 255;
@@ -32,7 +44,12 @@ int	read_point(const char *str, t_point3 *point)
 
 	point_arr = ft_split(str, ',');
 	if (arr_size(point_arr) < 3)
-		return (free_arr_of_str(&point_arr), 1);
+		return (print_error(NULL, ERR_CNT_PARAMS),
+			free_arr_of_str(&point_arr), 1);
+	if ((is_float_digit(point_arr[0]) && is_float_digit(point_arr[1])
+			&& is_float_digit(point_arr[2])) == 0)
+		return (free_arr_of_str(&point_arr),
+			print_error(NULL, ERR_PRM_NOT_NUMB), 1);
 	point->x = ft_atof(point_arr[0]);
 	point->y = ft_atof(point_arr[1]);
 	point->z = ft_atof(point_arr[2]);
@@ -40,42 +57,41 @@ int	read_point(const char *str, t_point3 *point)
 	return (0);
 }
 
-static t_ambient_lightning	*read_ambient_lightning(t_list *element_params)
+int	read_vector(const char *str, t_point3 *point)
 {
-	t_ambient_lightning		*new_amb_light;
-
-	new_amb_light = ft_calloc(1, sizeof (t_ambient_lightning));
-	if (new_amb_light == NULL)
-		return (print_error(NULL, ERR_ALC_MEM), NULL);
-	new_amb_light->amb_light_rate = ft_atof(element_params->content);
-	element_params = element_params->next;
-	if (read_colors(element_params->content, &(new_amb_light->color)))
-		return (free(new_amb_light), NULL);
-	return (new_amb_light);
+	if (read_point(str, point) != 0)
+		return (1);
+	if ((point->x < -1.0f) || (point->x > 1.0f)
+		|| (point->y < -1.0f) || (point->y > 1.0f)
+		|| (point->z < -1.0f) || (point->z > 1.0f))
+	{
+		return (print_error(NULL, ERR_VAL_NOT_IN_RANGE), 1);
+	}
+	return (0);
 }
 
-static t_camera	*read_camera(t_list *element_params)
+void	read_element1(t_element **new_element, t_list *element_params)
 {
-	t_camera		*new_camera;
-
-	new_camera = ft_calloc(1, sizeof (t_camera));
-	if (new_camera == NULL)
-		return (NULL);
-	if (read_point(element_params->content, &(new_camera->position)))
-		return (free(new_camera), NULL);
-	element_params = element_params->next;
-	if (read_point(element_params->content, &(new_camera->direction)))
-		return (free(new_camera), NULL);
-	element_params = element_params->next;
-	new_camera->field_of_view = (float) ft_atoi(element_params->content);
-	new_camera->up = vec3_create(0.0f, 1.0f, 0.0f);
-	return (new_camera);
+	if (ft_strcmp(element_params->content, "sp") == 0)
+	{
+		(*new_element)->type = SPHERE;
+		(*new_element)->params = read_sphere(element_params->next);
+	}
+	else if (ft_strcmp(element_params->content, "pl") == 0)
+	{
+		(*new_element)->type = PLANE;
+		(*new_element)->params = read_plane(element_params->next);
+	}
+	else if (ft_strcmp(element_params->content, "cy") == 0)
+	{
+		(*new_element)->type = CYLINDER;
+		(*new_element)->params = read_cylinder(element_params->next);
+	}
 }
 
 int	read_element(t_vars *vars, t_list *element_params)
 {
 	t_element		*new_element;
-	t_list			*new_el;
 
 	new_element = ft_calloc(1, sizeof (t_element));
 	if (ft_strcmp(element_params->content, "A") == 0)
@@ -93,58 +109,11 @@ int	read_element(t_vars *vars, t_list *element_params)
 		new_element->type = LIGHT;
 		new_element->params = read_light(element_params->next);
 	}
-	else if (ft_strcmp(element_params->content, "sp") == 0)
-	{
-		new_element->type = SPHERE;
-		new_element->params = read_sphere(element_params->next);
-	}
-	else if (ft_strcmp(element_params->content, "pl") == 0)
-	{
-		new_element->type = PLANE;
-		new_element->params = read_plane(element_params->next);
-	}
-	else if (ft_strcmp(element_params->content, "cy") == 0)
-	{
-		new_element->type = CYLINDER;
-		new_element->params = read_cylinder(element_params->next);
-	}
+	else
+		read_element1(&new_element, element_params);
 	if ((new_element->type != 0) && (new_element->params != NULL))
-	{
-		if (check_unique_element(vars, new_element->type))
-		{
-			free(new_element);
-			return (print_error(element_params->content,
-					ERR_EL_NOT_UNIQ), 1);
-		}
-		if (new_element->type == AMBIENT_LIGHTNING)
-		{
-			vars->scene.amb_light = new_element->params;
-			free(new_element);
-		}
-		else if (new_element->type == CAMERA)
-		{
-			vars->scene.camera = new_element->params;
-			free(new_element);
-		}
-		else if (new_element->type == LIGHT)
-		{
-			vars->scene.light = new_element->params;
-			free(new_element);
-		}
-		else
-		{
-			new_el = ft_calloc(sizeof (t_list), 1);
-			if (new_el == NULL)
-				return (free(new_element), 1);
-			new_el->content = new_element;
-			ft_lstadd_back(&(vars->elements), new_el);
-		}
-
-	}
-	else if ((new_element->params == NULL) && (ft_strncmp(element_params->content, "#", 1) != 0))
-	{
-		print_error(NULL, ERR_CRT_EL);
-		return (free(new_element), 1);
-	}
+		add_element_to_list(vars, element_params, new_element);
+	else if (ft_strncmp(element_params->content, "#", 1) != 0)
+		return (print_error(NULL, ERR_WRNG_EL), free(new_element), 1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/21 19:38:47 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/21 19:46:00 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,12 @@ void					vec3_reverse(t_vec3 *vec);
 t_color3				color_multiply(t_color3 a, t_color3 b);
 t_color3				color_scale(t_color3 c, float factor);
 t_color3				color_sum(t_color3 a, t_color3 b);
-void					raytrace_plane(t_vars *vars, t_cylinder *cylinder);
+
+// raytracing
+t_ray					primary_ray(t_vars *vars, int i, int j);
+void					raytrace_plane(t_vars *vars, t_plane *plane);
+void					raytrace_sphere(t_vars *vars, t_sphere *sphere);
+void					raytrace_cylinder(t_vars *vars, t_cylinder *cylinder);
 
 // utils
 int						arr_size(char **arr);
@@ -237,10 +242,6 @@ void					rotate_camera_vert(t_camera *camera, float angle);
 void					rotate_camera_hor(t_camera *camera, float angle);
 void					move_camera_side(t_camera *camera, float distance);
 void					cursor_hook(double xpos, double ypos, void *param);
-
-t_ray					primary_ray(t_vars *vars, int i, int j);
-void					raytrace_cylinder(t_vars *vars, t_cylinder *cylinder);
-void					raytrace_sphere(t_vars *vars, t_sphere *sphere);
 
 void					before_exit(void *param);
 

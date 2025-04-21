@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/21 19:39:44 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/21 19:43:09 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static bool	is_in_shadow_plane(t_ray shadow_ray, t_plane *plane, float max_t)
 	return (false);
 }
 
-static t_color3	calculate_lighting(t_vars *vars, t_plane *plane,
+static t_color3	calculate_lighting_plane(t_vars *vars, t_plane *plane,
 		t_point3 hit_point, t_point3 hit_normal, t_material material,
 		t_ray view_ray)
 {
@@ -132,7 +132,7 @@ void	raytrace_plane(t_vars *vars, t_plane *plane)
 			if (found_intersection)
 			{
 				vars->framebuffer[j * vars->width
-					+ i] = calculate_lighting(vars, plane, hit_point,
+					+ i] = calculate_lighting_plane(vars, plane, hit_point,
 						hit_normal, hit_material, p_ray);
 			}
 			else

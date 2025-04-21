@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 21:13:52 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/21 19:37:33 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/21 19:42:53 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ static bool	is_in_shadow_cylinder(t_ray shadow_ray, t_cylinder *cylinder,
 	return (false);
 }
 
-static t_color3	calculate_lighting(t_vars *vars, t_cylinder *cylinder,
+static t_color3	calculate_lighting_cylinder(t_vars *vars, t_cylinder *cylinder,
 		t_point3 hit_point, t_point3 hit_normal, t_material material,
 		t_ray view_ray)
 {
@@ -313,7 +313,7 @@ void	raytrace_cylinder(t_vars *vars, t_cylinder *cylinder)
 			if (found_intersection)
 			{
 				vars->framebuffer[j * vars->width
-					+ i] = calculate_lighting(vars, cylinder, hit_point,
+					+ i] = calculate_lighting_cylinder(vars, cylinder, hit_point,
 						hit_normal, hit_material, p_ray);
 			}
 			else

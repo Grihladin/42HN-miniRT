@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_calculations.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/21 14:57:45 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 19:42:36 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ bool	is_in_shadow_sphere(t_ray shadow_ray, t_sphere *sphere, float max_t)
 	return (false);
 }
 
-t_color3	calculate_lighting(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
+static t_color3	calculate_lighting_sphere(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
 		t_point3 hit_normal, t_material material, t_ray view_ray)
 {
 	t_color3	color;
@@ -167,7 +167,7 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 			}
 			if (found_intersection)
 			{
-				vars->framebuffer[j * vars->width + i] = calculate_lighting(vars, sphere,
+				vars->framebuffer[j * vars->width + i] = calculate_lighting_sphere(vars, sphere,
 						hit_point, hit_normal, hit_material, p_ray);
 			}
 			else

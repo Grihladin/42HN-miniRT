@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/21 13:49:38 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 13:53:50 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,74 +236,3 @@ void					raytrace_sphere(t_vars *vars, t_sphere *sphere);
 void					before_exit(void *param);
 
 #endif
-
-
-// typedef struct s_color
-// {
-// 	unsigned char red; //[0-255]
-// 	unsigned char	green;
-// 	unsigned char	blue;
-// }					t_color;
-
-// typedef struct s_point
-// {
-// 	float			x;
-// 	float			y;
-// 	float			z;
-// } t_vec3, t_point3, t_color3;
-
-// typedef struct s_ray
-// {
-// 	t_point3		origin;
-// 	t_vec3			direction;
-// }					t_ray;
-
-// typedef struct s_material
-// {
-// 	t_color3		color;
-// 	float			reflectivity;
-// }					t_material;
-
-// typedef struct s_sphere
-// {
-// 	t_point3		center;
-// 	float			radius;
-// 	t_material		material;
-// }					t_sphere;
-
-// typedef struct s_light
-// {
-// 	t_point3		position;
-// 	t_color3		color;
-// 	float			intensity;
-// }					t_light;
-
-// typedef struct s_scene
-// {
-// 	t_light			*light;
-// 	t_sphere		*sphere;
-// 	t_color3		ambient_light;
-// }					t_scene;
-
-// typedef struct s_camera
-// {
-// 	t_point3		position;
-// 	t_vec3			direction;
-// 	t_vec3			up;
-// 	float			aspect_ratio;
-// 	float			fov;
-// }					t_camera;
-
-// typedef struct s_vars
-// {
-// 	mlx_t			*wind;
-// 	mlx_image_t		*image;
-// 	int				width;
-// 	int				height;
-// 	char			need_redraw;
-// 	unsigned int	time_to_redraw;
-// 	t_scene			scene;
-// 	int				fd;
-// 	t_light			*light;
-// 	t_camera		*camera;
-// }					t_vars;

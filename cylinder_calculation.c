@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_calculation.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 21:13:52 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/21 15:00:22 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 16:40:33 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,26 @@ static bool	is_in_bounds(t_cylinder *cylinder, t_point3 hit_point)
 	projection = vec3_dot(vec_to_hit, cylinder->norm_vec_axis_cyl);
 	return (projection >= -cylinder->height / 2.0f
 		&& projection <= cylinder->height / 2.0f);
+}
+
+static bool	intersect_plane(t_ray ray, t_point3 plane_point,
+		t_vec3 plane_normal, float *t)
+{
+	float	denom;
+	float	numerator;
+
+	denom = vec3_dot(ray.direction, plane_normal);
+	if (fabsf(denom) < 0.0001f)
+	{
+		return (false);
+	}
+	*t = vec3_dot(vec3_substract(plane_point, ray.origin), plane_normal)
+		/ denom;
+	if (*t < 0.001f)
+	{
+		return (false);
+	}
+	return (true);
 }
 
 static bool	intersect_cylinder(t_ray ray, t_cylinder *cylinder, float *t,
@@ -60,7 +80,7 @@ static bool	intersect_cylinder(t_ray ray, t_cylinder *cylinder, float *t,
 	{
 		return (false);
 	}
-	discriminant = b * b - 4 * a * c;
+	discriminant = b * b - 4.0f * a * c;
 	if (discriminant < 0)
 	{
 		return (false);
@@ -192,6 +212,7 @@ void	raytrace_cylinder(t_vars *vars, t_cylinder *cylinder)
 	j = 0;
 	while (j < vars->height)
 	{
+		i = 0;
 		while (i < vars->width)
 		{
 			p_ray = primary_ray(vars, i, j);

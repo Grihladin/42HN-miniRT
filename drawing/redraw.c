@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:56:23 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/21 15:37:24 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 09:49:10 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@ int	redraw_image(t_vars *vars)
 		{
 			cylinder = element->params;
 			raytrace_cylinder(vars, element->params);
+		}
+		else if (element->type == PLANE)
+		{
+			cylinder = element->params;
+			raytrace_plane(vars, element->params);
 		}
 		elements = elements->next;
 	}

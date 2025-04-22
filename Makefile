@@ -6,7 +6,7 @@
 #    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/21 13:27:06 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/22 09:34:53 by psenko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,9 +43,10 @@ SOURCES=miniRT.c \
 	vector_operations.c \
 	vector_operations1.c \
 	vector_operations2.c \
-	sphere_calculations.c \
-	cylinder_calculation.c \
-	color_calculation.c
+	raytracing/sphere_calculations.c \
+	raytracing/cylinder_calculation.c \
+	raytracing/color_calculation.c \
+	raytracing/plane_calculations.c
 
 OBJECTS=$(SOURCES:.c=.o)
 

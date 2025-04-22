@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/21 14:57:46 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 09:36:30 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,14 @@ typedef struct s_ray
 	t_point3			origin;
 	t_vec3				direction;
 }						t_ray;
+
+typedef struct s_hit_info
+{
+	bool				hit;
+	float				t;
+	t_point3			point;
+	t_vec3				normal;
+}						t_hit_info;
 
 typedef struct s_ambient_lightning
 {
@@ -229,9 +237,11 @@ void					rotate_camera_hor(t_camera *camera, float angle);
 void					move_camera_side(t_camera *camera, float distance);
 void					cursor_hook(double xpos, double ypos, void *param);
 
+// raytracing
 t_ray					primary_ray(t_vars *vars, int i, int j);
 void					raytrace_cylinder(t_vars *vars, t_cylinder *cylinder);
 void					raytrace_sphere(t_vars *vars, t_sphere *sphere);
+void					raytrace_plane(t_vars *vars, t_plane *plane);
 
 void					before_exit(void *param);
 

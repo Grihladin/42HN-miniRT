@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   color_calculation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 19:55:50 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/16 20:32:30 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/22 09:35:44 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../miniRT.h"
 
 t_color3	color_multiply(t_color3 a, t_color3 b)
 {

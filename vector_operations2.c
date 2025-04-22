@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 12:28:35 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 12:38:16 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 09:42:29 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	vec3_reverse(t_vec3 *vec)
 {
-	if (vec->y < -0.998f)
+	if (vec->y < -0.99800f)
 		vec->y = 0.98f;
-	else if (vec->y > 0.998f)
+	else if (vec->y > 0.99800f)
 		vec->y = -0.98f;
 }

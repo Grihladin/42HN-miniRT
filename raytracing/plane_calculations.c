@@ -1,87 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere_calculations.c                              :+:      :+:    :+:   */
+/*   plane_calculations.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/21 14:57:45 by psenko           ###   ########.fr       */
+/*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
+/*   Updated: 2025/04/22 09:35:51 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../miniRT.h"
 
-t_ray	primary_ray(t_vars *vars, int i, int j)
+static bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
+		t_point3 *hit_point, t_point3 *hit_normal)
 {
-	t_ray		ray;
-	t_vec3		forward;
-	t_vec3		right;
-	t_vec3		up;
-	float		fov_scale;
-	float		pixel_x;
-	float		pixel_y;
+	t_vec3	denom;
+	float	denom_dot_normal;
 
-	forward = vec3_normalize(vars->scene.camera->direction);
-	right = vec3_normalize(vec3_cross(forward, vars->scene.camera->up));
-	up = vec3_cross(right, forward);
-	fov_scale = tanf(vars->scene.camera->field_of_view * 0.5f * M_PI / 180.0f);
-	pixel_x = (2.0f * ((i + 0.5f) / vars->width) - 1.0f) * fov_scale
-		* vars->aspect_ratio;
-	pixel_y = (1.0f - 2.0f * ((j + 0.5f) / vars->height)) * fov_scale;
-	ray.origin = vars->scene.camera->position;
-	ray.direction = vec3_normalize(vec3_sum(forward,
-				vec3_sum(vec3_multiply(right, pixel_x), vec3_multiply(up,
-						pixel_y))));
-	return (ray);
-}
-
-bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
-			t_point3 *hit_point, t_point3 *hit_normal)
-{
-	t_vec3		oc;
-	float		a;
-	float		b;
-	float		c;
-	float		discriminant;
-	float		t0;
-	float		t1;
-
-	oc = vec3_substract(ray.origin, sphere->center);
-	a = vec3_dot(ray.direction, ray.direction);
-	b = 2.0f * vec3_dot(oc, ray.direction);
-	c = vec3_dot(oc, oc) - sphere->radius * sphere->radius;
-	discriminant = b * b - 4 * a * c;
-	if (discriminant < 0)
+	denom = vec3_cross(plane->normal_vector, ray.direction);
+	denom_dot_normal = vec3_dot(denom, plane->normal_vector);
+	if (fabsf(denom_dot_normal) < 0.001f)
 	{
 		return (false);
 	}
-	t0 = (-b - sqrtf(discriminant)) / (2.0f * a);
-	t1 = (-b + sqrtf(discriminant)) / (2.0f * a);
-	if (t0 > 0.001f)
-	{
-		*t = t0;
-	}
-	else if (t1 > 0.001f)
-	{
-		*t = t1;
-	}
-	else
+	*t = vec3_dot(vec3_substract(plane->coord_point, ray.origin),
+			plane->normal_vector) / denom_dot_normal;
+	if (*t < 0.001f)
 	{
 		return (false);
 	}
 	*hit_point = vec3_sum(ray.origin, vec3_multiply(ray.direction, *t));
-	*hit_normal = vec3_normalize(vec3_substract(*hit_point, sphere->center));
+	*hit_normal = plane->normal_vector;
 	return (true);
 }
 
-bool	is_in_shadow_sphere(t_ray shadow_ray, t_sphere *sphere, float max_t)
+static bool	is_in_shadow_plane(t_ray shadow_ray, t_plane *plane, float max_t)
 {
 	float		t;
 	t_point3	hit_point;
 	t_point3	hit_normal;
 
-	if (intersect_sphere(shadow_ray, sphere, &t, &hit_point, &hit_normal))
+	if (intersect_plane(shadow_ray, plane, &t, &hit_point, &hit_normal))
 	{
 		if (t < max_t)
 		{
@@ -91,8 +51,9 @@ bool	is_in_shadow_sphere(t_ray shadow_ray, t_sphere *sphere, float max_t)
 	return (false);
 }
 
-t_color3	calculate_lighting(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
-		t_point3 hit_normal, t_material material, t_ray view_ray)
+static t_color3	calculate_lighting_plane(t_vars *vars, t_plane *plane,
+		t_point3 hit_point, t_point3 hit_normal, t_material material,
+		t_ray view_ray)
 {
 	t_color3	color;
 	t_light		light;
@@ -114,7 +75,7 @@ t_color3	calculate_lighting(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
 	light_dir = vec3_normalize(light_dir);
 	shadow_ray.origin = hit_point;
 	shadow_ray.direction = light_dir;
-	if (!is_in_shadow_sphere(shadow_ray, sphere, light_distance))
+	if (!is_in_shadow_plane(shadow_ray, plane, light_distance))
 	{
 		diffuse_factor = fmaxf(0.0f, vec3_dot(hit_normal, light_dir));
 		reflection_dir = vec3_substract(vec3_multiply(hit_normal, 2.0f
@@ -132,7 +93,7 @@ t_color3	calculate_lighting(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
 	return (color);
 }
 
-void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
+void	raytrace_plane(t_vars *vars, t_plane *plane)
 {
 	t_ray		p_ray;
 	float		min_dist;
@@ -143,38 +104,44 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 	float		t;
 	t_point3	p_hit;
 	t_point3	n_hit;
+	int			i;
+	int			j;
 
-	// Loop over each pixel in the image
-	for (int j = 0; j < vars->height; j++)
+	plane->normal_vector = vec3_normalize(plane->normal_vector);
+	i = 0;
+	j = 0;
+	while (j < vars->height)
 	{
-		for (int i = 0; i < vars->width; i++)
+		i = 0;
+		while (i < vars->width)
 		{
-			// Compute primary ray for this pixel
 			p_ray = primary_ray(vars, i, j);
-			// Initialize closest intersection
 			min_dist = INFINITY;
 			found_intersection = false;
-			if (intersect_sphere(p_ray, sphere, &t, &p_hit, &n_hit))
+			if (intersect_plane(p_ray, plane, &t, &p_hit, &n_hit))
 			{
 				if (t < min_dist)
 				{
 					min_dist = t;
 					hit_point = p_hit;
 					hit_normal = n_hit;
-					hit_material = sphere->material;
+					hit_material = plane->material;
 					found_intersection = true;
 				}
 			}
 			if (found_intersection)
 			{
-				vars->framebuffer[j * vars->width + i] = calculate_lighting(vars, sphere,
-						hit_point, hit_normal, hit_material, p_ray);
+				vars->framebuffer[j * vars->width
+					+ i] = calculate_lighting_plane(vars, plane, hit_point,
+						hit_normal, hit_material, p_ray);
 			}
 			else
 			{
 				vars->framebuffer[j * vars->width + i] = vec3_create(0.0f, 0.0f,
 						0.0f);
 			}
+			i++;
 		}
+		j++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/22 09:35:51 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 13:55:46 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,17 +129,18 @@ void	raytrace_plane(t_vars *vars, t_plane *plane)
 					found_intersection = true;
 				}
 			}
-			if (found_intersection)
+			if (found_intersection && (t < vars->framebuffer[j * vars->width + i].dist))
 			{
 				vars->framebuffer[j * vars->width
-					+ i] = calculate_lighting_plane(vars, plane, hit_point,
+					+ i].color3 = calculate_lighting_plane(vars, plane, hit_point,
 						hit_normal, hit_material, p_ray);
+				vars->framebuffer[j * vars->width + i].dist = t;
 			}
-			else
-			{
-				vars->framebuffer[j * vars->width + i] = vec3_create(0.0f, 0.0f,
-						0.0f);
-			}
+			// else
+			// {
+			// 	vars->framebuffer[j * vars->width + i].color3 = vec3_create(0.0f, 0.0f,
+			// 			0.0f);
+			// }
 			i++;
 		}
 		j++;

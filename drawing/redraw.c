@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:56:23 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 09:49:10 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 13:42:38 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void	out_image(t_vars *vars)
 		while (i < vars->width)
 		{
 			color.bytes[3] = (unsigned char)(255.0f * fminf(1.0f,
-						fmaxf(0.0f, vars->framebuffer[j * vars->width + i].x)));
+						fmaxf(0.0f, vars->framebuffer[j * vars->width + i].color3.x)));
 			color.bytes[2] = (unsigned char)(255.0f * fminf(1.0f,
-						fmaxf(0.0f, vars->framebuffer[j * vars->width + i].y)));
+						fmaxf(0.0f, vars->framebuffer[j * vars->width + i].color3.y)));
 			color.bytes[1] = (unsigned char)(255.0f * fminf(1.0f,
-						fmaxf(0.0f, vars->framebuffer[j * vars->width + i].z)));
+						fmaxf(0.0f, vars->framebuffer[j * vars->width + i].color3.z)));
 			mlx_put_pixel(vars->image, i, j, color.intgr);
 			i++;
 		}
@@ -39,33 +39,22 @@ void	out_image(t_vars *vars)
 	}
 }
 
-
 int	redraw_image(t_vars *vars)
 {
 	t_element	*element;
 	t_list		*elements;
-	t_sphere	*sphere;
-	t_cylinder	*cylinder;
 
 	elements = vars->elements;
+	free_framebuffer(vars);
 	while (elements != NULL)
 	{
 		element = elements->content;
 		if (element->type == SPHERE)
-		{
-			sphere = element->params;
-			raytrace_sphere(vars, sphere);
-		}
+			raytrace_sphere(vars, element->params);
 		else if (element->type == CYLINDER)
-		{
-			cylinder = element->params;
 			raytrace_cylinder(vars, element->params);
-		}
 		else if (element->type == PLANE)
-		{
-			cylinder = element->params;
 			raytrace_plane(vars, element->params);
-		}
 		elements = elements->next;
 	}
 	out_image(vars);

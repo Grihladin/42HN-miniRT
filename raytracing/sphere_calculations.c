@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/22 09:35:55 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 13:58:48 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,11 +143,15 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 	float		t;
 	t_point3	p_hit;
 	t_point3	n_hit;
+	int			i;
+	int			j;
 
 	// Loop over each pixel in the image
-	for (int j = 0; j < vars->height; j++)
+	j = 0;
+	while (j < vars->height)
 	{
-		for (int i = 0; i < vars->width; i++)
+		i = 0;
+		while (i < vars->width)
 		{
 			// Compute primary ray for this pixel
 			p_ray = primary_ray(vars, i, j);
@@ -165,16 +169,19 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 					found_intersection = true;
 				}
 			}
-			if (found_intersection)
+			if (found_intersection && (t < vars->framebuffer[j * vars->width + i].dist))
 			{
-				vars->framebuffer[j * vars->width + i] = calculate_lighting_sphere(vars, sphere,
+				vars->framebuffer[j * vars->width + i].color3 = calculate_lighting_sphere(vars, sphere,
 						hit_point, hit_normal, hit_material, p_ray);
+				vars->framebuffer[j * vars->width + i].dist = t;
 			}
-			else
-			{
-				vars->framebuffer[j * vars->width + i] = vec3_create(0.0f, 0.0f,
-						0.0f);
-			}
+			// else
+			// {
+			// 	vars->framebuffer[j * vars->width + i].color3 = vec3_create(0.0f, 0.0f,
+			// 			0.0f);
+			// }
+			i++;
 		}
+		j++;
 	}
 }

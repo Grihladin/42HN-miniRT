@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 10:14:28 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 13:19:07 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ typedef struct s_point
 	float				y;
 	float				z;
 } t_vec3, t_point3,	t_color3;
+
+typedef struct s_frame
+{
+	t_color3			color3;
+	float				dist;
+}						t_frame;
 
 typedef struct s_material
 {
@@ -162,7 +168,7 @@ typedef struct s_vars
 	t_list				*elements;
 	t_scene				scene;
 	int					fd;
-	t_color3			*framebuffer;
+	t_frame				*framebuffer;
 	double				cursor_xpos;
 	double				cursor_ypos;
 	int					mouse_rotate;
@@ -222,6 +228,8 @@ int						check_unique_element(t_vars *vars, int type);
 void					free_scene(t_scene *scene);
 int						is_digits(char *str);
 int						is_float_digit(char *str);
+void					free_framebuffer(t_vars *vars);
+
 
 // Debug functions
 void					print_elements(t_list *elements);

@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:08:32 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 10:18:20 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 15:32:02 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ static void	print_error1(int type)
 		print_str("Wrong element in file!\n", 2);
 	else if (type == ERR_VEC_NOT_NORM)
 		print_str("Vector is not normilized!\n", 2);
+	else if (type == ERR_CRT_WNDW)
+		print_str("Create window!\n", 2);
+	else if (type == ERR_MLX_IMG)
+		print_str("MLX image!\n", 2);
 }
 
 void	print_error(char *str, int type)

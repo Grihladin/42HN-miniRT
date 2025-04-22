@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 15:14:27 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 15:31:27 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@
 # define ERR_PRM_NOT_NUMB 83
 # define ERR_WRNG_EL 84
 # define ERR_VEC_NOT_NORM 85
+# define ERR_CRT_WNDW 86
+# define ERR_MLX_IMG 87
 # define ERR_ALC_MEM 122
 
 # include "MLX42/include/MLX42/MLX42.h"

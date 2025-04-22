@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 15:15:29 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 15:32:05 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ static int	preparations(int argc, char **argv, struct s_vars *vars)
 		return (1);
 	vars->wind = mlx_init(vars->width, vars->height, WINDOW_TITLE, 1);
 	if (vars->wind == NULL)
-		return (perror("Create window"), 1);
+		return (print_error(NULL, ERR_CRT_WNDW), 1);
 	vars->image = mlx_new_image(vars->wind, vars->width, vars->height);
 	ft_memset(vars->image->pixels, 255, vars->image->width * vars->image->height
 		* sizeof(int32_t));
 	if ((vars->image == NULL) || (mlx_image_to_window(vars->wind, vars->image,
 				0, 0) < 0))
-		return (perror("Output image"), 1);
+		return (print_error(NULL, ERR_MLX_IMG), 1);
 	mlx_key_hook(vars->wind, key_hook, vars);
 	mlx_loop_hook(vars->wind, main_hook, vars);
 	mlx_scroll_hook(vars->wind, scroll_hook, vars);

@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 13:19:07 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 15:14:27 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ int						check_unique_element(t_vars *vars, int type);
 void					free_scene(t_scene *scene);
 int						is_digits(char *str);
 int						is_float_digit(char *str);
+int						allocate_framebufer(t_vars *vars);
 void					free_framebuffer(t_vars *vars);
 
 
@@ -251,6 +252,14 @@ t_ray					primary_ray(t_vars *vars, int i, int j);
 void					raytrace_cylinder(t_vars *vars, t_cylinder *cylinder);
 void					raytrace_sphere(t_vars *vars, t_sphere *sphere);
 void					raytrace_plane(t_vars *vars, t_plane *plane);
+bool					is_in_shadow(t_ray shadow_ray, t_list *elements,
+							float max_t);
+bool					intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
+							t_point3 *hit_point, t_point3 *hit_normal);
+bool					intersect_cylinder(t_ray ray, t_cylinder *cylinder,
+							float *t, t_point3 *hit_point, t_point3 *hit_normal);
+bool					intersect_plane(t_ray ray, t_plane *plane, float *t,
+							t_point3 *hit_point, t_point3 *hit_normal);
 
 void					before_exit(void *param);
 

@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 13:04:48 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 15:15:29 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static int	init_vars(struct s_vars *vars)
 	vars->cursor_ypos = 0;
 	vars->mouse_rotate = 0;
 	vars->aspect_ratio = vars->width / vars->height;
-	vars->framebuffer = ft_calloc((vars->width * vars->height),
-			sizeof(t_frame));
+	vars->framebuffer = NULL;
+	allocate_framebufer(vars);
 	if (vars->framebuffer == NULL)
 	{
 		print_error(NULL, ERR_ALC_MEM);

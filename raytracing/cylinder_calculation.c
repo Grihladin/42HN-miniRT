@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 21:13:52 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/22 13:55:09 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 15:13:06 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static bool	is_in_bounds(t_cylinder *cylinder, t_point3 hit_point)
 		&& projection <= cylinder->height / 2.0f);
 }
 
-static bool	intersect_plane(t_ray ray, t_point3 plane_point,
+static bool	intersect_plane_cyl(t_ray ray, t_point3 plane_point,
 		t_vec3 plane_normal, float *t)
 {
 	float	denom;
@@ -164,7 +164,7 @@ static t_hit_info	intersect_cylinder_cap(t_ray ray, t_cylinder *cylinder,
 					-half_h));
 		cap_normal = vec3_multiply(axis, -1.0f);
 	}
-	if (intersect_plane(ray, cap_center, cap_normal, &t_cap))
+	if (intersect_plane_cyl(ray, cap_center, cap_normal, &t_cap))
 	{
 		hit_point_cap = vec3_sum(ray.origin, vec3_multiply(ray.direction,
 					t_cap));
@@ -180,7 +180,7 @@ static t_hit_info	intersect_cylinder_cap(t_ray ray, t_cylinder *cylinder,
 	return (hit_info);
 }
 
-static bool	intersect_cylinder(t_ray ray, t_cylinder *cylinder, float *t,
+bool	intersect_cylinder(t_ray ray, t_cylinder *cylinder, float *t,
 		t_point3 *hit_point, t_point3 *hit_normal)
 {
 	t_hit_info	closest_hit;
@@ -215,26 +215,29 @@ static bool	intersect_cylinder(t_ray ray, t_cylinder *cylinder, float *t,
 	return (false);
 }
 
-static bool	is_in_shadow_cylinder(t_ray shadow_ray, t_cylinder *cylinder,
-		float max_t)
-{
-	float		t;
-	t_point3	hit_point;
-	t_point3	hit_normal;
+// static bool	is_in_shadow_cylinder(t_ray shadow_ray, t_cylinder *cylinder,
+// 		float max_t)
+// {
+// 	float		t;
+// 	t_point3	hit_point;
+// 	t_point3	hit_normal;
 
-	if (intersect_cylinder(shadow_ray, cylinder, &t, &hit_point, &hit_normal))
-	{
-		if (t > 0.001f && t < max_t)
-		{
-			return (true);
-		}
-	}
-	return (false);
-}
+// 	if (intersect_cylinder(shadow_ray, cylinder, &t, &hit_point, &hit_normal))
+// 	{
+// 		if (t > 0.001f && t < max_t)
+// 		{
+// 			return (true);
+// 		}
+// 	}
+// 	return (false);
+// }
 
-static t_color3	calculate_lighting_cylinder(t_vars *vars, t_cylinder *cylinder,
-		t_point3 hit_point, t_point3 hit_normal, t_material material,
-		t_ray view_ray)
+// static t_color3	calculate_lighting_cylinder(t_vars *vars, t_cylinder *cylinder,
+// 		t_point3 hit_point, t_point3 hit_normal, t_material material,
+// 		t_ray view_ray)
+static t_color3	calculate_lighting_cylinder(t_vars *vars,
+	t_point3 hit_point, t_point3 hit_normal, t_material material,
+	t_ray view_ray)
 {
 	t_color3	color;
 	t_light		light;
@@ -256,7 +259,7 @@ static t_color3	calculate_lighting_cylinder(t_vars *vars, t_cylinder *cylinder,
 	light_dir = vec3_normalize(light_dir);
 	shadow_ray.origin = hit_point;
 	shadow_ray.direction = light_dir;
-	if (!is_in_shadow_cylinder(shadow_ray, cylinder, light_distance))
+	if (!is_in_shadow(shadow_ray, vars->elements, light_distance))
 	{
 		diffuse_factor = fmaxf(0.0f, vec3_dot(hit_normal, light_dir));
 		reflection_dir = vec3_substract(vec3_multiply(hit_normal, 2.0f
@@ -313,15 +316,10 @@ void	raytrace_cylinder(t_vars *vars, t_cylinder *cylinder)
 			if (found_intersection && (t < vars->framebuffer[j * vars->width + i].dist))
 			{
 				vars->framebuffer[j * vars->width
-					+ i].color3 = calculate_lighting_cylinder(vars, cylinder, hit_point,
+					+ i].color3 = calculate_lighting_cylinder(vars, hit_point,
 						hit_normal, hit_material, p_ray);
 				vars->framebuffer[j * vars->width + i].dist = t;
 			}
-			// else
-			// {
-			// 	vars->framebuffer[j * vars->width + i].color3 = vec3_create(0.0f, 0.0f,
-			// 			0.0f);
-			// }
 			i++;
 		}
 		j++;

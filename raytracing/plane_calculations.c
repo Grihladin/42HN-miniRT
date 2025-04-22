@@ -6,13 +6,13 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/22 13:55:46 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 15:12:56 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-static bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
+bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
 		t_point3 *hit_point, t_point3 *hit_normal)
 {
 	t_vec3	denom;
@@ -35,23 +35,23 @@ static bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
 	return (true);
 }
 
-static bool	is_in_shadow_plane(t_ray shadow_ray, t_plane *plane, float max_t)
-{
-	float		t;
-	t_point3	hit_point;
-	t_point3	hit_normal;
+// static bool	is_in_shadow_plane(t_ray shadow_ray, t_plane *plane, float max_t)
+// {
+// 	float		t;
+// 	t_point3	hit_point;
+// 	t_point3	hit_normal;
 
-	if (intersect_plane(shadow_ray, plane, &t, &hit_point, &hit_normal))
-	{
-		if (t < max_t)
-		{
-			return (true);
-		}
-	}
-	return (false);
-}
+// 	if (intersect_plane(shadow_ray, plane, &t, &hit_point, &hit_normal))
+// 	{
+// 		if (t < max_t)
+// 		{
+// 			return (true);
+// 		}
+// 	}
+// 	return (false);
+// }
 
-static t_color3	calculate_lighting_plane(t_vars *vars, t_plane *plane,
+static t_color3	calculate_lighting_plane(t_vars *vars,
 		t_point3 hit_point, t_point3 hit_normal, t_material material,
 		t_ray view_ray)
 {
@@ -75,7 +75,7 @@ static t_color3	calculate_lighting_plane(t_vars *vars, t_plane *plane,
 	light_dir = vec3_normalize(light_dir);
 	shadow_ray.origin = hit_point;
 	shadow_ray.direction = light_dir;
-	if (!is_in_shadow_plane(shadow_ray, plane, light_distance))
+	if (!is_in_shadow(shadow_ray, vars->elements, light_distance))
 	{
 		diffuse_factor = fmaxf(0.0f, vec3_dot(hit_normal, light_dir));
 		reflection_dir = vec3_substract(vec3_multiply(hit_normal, 2.0f
@@ -132,15 +132,10 @@ void	raytrace_plane(t_vars *vars, t_plane *plane)
 			if (found_intersection && (t < vars->framebuffer[j * vars->width + i].dist))
 			{
 				vars->framebuffer[j * vars->width
-					+ i].color3 = calculate_lighting_plane(vars, plane, hit_point,
+					+ i].color3 = calculate_lighting_plane(vars, hit_point,
 						hit_normal, hit_material, p_ray);
 				vars->framebuffer[j * vars->width + i].dist = t;
 			}
-			// else
-			// {
-			// 	vars->framebuffer[j * vars->width + i].color3 = vec3_create(0.0f, 0.0f,
-			// 			0.0f);
-			// }
 			i++;
 		}
 		j++;

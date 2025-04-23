@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
+#    By: mratke <mratke@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/21 13:27:06 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/23 13:36:17 by mratke           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ SOURCES=miniRT.c \
 	vector_operations2.c \
 	sphere_calculations.c \
 	cylinder_calculation.c \
-	color_calculation.c
+	color_calculation.c \
+	plane_calculations.c
 
 OBJECTS=$(SOURCES:.c=.o)
 

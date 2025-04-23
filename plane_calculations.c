@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/21 19:43:09 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/23 13:36:52 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,16 @@
 static bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
 		t_point3 *hit_point, t_point3 *hit_normal)
 {
-	t_vec3	denom;
-	float	denom_dot_normal;
+	t_vec3	p0_l0;
+	float	denom;
 
-	denom = vec3_cross(plane->normal_vector, ray.direction);
-	denom_dot_normal = vec3_dot(denom, plane->normal_vector);
-	if (fabsf(denom_dot_normal) < 0.001f)
+	denom = vec3_dot(plane->normal_vector, ray.direction);
+	if (fabsf(denom) < 0.001f)
 	{
 		return (false);
 	}
-	*t = vec3_dot(vec3_substract(plane->coord_point, ray.origin),
-			plane->normal_vector) / denom_dot_normal;
+	p0_l0 = vec3_substract(plane->coord_point, ray.origin);
+	*t = vec3_dot(p0_l0, plane->normal_vector) / denom;
 	if (*t < 0.001f)
 	{
 		return (false);
@@ -43,7 +42,7 @@ static bool	is_in_shadow_plane(t_ray shadow_ray, t_plane *plane, float max_t)
 
 	if (intersect_plane(shadow_ray, plane, &t, &hit_point, &hit_normal))
 	{
-		if (t < max_t)
+		if (t > 0.001f && t < max_t)
 		{
 			return (true);
 		}

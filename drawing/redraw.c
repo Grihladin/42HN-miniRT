@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redraw.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:56:23 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/21 15:37:24 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/23 13:35:41 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	redraw_image(t_vars *vars)
 	t_element	*element;
 	t_list		*elements;
 	t_sphere	*sphere;
-	t_cylinder	*cylinder;
 
 	elements = vars->elements;
 	while (elements != NULL)
@@ -58,8 +57,11 @@ int	redraw_image(t_vars *vars)
 		}
 		else if (element->type == CYLINDER)
 		{
-			cylinder = element->params;
 			raytrace_cylinder(vars, element->params);
+		}
+		else if (element->type == PLANE)
+		{
+			raytrace_plane(vars, element->params);
 		}
 		elements = elements->next;
 	}

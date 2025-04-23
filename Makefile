@@ -6,7 +6,7 @@
 #    By: mratke <mratke@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/22 15:14:37 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/23 18:21:41 by mratke           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,19 +50,22 @@ SOURCES=miniRT.c \
 	raytracing/plane_calculations.c \
 	raytracing/shadow.c
 
-OBJECTS=$(SOURCES:.c=.o)
+OBJ_DIR=objects
+
+# Prepend the object directory path to each object file, maintaining structure
+OBJECTS=$(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
 all: $(NAME)
 
 clean:
-	rm -f $(NAME)
-
-fclean: clean
+	rm -rf $(OBJ_DIR)
 	make -C libft fclean
 	make -C get_next_line fclean
+	rm -rf MLX42/build
+
+fclean: clean
+	rm -f $(NAME)
 #	make -C MLX42/build clean
-	rm -rf MLX42/build/*
-	rm -f $(OBJECTS)
 
 re:	fclean all
 
@@ -81,7 +84,9 @@ $(LIBMLX):
 	@cmake MLX42 -B MLX42/build && make -C MLX42/build -j4
 # -DDEBUG=1 -DGLFW_FETCH=0
 
-%.o: %.c $(HEADER)
+# Rule to compile .c files into the object directory
+$(OBJ_DIR)/%.o: %.c $(HEADER)
+	@mkdir -p $(dir $@)
 	$(CC) -c $(CFLAGS) $< -o $@
 
 .PHONY: all clean fclean re

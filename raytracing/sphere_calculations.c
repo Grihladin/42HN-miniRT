@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/23 18:52:17 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/23 20:08:30 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 t_ray	primary_ray(t_vars *vars, int i, int j)
 {
-	t_ray		ray;
-	t_vec3		forward;
-	t_vec3		right;
-	t_vec3		up;
-	float		fov_scale;
-	float		pixel_x;
-	float		pixel_y;
+	t_ray	ray;
+	t_vec3	forward;
+	t_vec3	right;
+	t_vec3	up;
+	float	fov_scale;
+	float	pixel_x;
+	float	pixel_y;
 
 	forward = vec3_normalize(vars->scene.camera->direction);
 	right = vec3_normalize(vec3_cross(forward, vars->scene.camera->up));
@@ -37,15 +37,15 @@ t_ray	primary_ray(t_vars *vars, int i, int j)
 }
 
 bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
-			t_point3 *hit_point, t_point3 *hit_normal)
+		t_point3 *hit_point, t_point3 *hit_normal)
 {
-	t_vec3		oc;
-	float		a;
-	float		b;
-	float		c;
-	float		discriminant;
-	float		t0;
-	float		t1;
+	t_vec3	oc;
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
+	float	t0;
+	float	t1;
 
 	oc = vec3_substract(ray.origin, sphere->center);
 	a = vec3_dot(ray.direction, ray.direction);
@@ -75,26 +75,8 @@ bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 	return (true);
 }
 
-// bool	is_in_shadow_sphere(t_ray shadow_ray, t_sphere *sphere, float max_t)
-// {
-// 	float		t;
-// 	t_point3	hit_point;
-// 	t_point3	hit_normal;
-
-// 	if (intersect_sphere(shadow_ray, sphere, &t, &hit_point, &hit_normal))
-// 	{
-// 		if (t < max_t)
-// 		{
-// 			return (true);
-// 		}
-// 	}
-// 	return (false);
-// }
-
-// static t_color3	calculate_lighting_sphere(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
-// 		t_point3 hit_normal, t_material material, t_ray view_ray)
 static t_color3	calculate_lighting_sphere(t_vars *vars, t_point3 hit_point,
-	t_point3 hit_normal, t_material material, t_ray view_ray)
+		t_point3 hit_normal, t_material material, t_ray view_ray)
 {
 	t_color3	color;
 	t_light		light;
@@ -142,7 +124,6 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 	t_point3	hit_point;
 	t_point3	hit_normal;
 	t_material	hit_material;
-	bool		found_intersection;
 	float		t;
 	t_point3	p_hit;
 	t_point3	n_hit;
@@ -156,28 +137,28 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 		i = 0;
 		while (i < vars->width)
 		{
-			// Compute primary ray for this pixel
 			p_ray = primary_ray(vars, i, j);
-			// Initialize closest intersection
 			min_dist = INFINITY;
-			found_intersection = false;
 			if (intersect_sphere(p_ray, sphere, &t, &p_hit, &n_hit))
 			{
-				if (t < min_dist)
+				if (t > EPSILON && t < vars->framebuffer[j * vars->width
+					+ i].dist)
 				{
-					min_dist = t;
 					hit_point = p_hit;
-					hit_normal = n_hit;
 					hit_material = sphere->material;
-					found_intersection = true;
+					if (vec3_dot(p_ray.direction, n_hit) > 0)
+					{
+						hit_normal = vec3_multiply(n_hit, -1.0f);
+					}
+					else
+					{
+						hit_normal = n_hit;
+					}
+					vars->framebuffer[j * vars->width
+						+ i].color3 = calculate_lighting_sphere(vars, hit_point,
+							hit_normal, hit_material, p_ray);
+					vars->framebuffer[j * vars->width + i].dist = t;
 				}
-			}
-			if (found_intersection && (t < vars->framebuffer[j * vars->width + i].dist))
-			{
-				// vars->framebuffer[j * vars->width + i].color3 = calculate_lighting_sphere(vars, sphere,
-				vars->framebuffer[j * vars->width + i].color3 = calculate_lighting_sphere(vars,
-						hit_point, hit_normal, hit_material, p_ray);
-				vars->framebuffer[j * vars->width + i].dist = t;
 			}
 			i++;
 		}

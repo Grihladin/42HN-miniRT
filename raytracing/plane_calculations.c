@@ -6,14 +6,14 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/23 19:41:20 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/23 20:11:13 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
 bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
-	t_point3 *hit_point, t_point3 *hit_normal)
+		t_point3 *hit_point, t_point3 *hit_normal)
 {
 	t_vec3	p0_l0;
 	float	denom;
@@ -34,25 +34,8 @@ bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
 	return (true);
 }
 
-// static bool	is_in_shadow_plane(t_ray shadow_ray, t_plane *plane, float max_t)
-// {
-// 	float		t;
-// 	t_point3	hit_point;
-// 	t_point3	hit_normal;
-
-// 	if (intersect_plane(shadow_ray, plane, &t, &hit_point, &hit_normal))
-// 	{
-// 		if (t < max_t)
-// 		{
-// 			return (true);
-// 		}
-// 	}
-// 	return (false);
-// }
-
-static t_color3	calculate_lighting_plane(t_vars *vars,
-		t_point3 hit_point, t_point3 hit_normal, t_material material,
-		t_ray view_ray)
+static t_color3	calculate_lighting_plane(t_vars *vars, t_point3 hit_point,
+		t_point3 hit_normal, t_material material, t_ray view_ray)
 {
 	t_color3	color;
 	t_light		light;
@@ -99,7 +82,6 @@ void	raytrace_plane(t_vars *vars, t_plane *plane)
 	t_point3	hit_point;
 	t_point3	hit_normal;
 	t_material	hit_material;
-	bool		found_intersection;
 	float		t;
 	t_point3	p_hit;
 	t_point3	n_hit;
@@ -116,24 +98,26 @@ void	raytrace_plane(t_vars *vars, t_plane *plane)
 		{
 			p_ray = primary_ray(vars, i, j);
 			min_dist = INFINITY;
-			found_intersection = false;
 			if (intersect_plane(p_ray, plane, &t, &p_hit, &n_hit))
 			{
-				if (t < min_dist)
+				if (t > EPSILON && t < vars->framebuffer[j * vars->width
+					+ i].dist)
 				{
-					min_dist = t;
 					hit_point = p_hit;
-					hit_normal = n_hit;
 					hit_material = plane->material;
-					found_intersection = true;
+					if (vec3_dot(p_ray.direction, n_hit) > 0)
+					{
+						hit_normal = vec3_multiply(n_hit, -1.0f);
+					}
+					else
+					{
+						hit_normal = n_hit;
+					}
+					vars->framebuffer[j * vars->width
+						+ i].color3 = calculate_lighting_plane(vars, hit_point,
+							hit_normal, hit_material, p_ray);
+					vars->framebuffer[j * vars->width + i].dist = t;
 				}
-			}
-			if (found_intersection && (t < vars->framebuffer[j * vars->width + i].dist))
-			{
-				vars->framebuffer[j * vars->width
-					+ i].color3 = calculate_lighting_plane(vars, hit_point,
-						hit_normal, hit_material, p_ray);
-				vars->framebuffer[j * vars->width + i].dist = t;
 			}
 			i++;
 		}

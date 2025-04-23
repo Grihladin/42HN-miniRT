@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 15:31:27 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/23 19:17:18 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,11 @@
 # include <math.h>
 # include <stdio.h>
 
+# define EPSILON 0.001f
+
 typedef struct s_color
 {
-	int red; //[0-255]
+	int					red;
 	int					green;
 	int					blue;
 }						t_color;
@@ -69,7 +71,7 @@ typedef struct s_point
 	float				x;
 	float				y;
 	float				z;
-} t_vec3, t_point3, t_color3;
+}	t_vec3,	t_point3,	t_color3;
 
 typedef struct s_frame
 {
@@ -99,23 +101,22 @@ typedef struct s_hit_info
 
 typedef struct s_ambient_lightning
 {
-	float amb_light_rate; //[0.0 , 1.0]
+	float				amb_light_rate;
 	t_color3			color;
 }						t_ambient_lightning;
 
 typedef struct s_camera
 {
 	t_point3			position;
-	t_vec3 direction;    // [-1,1]
-	float field_of_view; //[0,180]
-	t_vec3 up;           //???What is it???
-							// float				fov;
+	t_vec3				direction;
+	float				field_of_view;
+	t_vec3				up;
 }						t_camera;
 
 typedef struct s_light
 {
 	t_point3			position;
-	float brightness; //[0.0 , 1.0]
+	float				brightness;
 	t_color3			color;
 }						t_light;
 
@@ -137,18 +138,16 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_point3			coord_point;
-	t_vec3 normal_vector; // [-1,1]
-	// t_color3			color;
+	t_vec3				normal_vector;
 	t_material			material;
 }						t_plane;
 
 typedef struct s_cylinder
 {
 	t_point3			coord_center;
-	t_vec3 norm_vec_axis_cyl; // [-1,1]
+	t_vec3				norm_vec_axis_cyl;
 	float				diameter;
 	float				height;
-	// t_color3			color;
 	t_material			material;
 }						t_cylinder;
 
@@ -239,7 +238,6 @@ int						is_float_digit(char *str);
 int						allocate_framebufer(t_vars *vars);
 void					free_framebuffer(t_vars *vars);
 
-
 // Debug functions
 void					print_elements(t_list *elements);
 void					print_scene(t_scene *scene);
@@ -265,7 +263,8 @@ bool					is_in_shadow(t_ray shadow_ray, t_list *elements,
 bool					intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 							t_point3 *hit_point, t_point3 *hit_normal);
 bool					intersect_cylinder(t_ray ray, t_cylinder *cylinder,
-							float *t, t_point3 *hit_point, t_point3 *hit_normal);
+							float *t, t_point3 *hit_point,
+							t_point3 *hit_normal);
 bool					intersect_plane(t_ray ray, t_plane *plane, float *t,
 							t_point3 *hit_point, t_point3 *hit_normal);
 

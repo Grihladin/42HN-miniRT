@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_operations1.c                               :+:      :+:    :+:   */
+/*   vector_operations2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:16:19 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/21 14:57:48 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/23 18:39:59 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../miniRT.h"
 
 t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
 {

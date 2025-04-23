@@ -6,7 +6,7 @@
 #    By: mratke <mratke@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/23 18:21:41 by mratke           ###   ########.fr        #
+#    Updated: 2025/04/23 18:40:49 by mratke           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,12 +41,12 @@ SOURCES=miniRT.c \
 	moving/zoom.c \
 	moving/rotate.c \
 	moving/move.c \
-	vector_operations.c \
-	vector_operations1.c \
-	vector_operations2.c \
+	vector_operations/vector_colors.c \
+	vector_operations/vector_operations1.c \
+	vector_operations/vector_operations2.c \
+	vector_operations/vector_operations3.c \
 	raytracing/sphere_calculations.c \
 	raytracing/cylinder_calculation.c \
-	raytracing/color_calculation.c \
 	raytracing/plane_calculations.c \
 	raytracing/shadow.c
 

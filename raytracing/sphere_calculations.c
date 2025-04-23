@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/23 15:11:47 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/23 18:52:17 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 	}
 	t0 = (-b - sqrtf(discriminant)) / (2.0f * a);
 	t1 = (-b + sqrtf(discriminant)) / (2.0f * a);
-	if (t0 > 0.001f)
+	if (t0 > EPSILON)
 	{
 		*t = t0;
 	}
-	else if (t1 > 0.001f)
+	else if (t1 > EPSILON)
 	{
 		*t = t1;
 	}

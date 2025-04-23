@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane_calculations.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/23 15:14:16 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/23 19:41:20 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
 	float	denom;
 
 	denom = vec3_dot(plane->normal_vector, ray.direction);
-	if (fabsf(denom) < 0.001f)
+	if (denom > EPSILON)
 	{
 		return (false);
 	}
 	p0_l0 = vec3_substract(plane->coord_point, ray.origin);
 	*t = vec3_dot(p0_l0, plane->normal_vector) / denom;
-	if (*t < 0.001f)
+	if (*t < EPSILON)
 	{
 		return (false);
 	}

@@ -1,3 +1,6 @@
 *.[oa]
 *~
 miniRT
+.vscode
+test.rt
+*.rt

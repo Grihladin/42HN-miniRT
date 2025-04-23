@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:29:23 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 16:09:25 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/21 16:10:28 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	read_parameters(int argc, char **argv, t_vars *vars)
 	if (argc > 1)
 	{
 		filename = ft_split(argv[1], '.');
-		if (ft_strcmp(filename[1], "rt"))
+		if ((arr_size(filename) < 2) || ft_strcmp(filename[1], "rt"))
 			return (print_error(argv[1], ERR_WRNG_FL_EXT), 1);
 		vars->fd = open(argv[1], O_RDONLY);
 		if (vars->fd < 0)

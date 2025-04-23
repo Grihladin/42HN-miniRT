@@ -6,11 +6,11 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/21 19:42:36 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/23 15:11:47 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../miniRT.h"
 
 t_ray	primary_ray(t_vars *vars, int i, int j)
 {
@@ -75,24 +75,26 @@ bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 	return (true);
 }
 
-bool	is_in_shadow_sphere(t_ray shadow_ray, t_sphere *sphere, float max_t)
-{
-	float		t;
-	t_point3	hit_point;
-	t_point3	hit_normal;
+// bool	is_in_shadow_sphere(t_ray shadow_ray, t_sphere *sphere, float max_t)
+// {
+// 	float		t;
+// 	t_point3	hit_point;
+// 	t_point3	hit_normal;
 
-	if (intersect_sphere(shadow_ray, sphere, &t, &hit_point, &hit_normal))
-	{
-		if (t < max_t)
-		{
-			return (true);
-		}
-	}
-	return (false);
-}
+// 	if (intersect_sphere(shadow_ray, sphere, &t, &hit_point, &hit_normal))
+// 	{
+// 		if (t < max_t)
+// 		{
+// 			return (true);
+// 		}
+// 	}
+// 	return (false);
+// }
 
-static t_color3	calculate_lighting_sphere(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
-		t_point3 hit_normal, t_material material, t_ray view_ray)
+// static t_color3	calculate_lighting_sphere(t_vars *vars, t_sphere *sphere, t_point3 hit_point,
+// 		t_point3 hit_normal, t_material material, t_ray view_ray)
+static t_color3	calculate_lighting_sphere(t_vars *vars, t_point3 hit_point,
+	t_point3 hit_normal, t_material material, t_ray view_ray)
 {
 	t_color3	color;
 	t_light		light;
@@ -114,7 +116,8 @@ static t_color3	calculate_lighting_sphere(t_vars *vars, t_sphere *sphere, t_poin
 	light_dir = vec3_normalize(light_dir);
 	shadow_ray.origin = hit_point;
 	shadow_ray.direction = light_dir;
-	if (!is_in_shadow_sphere(shadow_ray, sphere, light_distance))
+	// if (!is_in_shadow_sphere(shadow_ray, sphere, light_distance))
+	if (!is_in_shadow(shadow_ray, vars->elements, light_distance))
 	{
 		diffuse_factor = fmaxf(0.0f, vec3_dot(hit_normal, light_dir));
 		reflection_dir = vec3_substract(vec3_multiply(hit_normal, 2.0f
@@ -143,11 +146,15 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 	float		t;
 	t_point3	p_hit;
 	t_point3	n_hit;
+	int			i;
+	int			j;
 
 	// Loop over each pixel in the image
-	for (int j = 0; j < vars->height; j++)
+	j = 0;
+	while (j < vars->height)
 	{
-		for (int i = 0; i < vars->width; i++)
+		i = 0;
+		while (i < vars->width)
 		{
 			// Compute primary ray for this pixel
 			p_ray = primary_ray(vars, i, j);
@@ -165,16 +172,15 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 					found_intersection = true;
 				}
 			}
-			if (found_intersection)
+			if (found_intersection && (t < vars->framebuffer[j * vars->width + i].dist))
 			{
-				vars->framebuffer[j * vars->width + i] = calculate_lighting_sphere(vars, sphere,
+				// vars->framebuffer[j * vars->width + i].color3 = calculate_lighting_sphere(vars, sphere,
+				vars->framebuffer[j * vars->width + i].color3 = calculate_lighting_sphere(vars,
 						hit_point, hit_normal, hit_material, p_ray);
+				vars->framebuffer[j * vars->width + i].dist = t;
 			}
-			else
-			{
-				vars->framebuffer[j * vars->width + i] = vec3_create(0.0f, 0.0f,
-						0.0f);
-			}
+			i++;
 		}
+		j++;
 	}
 }

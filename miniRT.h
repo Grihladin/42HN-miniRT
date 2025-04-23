@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/21 19:46:00 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/22 15:31:27 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@
 # define ERR_VAL_NOT_IN_RANGE 82
 # define ERR_PRM_NOT_NUMB 83
 # define ERR_WRNG_EL 84
+# define ERR_VEC_NOT_NORM 85
+# define ERR_CRT_WNDW 86
+# define ERR_MLX_IMG 87
 # define ERR_ALC_MEM 122
 
 # include "MLX42/include/MLX42/MLX42.h"
@@ -67,6 +70,12 @@ typedef struct s_point
 	float				y;
 	float				z;
 } t_vec3, t_point3, t_color3;
+
+typedef struct s_frame
+{
+	t_color3			color3;
+	float				dist;
+}						t_frame;
 
 typedef struct s_material
 {
@@ -161,7 +170,7 @@ typedef struct s_vars
 	t_list				*elements;
 	t_scene				scene;
 	int					fd;
-	t_color3			*framebuffer;
+	t_frame				*framebuffer;
 	double				cursor_xpos;
 	double				cursor_ypos;
 	int					mouse_rotate;
@@ -227,6 +236,9 @@ int						check_unique_element(t_vars *vars, int type);
 void					free_scene(t_scene *scene);
 int						is_digits(char *str);
 int						is_float_digit(char *str);
+int						allocate_framebufer(t_vars *vars);
+void					free_framebuffer(t_vars *vars);
+
 
 // Debug functions
 void					print_elements(t_list *elements);
@@ -242,6 +254,20 @@ void					rotate_camera_vert(t_camera *camera, float angle);
 void					rotate_camera_hor(t_camera *camera, float angle);
 void					move_camera_side(t_camera *camera, float distance);
 void					cursor_hook(double xpos, double ypos, void *param);
+
+// raytracing
+t_ray					primary_ray(t_vars *vars, int i, int j);
+void					raytrace_cylinder(t_vars *vars, t_cylinder *cylinder);
+void					raytrace_sphere(t_vars *vars, t_sphere *sphere);
+void					raytrace_plane(t_vars *vars, t_plane *plane);
+bool					is_in_shadow(t_ray shadow_ray, t_list *elements,
+							float max_t);
+bool					intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
+							t_point3 *hit_point, t_point3 *hit_normal);
+bool					intersect_cylinder(t_ray ray, t_cylinder *cylinder,
+							float *t, t_point3 *hit_point, t_point3 *hit_normal);
+bool					intersect_plane(t_ray ray, t_plane *plane, float *t,
+							t_point3 *hit_point, t_point3 *hit_normal);
 
 void					before_exit(void *param);
 

@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:11:22 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 15:32:05 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 09:58:14 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	cursor_hook(double xpos, double ypos, void *param)
 	vars = param;
 	if (vars->mouse_rotate)
 	{
-		if ((xpos <= vars->width) && (xpos >= 0) && (ypos <= vars->height) && (ypos >= 0))
+		if ((xpos <= vars->width) && (xpos >= 0)
+			&& (ypos <= vars->height) && (ypos >= 0))
 		{
 			if ((ypos - vars->cursor_ypos) < 0)
 				rotate_camera_vert(vars->scene.camera, MOUSE_ROTATE_ANGLE);

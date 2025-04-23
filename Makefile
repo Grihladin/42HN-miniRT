@@ -6,7 +6,7 @@
 #    By: mratke <mratke@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/23 13:36:17 by mratke           ###   ########.fr        #
+#    Updated: 2025/04/22 15:14:37 by psenko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SOURCES=miniRT.c \
 	utils/frees.c \
 	utils/print_elements.c \
 	utils/check_unique_element.c \
+	utils/free_framebuffer.c \
 	parsing/read_parameters.c \
 	parsing/read_elements.c \
 	parsing/read_elements1.c \
@@ -43,10 +44,11 @@ SOURCES=miniRT.c \
 	vector_operations.c \
 	vector_operations1.c \
 	vector_operations2.c \
-	sphere_calculations.c \
-	cylinder_calculation.c \
-	color_calculation.c \
-	plane_calculations.c
+	raytracing/sphere_calculations.c \
+	raytracing/cylinder_calculation.c \
+	raytracing/color_calculation.c \
+	raytracing/plane_calculations.c \
+	raytracing/shadow.c
 
 OBJECTS=$(SOURCES:.c=.o)
 

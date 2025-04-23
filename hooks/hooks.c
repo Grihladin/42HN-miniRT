@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:01:02 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/18 15:33:04 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/22 15:16:40 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ void	resize_hook(int width, int height, void *param)
 	vars->width = width;
 	vars->height = height;
 	vars->aspect_ratio = (float) vars->width / (float) vars->height;
-	free(vars->framebuffer);
-	vars->framebuffer = ft_calloc((vars->width * vars->height),
-			sizeof(t_color3));
+	allocate_framebufer(vars);
 	mlx_resize_image(vars->image, width, height);
 	vars->need_redraw = 1;
 	return ;

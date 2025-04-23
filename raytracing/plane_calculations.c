@@ -6,26 +6,25 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/22 15:12:56 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/23 15:14:16 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
 bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
-		t_point3 *hit_point, t_point3 *hit_normal)
+	t_point3 *hit_point, t_point3 *hit_normal)
 {
-	t_vec3	denom;
-	float	denom_dot_normal;
+	t_vec3	p0_l0;
+	float	denom;
 
-	denom = vec3_cross(plane->normal_vector, ray.direction);
-	denom_dot_normal = vec3_dot(denom, plane->normal_vector);
-	if (fabsf(denom_dot_normal) < 0.001f)
+	denom = vec3_dot(plane->normal_vector, ray.direction);
+	if (fabsf(denom) < 0.001f)
 	{
 		return (false);
 	}
-	*t = vec3_dot(vec3_substract(plane->coord_point, ray.origin),
-			plane->normal_vector) / denom_dot_normal;
+	p0_l0 = vec3_substract(plane->coord_point, ray.origin);
+	*t = vec3_dot(p0_l0, plane->normal_vector) / denom;
 	if (*t < 0.001f)
 	{
 		return (false);

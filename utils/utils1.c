@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:37:35 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 15:15:50 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/24 17:02:36 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,4 @@ int	is_float_digit(char *str)
 		str++;
 	}
 	return (1);
-}
-
-int	allocate_framebufer(t_vars *vars)
-{
-	if (vars->framebuffer != NULL)
-		free(vars->framebuffer);
-	vars->framebuffer = ft_calloc((vars->width * vars->height),
-			sizeof(t_frame));
-	return (0);
 }

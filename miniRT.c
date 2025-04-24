@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 15:32:05 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/24 16:56:54 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static int	init_vars(struct s_vars *vars)
 	vars->cursor_ypos = 0;
 	vars->mouse_rotate = 0;
 	vars->aspect_ratio = vars->width / vars->height;
-	vars->framebuffer = NULL;
-	allocate_framebufer(vars);
-	if (vars->framebuffer == NULL)
+	vars->frmbuf = NULL;
+	allocate_framebuffer(vars);
+	if (vars->frmbuf == NULL)
 	{
 		print_error(NULL, ERR_ALC_MEM);
 		return (1);
@@ -43,7 +43,7 @@ void	before_exit(void *param)
 	t_vars	*vars;
 
 	vars = param;
-	free(vars->framebuffer);
+	free(vars->frmbuf);
 	free_scene(&(vars->scene));
 	ft_lstclear(&(vars->elements), delete_element);
 	if (vars->wind != NULL)
@@ -58,10 +58,13 @@ static int	preparations(int argc, char **argv, struct s_vars *vars)
 {
 	if (init_vars(vars))
 		return (1);
-	if (argc == 1)
-		return (print_error(NULL, ERR_CNT_ARG), 1);
-	if (read_parameters(argc, argv, vars) == 1)
-		return (1);
+	if (argc > 1)
+	{
+		if (read_parameters(argv, vars) == 1)
+			return (1);
+	}
+	else
+		return (print_error(NULL, ERR_GEN), 1);
 	vars->wind = mlx_init(vars->width, vars->height, WINDOW_TITLE, 1);
 	if (vars->wind == NULL)
 		return (print_error(NULL, ERR_CRT_WNDW), 1);
@@ -84,6 +87,8 @@ int	main(int argc, char **argv)
 {
 	t_vars	vars;
 
+	if (argc == 1)
+		return (print_error(NULL, ERR_CNT_ARG), 1);
 	if (preparations(argc, argv, &vars) == 1)
 	{
 		before_exit(&vars);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_framebuffer.c                                 :+:      :+:    :+:   */
+/*   framebuffer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:13:14 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 13:50:20 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/24 17:02:39 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,20 @@ void	free_framebuffer(t_vars *vars)
 		x = 0;
 		while (x < vars->width)
 		{
-			vars->framebuffer[y * vars->width + x].dist = INFINITY;
-			vars->framebuffer[y * vars->width + x].color3
+			vars->frmbuf[y * vars->width + x].dist = INFINITY;
+			vars->frmbuf[y * vars->width + x].color3
 				= vec3_create(0.0f, 0.0f, 0.0f);
 			x++;
 		}
 		y++;
 	}
+}
+
+int	allocate_framebuffer(t_vars *vars)
+{
+	if (vars->frmbuf != NULL)
+		free(vars->frmbuf);
+	vars->frmbuf = ft_calloc((vars->width * vars->height),
+			sizeof(t_frame));
+	return (0);
 }

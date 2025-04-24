@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/24 13:29:47 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/24 16:56:49 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ typedef struct s_vars
 	t_list				*elements;
 	t_scene				scene;
 	int					fd;
-	t_frame				*framebuffer;
+	t_frame				*frmbuf;
 	double				cursor_xpos;
 	double				cursor_ypos;
 	int					mouse_rotate;
@@ -188,7 +188,7 @@ void					cursor_hook(double xpos, double ypos, void *param);
 void					resize_hook(int width, int height, void *param);
 
 // parsing
-int						read_parameters(int argc, char **argv, t_vars *vars);
+int						read_parameters(char **argv, t_vars *vars);
 int						read_element(t_vars *vars, t_list *element_params);
 int						read_point(const char *str, t_point3 *point);
 int						read_vector(const char *str, t_point3 *point);
@@ -230,7 +230,7 @@ int						check_unique_element(t_vars *vars, int type);
 void					free_scene(t_scene *scene);
 int						is_digits(char *str);
 int						is_float_digit(char *str);
-int						allocate_framebufer(t_vars *vars);
+int						allocate_framebuffer(t_vars *vars);
 void					free_framebuffer(t_vars *vars);
 
 

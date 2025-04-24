@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_calculations.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/23 20:08:30 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/24 16:35:02 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 			min_dist = INFINITY;
 			if (intersect_sphere(p_ray, sphere, &t, &p_hit, &n_hit))
 			{
-				if (t > EPSILON && t < vars->framebuffer[j * vars->width
+				if (t > EPSILON && t < vars->frmbuf[j * vars->width
 					+ i].dist)
 				{
 					hit_point = p_hit;
@@ -154,10 +154,10 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 					{
 						hit_normal = n_hit;
 					}
-					vars->framebuffer[j * vars->width
+					vars->frmbuf[j * vars->width
 						+ i].color3 = calculate_lighting_sphere(vars, hit_point,
 							hit_normal, hit_material, p_ray);
-					vars->framebuffer[j * vars->width + i].dist = t;
+					vars->frmbuf[j * vars->width + i].dist = t;
 				}
 			}
 			i++;

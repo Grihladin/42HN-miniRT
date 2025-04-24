@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 15:31:27 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/24 13:29:47 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,11 @@
 # include <math.h>
 # include <stdio.h>
 
+# define EPSILON 0.001f
+
 typedef struct s_color
 {
-	int			red; //[0-255]
+	int			red;
 	int			green;
 	int			blue;
 }						t_color;
@@ -99,23 +101,22 @@ typedef struct s_hit_info
 
 typedef struct s_ambient_lightning
 {
-	float				amb_light_rate; //[0.0 , 1.0]
+	float				amb_light_rate;
 	t_color3			color;
 }						t_ambient_lightning;
 
 typedef struct s_camera
 {
 	t_point3			position;
-	t_vec3				direction; // [-1,1]
-	float				field_of_view; //[0,180]
-	t_vec3				up;	//???What is it???
-	// float				fov;
+	t_vec3				direction;
+	float				field_of_view;
+	t_vec3				up;
 }						t_camera;
 
 typedef struct s_light
 {
 	t_point3			position;
-	float				brightness; //[0.0 , 1.0]
+	float				brightness;
 	t_color3			color;
 }						t_light;
 
@@ -137,15 +138,14 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_point3			coord_point;
-	t_vec3				normal_vector; // [-1,1]
-	// t_color3			color;
+	t_vec3				normal_vector;
 	t_material			material;
 }						t_plane;
 
 typedef struct s_cylinder
 {
 	t_point3			coord_center;
-	t_vec3				norm_vec_axis_cyl; // [-1,1]
+	t_vec3				norm_vec_axis_cyl;
 	float				diameter;
 	float				height;
 	// t_color3			color;
@@ -184,7 +184,7 @@ void					main_hook(void *param);
 void					key_hook(mlx_key_data_t keydata, void *param);
 void					scroll_hook(double xdelta, double ydelta, void *param);
 void					close_hook(void *param);
-// void			cursor_hook(double xpos, double ypos, void *param);
+void					cursor_hook(double xpos, double ypos, void *param);
 void					resize_hook(int width, int height, void *param);
 
 // parsing
@@ -247,7 +247,6 @@ void					zoom(t_camera *camera, float scale);
 void					rotate_camera_vert(t_camera *camera, float angle);
 void					rotate_camera_hor(t_camera *camera, float angle);
 void					move_camera_side(t_camera *camera, float distance);
-void					cursor_hook(double xpos, double ypos, void *param);
 
 // raytracing
 t_ray					primary_ray(t_vars *vars, int i, int j);
@@ -259,7 +258,8 @@ bool					is_in_shadow(t_ray shadow_ray, t_list *elements,
 bool					intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 							t_point3 *hit_point, t_point3 *hit_normal);
 bool					intersect_cylinder(t_ray ray, t_cylinder *cylinder,
-							float *t, t_point3 *hit_point, t_point3 *hit_normal);
+							float *t, t_point3 *hit_point,
+							t_point3 *hit_normal);
 bool					intersect_plane(t_ray ray, t_plane *plane, float *t,
 							t_point3 *hit_point, t_point3 *hit_normal);
 

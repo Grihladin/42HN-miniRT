@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_calculation.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 21:13:52 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/22 15:13:06 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/23 20:02:09 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,29 +215,8 @@ bool	intersect_cylinder(t_ray ray, t_cylinder *cylinder, float *t,
 	return (false);
 }
 
-// static bool	is_in_shadow_cylinder(t_ray shadow_ray, t_cylinder *cylinder,
-// 		float max_t)
-// {
-// 	float		t;
-// 	t_point3	hit_point;
-// 	t_point3	hit_normal;
-
-// 	if (intersect_cylinder(shadow_ray, cylinder, &t, &hit_point, &hit_normal))
-// 	{
-// 		if (t > 0.001f && t < max_t)
-// 		{
-// 			return (true);
-// 		}
-// 	}
-// 	return (false);
-// }
-
-// static t_color3	calculate_lighting_cylinder(t_vars *vars, t_cylinder *cylinder,
-// 		t_point3 hit_point, t_point3 hit_normal, t_material material,
-// 		t_ray view_ray)
-static t_color3	calculate_lighting_cylinder(t_vars *vars,
-	t_point3 hit_point, t_point3 hit_normal, t_material material,
-	t_ray view_ray)
+static t_color3	calculate_lighting_cylinder(t_vars *vars, t_point3 hit_point,
+		t_point3 hit_normal, t_material material, t_ray view_ray)
 {
 	t_color3	color;
 	t_light		light;
@@ -284,14 +263,13 @@ void	raytrace_cylinder(t_vars *vars, t_cylinder *cylinder)
 	t_point3	hit_point;
 	t_point3	hit_normal;
 	t_material	hit_material;
-	bool		found_intersection;
 	float		t;
 	t_point3	p_hit;
 	t_point3	n_hit;
 	int			i;
 	int			j;
-	cylinder->norm_vec_axis_cyl = vec3_normalize(cylinder->norm_vec_axis_cyl);
 
+	cylinder->norm_vec_axis_cyl = vec3_normalize(cylinder->norm_vec_axis_cyl);
 	i = 0;
 	j = 0;
 	while (j < vars->height)
@@ -301,24 +279,26 @@ void	raytrace_cylinder(t_vars *vars, t_cylinder *cylinder)
 		{
 			p_ray = primary_ray(vars, i, j);
 			min_dist = INFINITY;
-			found_intersection = false;
 			if (intersect_cylinder(p_ray, cylinder, &t, &p_hit, &n_hit))
 			{
-				if (t < min_dist)
+				if (t > EPSILON && t < vars->framebuffer[j * vars->width
+					+ i].dist)
 				{
-					min_dist = t;
 					hit_point = p_hit;
-					hit_normal = n_hit;
 					hit_material = cylinder->material;
-					found_intersection = true;
+					if (vec3_dot(p_ray.direction, n_hit) > 0)
+					{
+						hit_normal = vec3_multiply(n_hit, -1.0f);
+					}
+					else
+					{
+						hit_normal = n_hit;
+					}
+					vars->framebuffer[j * vars->width
+						+ i].color3 = calculate_lighting_cylinder(vars,
+							hit_point, hit_normal, hit_material, p_ray);
+					vars->framebuffer[j * vars->width + i].dist = t;
 				}
-			}
-			if (found_intersection && (t < vars->framebuffer[j * vars->width + i].dist))
-			{
-				vars->framebuffer[j * vars->width
-					+ i].color3 = calculate_lighting_cylinder(vars, hit_point,
-						hit_normal, hit_material, p_ray);
-				vars->framebuffer[j * vars->width + i].dist = t;
 			}
 			i++;
 		}

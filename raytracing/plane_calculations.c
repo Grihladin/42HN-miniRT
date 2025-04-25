@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/23 20:11:13 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/24 16:35:02 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	raytrace_plane(t_vars *vars, t_plane *plane)
 			min_dist = INFINITY;
 			if (intersect_plane(p_ray, plane, &t, &p_hit, &n_hit))
 			{
-				if (t > EPSILON && t < vars->framebuffer[j * vars->width
+				if (t > EPSILON && t < vars->frmbuf[j * vars->width
 					+ i].dist)
 				{
 					hit_point = p_hit;
@@ -113,10 +113,10 @@ void	raytrace_plane(t_vars *vars, t_plane *plane)
 					{
 						hit_normal = n_hit;
 					}
-					vars->framebuffer[j * vars->width
+					vars->frmbuf[j * vars->width
 						+ i].color3 = calculate_lighting_plane(vars, hit_point,
 							hit_normal, hit_material, p_ray);
-					vars->framebuffer[j * vars->width + i].dist = t;
+					vars->frmbuf[j * vars->width + i].dist = t;
 				}
 			}
 			i++;

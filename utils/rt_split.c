@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 09:48:55 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/15 09:37:16 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/24 17:04:32 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,33 +46,6 @@ static char	*get_next_part(char **str)
 	*str += size;
 	return (new_str);
 }
-
-// static char	*mv_lst_to_str(t_list *lst)
-// {
-// 	t_list	*tmp_lst;
-// 	char	*result_str;
-// 	size_t	strsize;
-
-// 	result_str = NULL;
-// 	tmp_lst = lst;
-// 	strsize = 0;
-// 	while (tmp_lst != NULL)
-// 	{
-// 		strsize += ft_strlen((char *)tmp_lst->content);
-// 		tmp_lst = tmp_lst->next;
-// 	}
-// 	result_str = ft_calloc(strsize + 1, sizeof(char));
-// 	if (result_str == NULL)
-// 		return (free_list(lst), NULL);
-// 	tmp_lst = lst;
-// 	while (tmp_lst != NULL)
-// 	{
-// 		ft_strlcat(result_str, (char *)tmp_lst->content, strsize + 1);
-// 		tmp_lst = tmp_lst->next;
-// 	}
-// 	ft_lstclear(lst, free);
-// 	return (result_str);
-// }
 
 t_list	*rt_split(char *str)
 {

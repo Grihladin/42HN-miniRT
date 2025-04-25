@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/23 20:40:54 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/24 16:56:49 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@
 
 typedef struct s_color
 {
-	int					red;
-	int					green;
-	int					blue;
+	int			red;
+	int			green;
+	int			blue;
 }						t_color;
 
 typedef union t_color_int
@@ -169,7 +169,7 @@ typedef struct s_vars
 	t_list				*elements;
 	t_scene				scene;
 	int					fd;
-	t_frame				*framebuffer;
+	t_frame				*frmbuf;
 	double				cursor_xpos;
 	double				cursor_ypos;
 	int					mouse_rotate;
@@ -183,11 +183,11 @@ void					main_hook(void *param);
 void					key_hook(mlx_key_data_t keydata, void *param);
 void					scroll_hook(double xdelta, double ydelta, void *param);
 void					close_hook(void *param);
-// void			cursor_hook(double xpos, double ypos, void *param);
+void					cursor_hook(double xpos, double ypos, void *param);
 void					resize_hook(int width, int height, void *param);
 
 // parsing
-int						read_parameters(int argc, char **argv, t_vars *vars);
+int						read_parameters(char **argv, t_vars *vars);
 int						read_element(t_vars *vars, t_list *element_params);
 int						read_point(const char *str, t_point3 *point);
 int						read_vector(const char *str, t_point3 *point);
@@ -235,7 +235,7 @@ int						check_unique_element(t_vars *vars, int type);
 void					free_scene(t_scene *scene);
 int						is_digits(char *str);
 int						is_float_digit(char *str);
-int						allocate_framebufer(t_vars *vars);
+int						allocate_framebuffer(t_vars *vars);
 void					free_framebuffer(t_vars *vars);
 
 // Debug functions
@@ -251,7 +251,6 @@ void					zoom(t_camera *camera, float scale);
 void					rotate_camera_vert(t_camera *camera, float angle);
 void					rotate_camera_hor(t_camera *camera, float angle);
 void					move_camera_side(t_camera *camera, float distance);
-void					cursor_hook(double xpos, double ypos, void *param);
 
 // raytracing
 t_ray					primary_ray(t_vars *vars, int i, int j);

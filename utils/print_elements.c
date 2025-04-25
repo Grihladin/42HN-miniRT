@@ -6,12 +6,13 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:29:57 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/23 19:16:40 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/24 17:04:19 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 //Forbidden function
+//This file should be deleted
 #include <stdio.h>
 
 static void	print_colors(t_color3 *colors)
@@ -79,12 +80,6 @@ static void	print_cylinder(t_cylinder *element)
 
 static void	print_element(t_element *element)
 {
-	// if (element->type == AMBIENT_LIGHTNING)
-	// 	print_ambient_lightning(element->params);
-	// else if (element->type == CAMERA)
-	// 	print_camera(element->params);
-	// else if (element->type == LIGHT)
-	// 	print_light(element->params);
 	if (element->type == SPHERE)
 		print_sphere(element->params);
 	else if (element->type == PLANE)

@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:56:23 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 13:42:38 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/24 16:38:40 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	out_image(t_vars *vars)
 	int				i;
 	t_color_int		color;
 
-	color.intgr = 0;
 	color.bytes[0] = 0xFF;
 	j = 0;
 	while (j < vars->height)
@@ -27,11 +26,14 @@ void	out_image(t_vars *vars)
 		while (i < vars->width)
 		{
 			color.bytes[3] = (unsigned char)(255.0f * fminf(1.0f,
-						fmaxf(0.0f, vars->framebuffer[j * vars->width + i].color3.x)));
+						fmaxf(0.0f, vars->frmbuf[j * vars->width
+							+ i].color3.x)));
 			color.bytes[2] = (unsigned char)(255.0f * fminf(1.0f,
-						fmaxf(0.0f, vars->framebuffer[j * vars->width + i].color3.y)));
+						fmaxf(0.0f, vars->frmbuf[j * vars->width
+							+ i].color3.y)));
 			color.bytes[1] = (unsigned char)(255.0f * fminf(1.0f,
-						fmaxf(0.0f, vars->framebuffer[j * vars->width + i].color3.z)));
+						fmaxf(0.0f, vars->frmbuf[j * vars->width
+							+ i].color3.z)));
 			mlx_put_pixel(vars->image, i, j, color.intgr);
 			i++;
 		}

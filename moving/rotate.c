@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:59:09 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 09:39:51 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/24 16:51:27 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,4 @@ void	rotate_camera_vert(t_camera *camera, float angle)
 			- right.y * camera->direction.x) * sinf(angle);
 	camera->direction = vec3_normalize(new_forward);
 	vec3_reverse(&(camera->direction));
-	// printf("New camera: x= %f, y= %f, z= %f\n", camera->direction.x,
-	// 	camera->direction.y, camera->direction.z);
 }

@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/23 20:46:44 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/24 16:35:02 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,16 @@ t_ray	primary_ray(t_vars *vars, int i, int j)
 	return (ray);
 }
 
-static bool	solve_equation(t_ray ray, t_sphere *sphere, float *t0, float *t1)
+bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
+		t_point3 *hit_point, t_point3 *hit_normal)
 {
 	t_vec3	oc;
 	float	a;
 	float	b;
 	float	c;
 	float	discriminant;
+	float	t0;
+	float	t1;
 
 	oc = vec3_substract(ray.origin, sphere->center);
 	a = vec3_dot(ray.direction, ray.direction);
@@ -53,21 +56,8 @@ static bool	solve_equation(t_ray ray, t_sphere *sphere, float *t0, float *t1)
 	{
 		return (false);
 	}
-	*t0 = (-b - sqrtf(discriminant)) / (2.0f * a);
-	*t1 = (-b + sqrtf(discriminant)) / (2.0f * a);
-	return (true);
-}
-
-bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
-		t_point3 *hit_point, t_point3 *hit_normal)
-{
-	float	t0;
-	float	t1;
-
-	if (!solve_equation(ray, sphere, &t0, &t1))
-	{
-		return (false);
-	}
+	t0 = (-b - sqrtf(discriminant)) / (2.0f * a);
+	t1 = (-b + sqrtf(discriminant)) / (2.0f * a);
 	if (t0 > EPSILON)
 	{
 		*t = t0;
@@ -85,7 +75,7 @@ bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 	return (true);
 }
 
-static t_color3	calculate_lighting_sphere(t_vars *vars, t_hit_info * t_point3 hit_point,
+static t_color3	calculate_lighting_sphere(t_vars *vars, t_point3 hit_point,
 		t_point3 hit_normal, t_material material, t_ray view_ray)
 {
 	t_color3	color;
@@ -133,7 +123,6 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 	t_point3	hit_point;
 	t_point3	hit_normal;
 	t_material	hit_material;
-	t_hit_info	hit_info;
 	float		t;
 	t_point3	p_hit;
 	t_point3	n_hit;
@@ -150,23 +139,23 @@ void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
 			min_dist = INFINITY;
 			if (intersect_sphere(p_ray, sphere, &t, &p_hit, &n_hit))
 			{
-				if (t > EPSILON && t < vars->framebuffer[j * vars->width
+				if (t > EPSILON && t < vars->frmbuf[j * vars->width
 					+ i].dist)
 				{
-					hit_info.point = p_hit;
+					hit_point = p_hit;
 					hit_material = sphere->material;
 					if (vec3_dot(p_ray.direction, n_hit) > 0)
 					{
-						hit_info.normal = vec3_multiply(n_hit, -1.0f);
+						hit_normal = vec3_multiply(n_hit, -1.0f);
 					}
 					else
 					{
-						hit_info.normal = n_hit;
+						hit_normal = n_hit;
 					}
-					vars->framebuffer[j * vars->width
+					vars->frmbuf[j * vars->width
 						+ i].color3 = calculate_lighting_sphere(vars, hit_point,
 							hit_normal, hit_material, p_ray);
-					vars->framebuffer[j * vars->width + i].dist = t;
+					vars->frmbuf[j * vars->width + i].dist = t;
 				}
 			}
 			i++;

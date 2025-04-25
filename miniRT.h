@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/24 16:56:49 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/25 20:09:13 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@
 
 typedef struct s_color
 {
-	int			red;
-	int			green;
-	int			blue;
+	int					red;
+	int					green;
+	int					blue;
 }						t_color;
 
 typedef union t_color_int
@@ -71,7 +71,7 @@ typedef struct s_point
 	float				x;
 	float				y;
 	float				z;
-}	t_vec3,	t_point3,	t_color3;
+} t_vec3, t_point3, t_color3;
 
 typedef struct s_frame
 {
@@ -175,6 +175,23 @@ typedef struct s_vars
 	int					mouse_rotate;
 }						t_vars;
 
+typedef struct s_lightning_calc
+{
+	t_light				light;
+	t_vec3				light_dir;
+	float				light_distance;
+	float				diffuse_factor;
+	t_vec3				reflection_dir;
+	t_vec3				view_dir;
+	t_ray				view_ray;
+	float				specular_factor;
+	float				attenuation;
+	t_color3			diffuse;
+	t_color3			specular;
+	t_ray				shadow_ray;
+	t_hit_info			hit;
+}						t_lightning_calc;
+
 void					print_error(char *str, int type);
 void					print_str(char *str, int fd);
 void					main_hook(void *param);
@@ -218,6 +235,8 @@ void					vec3_reverse(t_vec3 *vec);
 t_color3				color_multiply(t_color3 a, t_color3 b);
 t_color3				color_scale(t_color3 c, float factor);
 t_color3				color_sum(t_color3 a, t_color3 b);
+t_color3				calculate_lighting(t_vars *vars, t_hit_info hit,
+							t_material material, t_ray view_ray);
 
 // raytracing
 t_ray					primary_ray(t_vars *vars, int i, int j);
@@ -260,7 +279,7 @@ void					raytrace_plane(t_vars *vars, t_plane *plane);
 bool					is_in_shadow(t_ray shadow_ray, t_list *elements,
 							float max_t);
 bool					intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
-							t_point3 *hit_point, t_point3 *hit_normal);
+							t_hit_info *hit);
 bool					intersect_cylinder(t_ray ray, t_cylinder *cylinder,
 							float *t, t_point3 *hit_point,
 							t_point3 *hit_normal);

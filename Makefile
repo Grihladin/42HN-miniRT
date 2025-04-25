@@ -6,7 +6,7 @@
 #    By: mratke <mratke@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/24 17:05:01 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/25 20:10:38 by mratke           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,8 @@ SOURCES=miniRT.c \
 	raytracing/sphere_calculations.c \
 	raytracing/cylinder_calculation.c \
 	raytracing/plane_calculations.c \
-	raytracing/shadow.c
+	raytracing/shadow.c \
+	raytracing/lightning_calculation.c
 
 OBJ_DIR=objects
 

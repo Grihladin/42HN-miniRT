@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/25 20:09:13 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/28 15:53:37 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,7 +284,7 @@ bool					intersect_cylinder(t_ray ray, t_cylinder *cylinder,
 							float *t, t_point3 *hit_point,
 							t_point3 *hit_normal);
 bool					intersect_plane(t_ray ray, t_plane *plane, float *t,
-							t_point3 *hit_point, t_point3 *hit_normal);
+							t_hit_info *hit);
 
 void					before_exit(void *param);
 

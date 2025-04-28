@@ -6,14 +6,13 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/24 16:35:02 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/28 15:55:25 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
-		t_point3 *hit_point, t_point3 *hit_normal)
+bool	intersect_plane(t_ray ray, t_plane *plane, float *t, t_hit_info *hit)
 {
 	t_vec3	p0_l0;
 	float	denom;
@@ -29,62 +28,41 @@ bool	intersect_plane(t_ray ray, t_plane *plane, float *t,
 	{
 		return (false);
 	}
-	*hit_point = vec3_sum(ray.origin, vec3_multiply(ray.direction, *t));
-	*hit_normal = plane->normal_vector;
+	hit->point = vec3_sum(ray.origin, vec3_multiply(ray.direction, *t));
+	hit->normal = plane->normal_vector;
 	return (true);
 }
 
-static t_color3	calculate_lighting_plane(t_vars *vars, t_point3 hit_point,
-		t_point3 hit_normal, t_material material, t_ray view_ray)
+static void	plane_calculations(t_vars *vars, t_plane *plane, int i, int j)
 {
-	t_color3	color;
-	t_light		light;
-	t_vec3		light_dir;
-	float		light_distance;
-	t_ray		shadow_ray;
-	float		diffuse_factor;
-	t_vec3		reflection_dir;
-	t_vec3		view_dir;
-	float		specular_factor;
-	float		attenuation;
-	t_color3	diffuse;
-	t_color3	specular;
+	t_hit_info	hit;
+	t_hit_info	p_hit;
+	t_ray		p_ray;
+	float		t;
 
-	color = color_scale(vars->scene.amb_light->color, 0.1f);
-	light = *(vars->scene.light);
-	light_dir = vec3_substract(light.position, hit_point);
-	light_distance = vec3_length(light_dir);
-	light_dir = vec3_normalize(light_dir);
-	shadow_ray.origin = hit_point;
-	shadow_ray.direction = light_dir;
-	if (!is_in_shadow(shadow_ray, vars->elements, light_distance))
+	p_ray = primary_ray(vars, i, j);
+	if (intersect_plane(p_ray, plane, &t, &p_hit))
 	{
-		diffuse_factor = fmaxf(0.0f, vec3_dot(hit_normal, light_dir));
-		reflection_dir = vec3_substract(vec3_multiply(hit_normal, 2.0f
-					* vec3_dot(hit_normal, light_dir)), light_dir);
-		view_dir = vec3_normalize(vec3_multiply(view_ray.direction, -1.0f));
-		specular_factor = powf(fmaxf(0.0f, vec3_dot(view_dir, reflection_dir)),
-				20.0f);
-		attenuation = light.brightness / (light_distance * light_distance);
-		diffuse = color_scale(color_multiply(light.color, material.color),
-				diffuse_factor * attenuation);
-		specular = color_scale(light.color, specular_factor * attenuation
-				* 0.5f);
-		color = color_sum(color, color_sum(diffuse, specular));
+		if (t > EPSILON && t < vars->frmbuf[j * vars->width + i].dist)
+		{
+			hit.point = p_hit.point;
+			if (vec3_dot(p_ray.direction, p_hit.normal) > 0)
+			{
+				hit.normal = vec3_multiply(p_hit.normal, -1.0f);
+			}
+			else
+			{
+				hit.normal = p_hit.normal;
+			}
+			vars->frmbuf[j * vars->width + i].color3 = calculate_lighting(vars,
+					hit, plane->material, p_ray);
+			vars->frmbuf[j * vars->width + i].dist = t;
+		}
 	}
-	return (color);
 }
 
 void	raytrace_plane(t_vars *vars, t_plane *plane)
 {
-	t_ray		p_ray;
-	float		min_dist;
-	t_point3	hit_point;
-	t_point3	hit_normal;
-	t_material	hit_material;
-	float		t;
-	t_point3	p_hit;
-	t_point3	n_hit;
 	int			i;
 	int			j;
 
@@ -96,29 +74,7 @@ void	raytrace_plane(t_vars *vars, t_plane *plane)
 		i = 0;
 		while (i < vars->width)
 		{
-			p_ray = primary_ray(vars, i, j);
-			min_dist = INFINITY;
-			if (intersect_plane(p_ray, plane, &t, &p_hit, &n_hit))
-			{
-				if (t > EPSILON && t < vars->frmbuf[j * vars->width
-					+ i].dist)
-				{
-					hit_point = p_hit;
-					hit_material = plane->material;
-					if (vec3_dot(p_ray.direction, n_hit) > 0)
-					{
-						hit_normal = vec3_multiply(n_hit, -1.0f);
-					}
-					else
-					{
-						hit_normal = n_hit;
-					}
-					vars->frmbuf[j * vars->width
-						+ i].color3 = calculate_lighting_plane(vars, hit_point,
-							hit_normal, hit_material, p_ray);
-					vars->frmbuf[j * vars->width + i].dist = t;
-				}
-			}
+			plane_calculations(vars, plane, i, j);
 			i++;
 		}
 		j++;

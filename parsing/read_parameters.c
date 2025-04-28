@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_parameters.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:29:23 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/24 16:54:31 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/28 20:54:35 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,5 @@ int	read_parameters(char **argv, t_vars *vars)
 		nextstr = get_next_line(vars->fd);
 	}
 	close(vars->fd);
-	// print_scene(&(vars->scene));
-	// print_elements(vars->elements);
 	return (0);
 }

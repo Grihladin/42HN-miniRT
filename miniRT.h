@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/28 15:53:37 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/28 20:52:02 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,17 @@ typedef struct s_element
 	void				*params;
 }						t_element;
 
+typedef struct s_params
+{
+	float				a;
+	float				b;
+	float				c;
+	t_vec3				oc;
+	t_vec3				ray_dir_prep;
+	t_vec3				oc_prep;
+	float				discriminant;
+}						t_params;
+
 typedef struct s_vars
 {
 	mlx_t				*wind;
@@ -240,9 +251,6 @@ t_color3				calculate_lighting(t_vars *vars, t_hit_info hit,
 
 // raytracing
 t_ray					primary_ray(t_vars *vars, int i, int j);
-void					raytrace_plane(t_vars *vars, t_plane *plane);
-void					raytrace_sphere(t_vars *vars, t_sphere *sphere);
-void					raytrace_cylinder(t_vars *vars, t_cylinder *cylinder);
 
 // utils
 int						arr_size(char **arr);
@@ -272,17 +280,25 @@ void					rotate_camera_hor(t_camera *camera, float angle);
 void					move_camera_side(t_camera *camera, float distance);
 
 // raytracing
+bool					is_in_bounds(t_cylinder *cylinder, t_point3 hit_point);
 t_ray					primary_ray(t_vars *vars, int i, int j);
-void					raytrace_cylinder(t_vars *vars, t_cylinder *cylinder);
-void					raytrace_sphere(t_vars *vars, t_sphere *sphere);
-void					raytrace_plane(t_vars *vars, t_plane *plane);
+void					plane_calculation(t_vars *vars, t_plane *plane, int i,
+							int j);
+void					sphere_calculation(t_vars *vars, t_sphere *sphere,
+							int i, int j);
+void					cylinder_calculation(t_vars *vars, t_cylinder *cylinder,
+							int i, int j);
+
 bool					is_in_shadow(t_ray shadow_ray, t_list *elements,
 							float max_t);
 bool					intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
 							t_hit_info *hit);
 bool					intersect_cylinder(t_ray ray, t_cylinder *cylinder,
-							float *t, t_point3 *hit_point,
-							t_point3 *hit_normal);
+							float *t, t_hit_info *hit);
+t_hit_info				intersect_cylinder_body(t_ray ray,
+							t_cylinder *cylinder);
+t_hit_info				intersect_cylinder_cap(t_ray ray, t_cylinder *cylinder,
+							bool is_top_cap);
 bool					intersect_plane(t_ray ray, t_plane *plane, float *t,
 							t_hit_info *hit);
 

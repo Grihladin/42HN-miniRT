@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_elements.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:02:25 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/24 16:57:44 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/28 20:54:18 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,6 @@ int	read_vector(const char *str, t_point3 *point)
 	{
 		return (print_error(NULL, ERR_VAL_NOT_IN_RANGE), 1);
 	}
-	// Check normalization of vector???
-	// if (vec3_length(*point) != 1)
-	// 	return (print_error(NULL, ERR_VEC_NOT_NORM), 1);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 #    By: mratke <mratke@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/25 20:10:38 by mratke           ###   ########.fr        #
+#    Updated: 2025/04/28 20:12:50 by mratke           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,11 +45,14 @@ SOURCES=miniRT.c \
 	vector_operations/vector_operations1.c \
 	vector_operations/vector_operations2.c \
 	vector_operations/vector_operations3.c \
-	raytracing/sphere_calculations.c \
-	raytracing/cylinder_calculation.c \
-	raytracing/plane_calculations.c \
+	raytracing/sphere.c \
+	raytracing/cylinder.c \
+	raytracing/plane.c \
 	raytracing/shadow.c \
-	raytracing/lightning_calculation.c
+	raytracing/lightning.c \
+	raytracing/cylinder_body.c \
+	raytracing/cylinder_cap.c
+	
 
 OBJ_DIR=objects
 

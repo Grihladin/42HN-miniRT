@@ -1,38 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere_calculations.c                              :+:      :+:    :+:   */
+/*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/25 20:12:55 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/28 20:52:28 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-t_ray	primary_ray(t_vars *vars, int i, int j)
+static t_ray	calculate_ray(t_vars *vars, float pixel_x, float pixel_y)
 {
 	t_ray	ray;
 	t_vec3	forward;
 	t_vec3	right;
 	t_vec3	up;
-	float	fov_scale;
-	float	pixel_x;
-	float	pixel_y;
 
 	forward = vec3_normalize(vars->scene.camera->direction);
 	right = vec3_normalize(vec3_cross(forward, vars->scene.camera->up));
 	up = vec3_cross(right, forward);
-	fov_scale = tanf(vars->scene.camera->field_of_view * 0.5f * M_PI / 180.0f);
-	pixel_x = (2.0f * ((i + 0.5f) / vars->width) - 1.0f) * fov_scale
-		* vars->aspect_ratio;
-	pixel_y = (1.0f - 2.0f * ((j + 0.5f) / vars->height)) * fov_scale;
 	ray.origin = vars->scene.camera->position;
 	ray.direction = vec3_normalize(vec3_sum(forward,
 				vec3_sum(vec3_multiply(right, pixel_x), vec3_multiply(up,
 						pixel_y))));
+	return (ray);
+}
+
+t_ray	primary_ray(t_vars *vars, int i, int j)
+{
+	float	pixel_x;
+	float	pixel_y;
+	float	fov_scale;
+	t_ray	ray;
+
+	fov_scale = tanf(vars->scene.camera->field_of_view * 0.5f * M_PI / 180.0f);
+	pixel_x = (2.0f * ((i + 0.5f) / vars->width) - 1.0f) * fov_scale
+		* vars->aspect_ratio;
+	pixel_y = (1.0f - 2.0f * ((j + 0.5f) / vars->height)) * fov_scale;
+	ray = calculate_ray(vars, pixel_x, pixel_y);
 	return (ray);
 }
 
@@ -109,24 +117,5 @@ void	sphere_calculation(t_vars *vars, t_sphere *sphere, int i, int j)
 					hit, sphere->material, p_ray);
 			vars->frmbuf[j * vars->width + i].dist = t;
 		}
-	}
-}
-
-void	raytrace_sphere(t_vars *vars, t_sphere *sphere)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	while (j < vars->height)
-	{
-		i = 0;
-		while (i < vars->width)
-		{
-			sphere_calculation(vars, sphere, i, j);
-			// here if statements and second param is just element
-			i++;
-		}
-		j++;
 	}
 }

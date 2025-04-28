@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/28 15:55:25 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/28 19:59:29 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ bool	intersect_plane(t_ray ray, t_plane *plane, float *t, t_hit_info *hit)
 	return (true);
 }
 
-static void	plane_calculations(t_vars *vars, t_plane *plane, int i, int j)
+void	plane_calculation(t_vars *vars, t_plane *plane, int i, int j)
 {
 	t_hit_info	hit;
 	t_hit_info	p_hit;
@@ -58,25 +58,5 @@ static void	plane_calculations(t_vars *vars, t_plane *plane, int i, int j)
 					hit, plane->material, p_ray);
 			vars->frmbuf[j * vars->width + i].dist = t;
 		}
-	}
-}
-
-void	raytrace_plane(t_vars *vars, t_plane *plane)
-{
-	int			i;
-	int			j;
-
-	plane->normal_vector = vec3_normalize(plane->normal_vector);
-	i = 0;
-	j = 0;
-	while (j < vars->height)
-	{
-		i = 0;
-		while (i < vars->width)
-		{
-			plane_calculations(vars, plane, i, j);
-			i++;
-		}
-		j++;
 	}
 }

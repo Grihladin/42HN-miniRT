@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   plane_calculations.c                               :+:      :+:    :+:   */
+/*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/28 19:59:29 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/28 21:02:41 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool	intersect_plane(t_ray ray, t_plane *plane, float *t, t_hit_info *hit)
 	float	denom;
 
 	denom = vec3_dot(plane->normal_vector, ray.direction);
-	if (denom > EPSILON)
+	if (fabs(denom) > EPSILON)
 	{
 		return (false);
 	}

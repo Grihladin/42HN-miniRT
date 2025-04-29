@@ -6,7 +6,7 @@
 #    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/29 19:21:41 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/29 19:30:32 by psenko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBMLX=MLX42/build/libmlx42.a
 HEADER=miniRT.h
 GETNEXTLINE=get_next_line/get_next_line.a
 LIBFT=libft/libft.a
-CFLAGS=-g -fsanitize=address -Wall -Wextra -Werror -Ofast -ffast-math -flto -march=native
+CFLAGS=-Wall -Wextra -Werror -Ofast -ffast-math -flto -march=native
 # -g -fsanitize=address
 LIBS=-ldl -lglfw -pthread -lm $(LIBFT) $(GETNEXTLINE) MLX42/build/libmlx42.a
 # CFLAGS_TEST=-Wall -Wextra -Werror -g -fsanitize=address

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_operations2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:16:19 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/24 13:36:13 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/29 19:23:34 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
 			- a.y * b.x));
 }
 
-t_vec3	vec3_normalize(t_vec3 v)
+t_vec3	vec3_norm(t_vec3 v)
 {
 	float	length;
 

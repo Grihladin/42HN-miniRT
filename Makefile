@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mratke <mratke@student.42.fr>              +#+  +:+       +#+         #
+#    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/28 20:12:50 by mratke           ###   ########.fr        #
+#    Updated: 2025/04/29 19:21:41 by psenko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,6 @@ SOURCES=miniRT.c \
 	utils/rt_split.c \
 	utils/ft_atof.c \
 	utils/frees.c \
-	utils/print_elements.c \
 	utils/check_unique_element.c \
 	utils/framebuffer.c \
 	parsing/read_parameters.c \
@@ -52,7 +51,7 @@ SOURCES=miniRT.c \
 	raytracing/lightning.c \
 	raytracing/cylinder_body.c \
 	raytracing/cylinder_cap.c
-	
+
 
 OBJ_DIR=objects
 

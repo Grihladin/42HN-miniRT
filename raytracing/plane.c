@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:18:37 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/29 17:16:14 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/29 19:26:25 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	intersect_plane(t_ray ray, t_plane *plane, float *t, t_hit_info *hit)
 	t_vec3	p0_l0;
 	float	denom;
 
-	denom = vec3_dot(plane->normal_vector, ray.direction);
+	denom = vec3_dot(plane->normal_vector, ray.dir);
 	if (fabs(denom) < EPSILON)
 	{
 		return (false);
@@ -28,7 +28,7 @@ bool	intersect_plane(t_ray ray, t_plane *plane, float *t, t_hit_info *hit)
 	{
 		return (false);
 	}
-	hit->point = vec3_sum(ray.origin, vec3_multiply(ray.direction, *t));
+	hit->point = vec3_sum(ray.origin, vec3_multiply(ray.dir, *t));
 	hit->normal = plane->normal_vector;
 	return (true);
 }
@@ -46,7 +46,7 @@ void	plane_calculation(t_vars *vars, t_plane *plane, int i, int j)
 		if (t > EPSILON && t < vars->frmbuf[j * vars->width + i].dist)
 		{
 			hit.point = p_hit.point;
-			if (vec3_dot(p_ray.direction, p_hit.normal) > 0)
+			if (vec3_dot(p_ray.dir, p_hit.normal) > 0)
 			{
 				hit.normal = vec3_multiply(p_hit.normal, -1.0f);
 			}

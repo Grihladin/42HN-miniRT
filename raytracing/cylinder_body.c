@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_body.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 20:05:59 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/28 20:51:27 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/29 19:26:25 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static bool	cylinder_equation(t_ray ray, t_cylinder *cylinder, float *t0,
 	axis = cylinder->norm_vec_axis_cyl;
 	radius = cylinder->diameter / 2.0f;
 	p.oc = vec3_substract(ray.origin, cylinder->coord_center);
-	ray_dir_prep = vec3_substract(ray.direction, vec3_multiply(axis,
-				vec3_dot(ray.direction, axis)));
+	ray_dir_prep = vec3_substract(ray.dir, vec3_multiply(axis,
+				vec3_dot(ray.dir, axis)));
 	oc_prep = vec3_substract(p.oc, vec3_multiply(axis, vec3_dot(p.oc, axis)));
 	p.a = vec3_dot(ray_dir_prep, ray_dir_prep);
 	p.b = 2.0f * vec3_dot(oc_prep, ray_dir_prep);
@@ -68,13 +68,13 @@ static float	calculate_body_distance(t_cylinder *cylinder, t_ray ray,
 	hit1_valid = false;
 	if (t0 > 0.001f)
 	{
-		p0 = vec3_sum(ray.origin, vec3_multiply(ray.direction, t0));
+		p0 = vec3_sum(ray.origin, vec3_multiply(ray.dir, t0));
 		if (is_in_bounds(cylinder, p0))
 			hit0_valid = true;
 	}
 	if (t1 > 0.001f)
 	{
-		p1 = vec3_sum(ray.origin, vec3_multiply(ray.direction, t1));
+		p1 = vec3_sum(ray.origin, vec3_multiply(ray.dir, t1));
 		if (is_in_bounds(cylinder, p1))
 			hit1_valid = true;
 	}
@@ -91,12 +91,12 @@ static t_hit_info	calculate_body_vector(t_hit_info hit_info, float t_body,
 
 	hit_info.hit = true;
 	hit_info.t = t_body;
-	hit_info.point = vec3_sum(ray.origin, vec3_multiply(ray.direction, t_body));
+	hit_info.point = vec3_sum(ray.origin, vec3_multiply(ray.dir, t_body));
 	vec_to_hit = vec3_substract(hit_info.point, cylinder->coord_center);
 	projection = vec3_dot(vec_to_hit, cylinder->norm_vec_axis_cyl);
 	axis_point = vec3_sum(cylinder->coord_center,
 			vec3_multiply(cylinder->norm_vec_axis_cyl, projection));
-	hit_info.normal = vec3_normalize(vec3_substract(hit_info.point,
+	hit_info.normal = vec3_norm(vec3_substract(hit_info.point,
 				axis_point));
 	return (hit_info);
 }

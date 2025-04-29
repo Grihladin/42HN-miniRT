@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder_calculation.c                             :+:      :+:    :+:   */
+/*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 21:13:52 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/28 20:08:15 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/29 19:26:25 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ void	cylinder_calculation(t_vars *vars, t_cylinder *cylinder, int i, int j)
 	t_hit_info	p;
 	t_hit_info	hit;
 
-	cylinder->norm_vec_axis_cyl = vec3_normalize(cylinder->norm_vec_axis_cyl);
+	cylinder->norm_vec_axis_cyl = vec3_norm(cylinder->norm_vec_axis_cyl);
 	p_ray = primary_ray(vars, i, j);
 	if (intersect_cylinder(p_ray, cylinder, &t, &p))
 	{
 		if (t > EPSILON && t < vars->frmbuf[j * vars->width + i].dist)
 		{
 			hit.point = p.point;
-			if (vec3_dot(p_ray.direction, p.normal) > 0)
+			if (vec3_dot(p_ray.dir, p.normal) > 0)
 			{
 				hit.normal = vec3_multiply(p.normal, -1.0f);
 			}

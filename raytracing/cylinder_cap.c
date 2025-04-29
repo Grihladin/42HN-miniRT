@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder_cap_calculation.c                         :+:      :+:    :+:   */
+/*   cylinder_cap.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 20:02:51 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/28 20:04:44 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/29 19:26:25 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static bool	intersect_plane_cyl(t_ray ray, t_point3 plane_point,
 {
 	float	denom;
 
-	denom = vec3_dot(ray.direction, plane_normal);
+	denom = vec3_dot(ray.dir, plane_normal);
 	if (fabsf(denom) < 0.001f)
 	{
 		return (false);
@@ -45,7 +45,7 @@ static t_hit_info	calculate_cap_vector(t_ray ray, t_cylinder *cylinder,
 	radius = cylinder->diameter / 2.0f;
 	if (intersect_plane_cyl(ray, cap_center, cap_normal, &t_cap))
 	{
-		hit_point_cap = vec3_sum(ray.origin, vec3_multiply(ray.direction,
+		hit_point_cap = vec3_sum(ray.origin, vec3_multiply(ray.dir,
 					t_cap));
 		vec_to_hit = vec3_substract(hit_point_cap, cap_center);
 		if (vec3_dot(vec_to_hit, vec_to_hit) <= radius * radius)

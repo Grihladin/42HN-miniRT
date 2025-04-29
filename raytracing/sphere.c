@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/29 17:45:20 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/29 19:26:25 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static t_ray	calculate_ray(t_vars *vars, float pixel_x, float pixel_y,
 	t_vec3	up;
 	t_vec3	temp_up;
 
-	forward = vec3_normalize(vars->scene.camera->direction);
-	initial_up = vec3_normalize(vars->scene.camera->up);
+	forward = vec3_norm(vars->scene.camera->direction);
+	initial_up = vec3_norm(vars->scene.camera->up);
 	if (fabs(vec3_dot(forward, initial_up)) > 0.999f)
 	{
 		if (fabs(forward.z) > 0.999f)
@@ -33,10 +33,10 @@ static t_ray	calculate_ray(t_vars *vars, float pixel_x, float pixel_y,
 	}
 	else
 		temp_up = initial_up;
-	right = vec3_normalize(vec3_cross(forward, temp_up));
+	right = vec3_norm(vec3_cross(forward, temp_up));
 	up = vec3_cross(right, forward);
 	ray.origin = vars->scene.camera->position;
-	ray.direction = vec3_normalize(vec3_sum(forward,
+	ray.dir = vec3_norm(vec3_sum(forward,
 				vec3_sum(vec3_multiply(right, pixel_x), vec3_multiply(up,
 						pixel_y))));
 	return (ray);
@@ -93,15 +93,15 @@ bool	intersect_sphere(t_ray ray, t_sphere *sphere, float *t, t_hit_info *hit)
 	float	c;
 
 	oc = vec3_substract(ray.origin, sphere->center);
-	a = vec3_dot(ray.direction, ray.direction);
-	b = 2.0f * vec3_dot(oc, ray.direction);
+	a = vec3_dot(ray.dir, ray.dir);
+	b = 2.0f * vec3_dot(oc, ray.dir);
 	c = vec3_dot(oc, oc) - sphere->radius * sphere->radius;
 	if (!sphere_equation(a, b, c, t))
 	{
 		return (false);
 	}
-	hit->point = vec3_sum(ray.origin, vec3_multiply(ray.direction, *t));
-	hit->normal = vec3_normalize(vec3_substract(hit->point, sphere->center));
+	hit->point = vec3_sum(ray.origin, vec3_multiply(ray.dir, *t));
+	hit->normal = vec3_norm(vec3_substract(hit->point, sphere->center));
 	return (true);
 }
 
@@ -118,7 +118,7 @@ void	sphere_calculation(t_vars *vars, t_sphere *sphere, int i, int j)
 		if (t > EPSILON && t < vars->frmbuf[j * vars->width + i].dist)
 		{
 			hit.point = p.point;
-			if (vec3_dot(p_ray.direction, p.normal) > 0)
+			if (vec3_dot(p_ray.dir, p.normal) > 0)
 			{
 				hit.normal = vec3_multiply(p.normal, -1.0f);
 			}

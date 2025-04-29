@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/29 18:49:49 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/29 19:26:25 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_material
 typedef struct s_ray
 {
 	t_point3			origin;
-	t_vec3				direction;
+	t_vec3				dir;
 }						t_ray;
 
 typedef struct s_hit_info
@@ -236,7 +236,7 @@ t_vec3					vec3_substract(t_vec3 a, t_vec3 b);
 t_vec3					vec3_multiply(t_vec3 v, float scalar);
 t_vec3					vec3_divide(t_vec3 v, float scalar);
 t_vec3					vec3_cross(t_vec3 a, t_vec3 b);
-t_vec3					vec3_normalize(t_vec3 v);
+t_vec3					vec3_norm(t_vec3 v);
 float					vec3_dot(t_vec3 a, t_vec3 b);
 float					vec3_length(t_vec3 v);
 float					calculate_distance(t_vec3 a, t_vec3 b);
@@ -264,10 +264,6 @@ int						is_digits(char *str);
 int						is_float_digit(char *str);
 int						allocate_framebuffer(t_vars *vars);
 void					free_framebuffer(t_vars *vars);
-
-// Debug functions
-void					print_elements(t_list *elements);
-void					print_scene(t_scene *scene);
 
 // Drawing
 int						redraw_image(t_vars *vars);

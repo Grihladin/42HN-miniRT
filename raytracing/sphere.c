@@ -6,21 +6,34 @@
 /*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:23:12 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/28 20:52:28 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/29 17:45:20 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-static t_ray	calculate_ray(t_vars *vars, float pixel_x, float pixel_y)
+// GImbal lock solved
+static t_ray	calculate_ray(t_vars *vars, float pixel_x, float pixel_y,
+		t_vec3 initial_up)
 {
 	t_ray	ray;
 	t_vec3	forward;
 	t_vec3	right;
 	t_vec3	up;
+	t_vec3	temp_up;
 
 	forward = vec3_normalize(vars->scene.camera->direction);
-	right = vec3_normalize(vec3_cross(forward, vars->scene.camera->up));
+	initial_up = vec3_normalize(vars->scene.camera->up);
+	if (fabs(vec3_dot(forward, initial_up)) > 0.999f)
+	{
+		if (fabs(forward.z) > 0.999f)
+			temp_up = vec3_create(0.0f, 1.0f, 0.0f);
+		else
+			temp_up = vec3_create(0.0f, 0.0f, 1.0f);
+	}
+	else
+		temp_up = initial_up;
+	right = vec3_normalize(vec3_cross(forward, temp_up));
 	up = vec3_cross(right, forward);
 	ray.origin = vars->scene.camera->position;
 	ray.direction = vec3_normalize(vec3_sum(forward,
@@ -40,7 +53,7 @@ t_ray	primary_ray(t_vars *vars, int i, int j)
 	pixel_x = (2.0f * ((i + 0.5f) / vars->width) - 1.0f) * fov_scale
 		* vars->aspect_ratio;
 	pixel_y = (1.0f - 2.0f * ((j + 0.5f) / vars->height)) * fov_scale;
-	ray = calculate_ray(vars, pixel_x, pixel_y);
+	ray = calculate_ray(vars, pixel_x, pixel_y, vars->scene.camera->up);
 	return (ray);
 }
 

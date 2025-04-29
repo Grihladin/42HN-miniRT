@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/28 20:52:02 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/29 18:49:49 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_point
 	float				x;
 	float				y;
 	float				z;
-} t_vec3, t_point3, t_color3;
+} t_vec3, t_point3,	t_color3;
 
 typedef struct s_frame
 {

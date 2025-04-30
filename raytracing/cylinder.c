@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 21:13:52 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/29 19:26:25 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/30 13:50:17 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	cylinder_calculation(t_vars *vars, t_cylinder *cylinder, int i, int j)
 	t_hit_info	p;
 	t_hit_info	hit;
 
-	cylinder->norm_vec_axis_cyl = vec3_norm(cylinder->norm_vec_axis_cyl);
 	p_ray = primary_ray(vars, i, j);
 	if (intersect_cylinder(p_ray, cylinder, &t, &p))
 	{

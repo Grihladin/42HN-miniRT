@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/30 14:14:13 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/30 15:18:32 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,7 @@ int						check_unique_element(t_vars *vars, int type);
 void					free_scene(t_scene *scene);
 int						is_digits(char *str);
 int						is_float_digit(char *str);
+int						is_pos_float_digit(char *str);
 int						allocate_framebuffer(t_vars *vars);
 void					free_framebuffer(t_vars *vars);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mratke <mratke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:37:35 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/28 20:15:31 by mratke           ###   ########.fr       */
+/*   Updated: 2025/04/30 15:18:44 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,24 @@ int	is_float_digit(char *str)
 
 	if (*str == '-')
 		str++;
+	dot = 0;
+	while (*str != '\0')
+	{
+		if ((*str == '.') && !dot)
+			dot = 1;
+		else if ((*str == '.') && dot)
+			return (0);
+		else if ((*str < '0') || (*str > '9'))
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+int	is_pos_float_digit(char *str)
+{
+	int	dot;
+
 	dot = 0;
 	while (*str != '\0')
 	{

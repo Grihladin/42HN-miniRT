@@ -6,7 +6,7 @@
 #    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/30 10:23:53 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/30 15:13:01 by psenko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SOURCES=miniRT.c \
 	parsing/read_elements1.c \
 	parsing/read_elements2.c \
 	parsing/add_element.c \
+	parsing/read_sphere.c \
 	drawing/redraw.c \
 	moving/zoom.c \
 	moving/rotate.c \

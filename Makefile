@@ -6,7 +6,7 @@
 #    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/29 19:30:32 by psenko           ###   ########.fr        #
+#    Updated: 2025/04/30 10:23:53 by psenko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ GETNEXTLINE=get_next_line/get_next_line.a
 LIBFT=libft/libft.a
 CFLAGS=-Wall -Wextra -Werror -Ofast -ffast-math -flto -march=native
 # -g -fsanitize=address
-LIBS=-ldl -lglfw -pthread -lm $(LIBFT) $(GETNEXTLINE) MLX42/build/libmlx42.a
+LIBS=$(LIBFT) $(GETNEXTLINE) MLX42/build/libmlx42.a -ldl -lglfw -pthread -lm
 # CFLAGS_TEST=-Wall -Wextra -Werror -g -fsanitize=address
 
 SOURCES=miniRT.c \
@@ -73,7 +73,7 @@ fclean: clean
 re:	fclean all
 
 $(NAME): $(LIBFT) $(GETNEXTLINE) $(LIBMLX) $(OBJECTS) $(HEADER)
-	$(CC) $(CFLAGS) $(LIBS) $(OBJECTS) -o $(NAME)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJECTS) $(LIBS)
 
 $(LIBFT):
 	make -C libft

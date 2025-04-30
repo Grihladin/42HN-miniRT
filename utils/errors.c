@@ -6,16 +6,17 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:08:32 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 15:32:02 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/30 10:13:52 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-void	print_str(char *str, int fd)
+int	print_str(char *str, int fd)
 {
 	if (str != NULL)
-		write(fd, str, ft_strlen(str));
+		return (write(fd, str, ft_strlen(str)));
+	return (0);
 }
 
 static void	print_error1(int type)

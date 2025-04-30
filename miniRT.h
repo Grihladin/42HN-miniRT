@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/29 19:26:25 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/30 10:13:51 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ typedef struct s_lightning_calc
 }						t_lightning_calc;
 
 void					print_error(char *str, int type);
-void					print_str(char *str, int fd);
+int						print_str(char *str, int fd);
 void					main_hook(void *param);
 
 // hooks

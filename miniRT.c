@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/24 16:56:54 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/30 10:31:49 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	init_vars(struct s_vars *vars)
 	vars->width = DEFAULT_WIDTH;
 	vars->height = DEFAULT_HEIGHT;
 	vars->need_redraw = 1;
+	vars->time_to_redraw = 0;
 	vars->elements = NULL;
 	vars->fd = -1;
 	vars->scene.amb_light = NULL;

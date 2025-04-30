@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:11:22 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/22 09:58:14 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/30 10:05:46 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,15 @@ void	scroll_hook(double xdelta, double ydelta, void *param)
 	t_vars		*vars;
 
 	vars = param;
-	xdelta = 0;
 	mlx_get_mouse_pos(vars->wind, &x, &y);
 	if (ydelta > 0)
 		zoom(vars->scene.camera, 3.0f);
 	else if (ydelta < 0)
 		zoom(vars->scene.camera, -3.0f);
+	if (xdelta > 0)
+		move_camera_side(vars->scene.camera, MOVE_DISTANCE);
+	else if (xdelta < 0)
+		move_camera_side(vars->scene.camera, -MOVE_DISTANCE);
 	vars->need_redraw = 1;
 }
 

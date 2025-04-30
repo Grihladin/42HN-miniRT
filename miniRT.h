@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/30 10:13:51 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/30 14:14:13 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,7 @@ float					vec3_dot(t_vec3 a, t_vec3 b);
 float					vec3_length(t_vec3 v);
 float					calculate_distance(t_vec3 a, t_vec3 b);
 void					vec3_reverse(t_vec3 *vec);
+bool					vec3_is_norm(t_vec3 *vec);
 
 // colors
 t_color3				color_multiply(t_color3 a, t_color3 b);

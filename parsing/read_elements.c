@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:02:25 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/30 13:47:37 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/30 14:16:22 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int	read_vector(const char *str, t_point3 *point)
 	{
 		return (print_error(NULL, ERR_VAL_NOT_IN_RANGE), 1);
 	}
+	if (!vec3_is_norm(point))
+		ft_printf("Vector is not normilized. Normilize...\n");
 	*point = vec3_norm(*point);
 	return (0);
 }

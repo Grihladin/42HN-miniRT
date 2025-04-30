@@ -6,7 +6,7 @@
 /*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:33 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/30 10:31:49 by psenko           ###   ########.fr       */
+/*   Updated: 2025/04/30 14:47:37 by psenko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,8 @@ void	before_exit(void *param)
 	}
 }
 
-static int	preparations(int argc, char **argv, struct s_vars *vars)
+int	prepare_mlx(t_vars *vars)
 {
-	if (init_vars(vars))
-		return (1);
-	if (argc > 1)
-	{
-		if (read_parameters(argv, vars) == 1)
-			return (1);
-	}
-	else
-		return (print_error(NULL, ERR_GEN), 1);
 	vars->wind = mlx_init(vars->width, vars->height, WINDOW_TITLE, 1);
 	if (vars->wind == NULL)
 		return (print_error(NULL, ERR_CRT_WNDW), 1);
@@ -81,6 +72,25 @@ static int	preparations(int argc, char **argv, struct s_vars *vars)
 	mlx_resize_hook(vars->wind, resize_hook, vars);
 	mlx_cursor_hook(vars->wind, cursor_hook, vars);
 	mlx_close_hook(vars->wind, close_hook, vars);
+	return (0);
+}
+
+static int	preparations(int argc, char **argv, t_vars *vars)
+{
+	if (init_vars(vars))
+		return (1);
+	if (argc > 1)
+	{
+		if (read_parameters(argv, vars) == 1)
+			return (1);
+		if ((vars->scene.amb_light == NULL) || (vars->scene.camera == NULL)
+			|| (vars->scene.light == NULL))
+			return (print_error(NULL, ERR_WRNG_EL), 1);
+	}
+	else
+		return (print_error(NULL, ERR_GEN), 1);
+	if (prepare_mlx(vars))
+		return (print_error(NULL, ERR_GEN), 1);
 	return (0);
 }
 

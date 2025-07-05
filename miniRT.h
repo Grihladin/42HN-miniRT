@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:07:24 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/30 15:18:32 by psenko           ###   ########.fr       */
+/*   Updated: 2025/07/06 01:03:44 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,14 @@ typedef struct s_params
 	float				discriminant;
 }						t_params;
 
+typedef struct s_camera_cache
+{
+	t_vec3				forward;
+	t_vec3				right;
+	t_vec3				up;
+	float				fov_scale;
+}						t_camera_cache;
+
 typedef struct s_vars
 {
 	mlx_t				*wind;
@@ -184,6 +192,7 @@ typedef struct s_vars
 	double				cursor_xpos;
 	double				cursor_ypos;
 	int					mouse_rotate;
+	t_camera_cache		cam_cache;
 }						t_vars;
 
 typedef struct s_lightning_calc
@@ -252,6 +261,7 @@ t_color3				calculate_lighting(t_vars *vars, t_hit_info hit,
 
 // raytracing
 t_ray					primary_ray(t_vars *vars, int i, int j);
+void					invalidate_camera_cache(t_vars *vars);
 
 // utils
 int						arr_size(char **arr);
@@ -273,23 +283,17 @@ void					out_image(t_vars *vars);
 
 // Moving
 void					zoom(t_camera *camera, float scale);
-void					rotate_camera_vert(t_camera *camera, float angle);
-void					rotate_camera_hor(t_camera *camera, float angle);
-void					move_camera_side(t_camera *camera, float distance);
+void					rotate_camera_vert(t_vars *vars, float angle);
+void					rotate_camera_hor(t_vars *vars, float angle);
+void					move_camera_side(t_vars *vars, float distance);
 
-// raytracing
+// object intersections
 bool					is_in_bounds(t_cylinder *cylinder, t_point3 hit_point);
-t_ray					primary_ray(t_vars *vars, int i, int j);
-void					plane_calculation(t_vars *vars, t_plane *plane, int i,
-							int j);
-void					sphere_calculation(t_vars *vars, t_sphere *sphere,
-							int i, int j);
-void					cylinder_calculation(t_vars *vars, t_cylinder *cylinder,
-							int i, int j);
-
 bool					is_in_shadow(t_ray shadow_ray, t_list *elements,
 							float max_t);
 bool					intersect_sphere(t_ray ray, t_sphere *sphere, float *t,
+							t_hit_info *hit);
+bool					intersect_plane(t_ray ray, t_plane *plane, float *t,
 							t_hit_info *hit);
 bool					intersect_cylinder(t_ray ray, t_cylinder *cylinder,
 							float *t, t_hit_info *hit);

@@ -3,11 +3,26 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+         #
+#    By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/04/30 15:13:01 by psenko           ###   ########.fr        #
+#    Updated: 2025/07/06 01:03:44 by mratke           ###   ########.fr        #
 #                                                                              #
+# **************************************************************************** #
+#
+# 🚀 miniRT - High Performance Ray Tracer
+# 
+# Quick Start:
+#   make        - Automatically install dependencies and build
+#
+# This Makefile automatically handles:
+#   ✅ Dependency checking and installation
+#   ✅ GLFW library detection and linking
+#   ✅ Optimized compilation flags for performance
+#   ✅ MLX42 submodule management
+#
+# Requirements: Homebrew (https://brew.sh)
+#
 # **************************************************************************** #
 
 CC=cc
@@ -16,7 +31,10 @@ LIBMLX=MLX42/build/libmlx42.a
 HEADER=miniRT.h
 GETNEXTLINE=get_next_line/get_next_line.a
 LIBFT=libft/libft.a
+GLFW_PATH = $(shell brew --prefix glfw)
 CFLAGS=-Wall -Wextra -Werror -Ofast -ffast-math -flto -march=native
+CFLAGS += -I$(GLFW_PATH)/include
+LDFLAGS += -L$(GLFW_PATH)/lib -lglfw
 # -g -fsanitize=address
 LIBS=$(LIBFT) $(GETNEXTLINE) MLX42/build/libmlx42.a -ldl -lglfw -pthread -lm
 # CFLAGS_TEST=-Wall -Wextra -Werror -g -fsanitize=address
@@ -59,7 +77,31 @@ OBJ_DIR=objects
 # Prepend the object directory path to each object file, maintaining structure
 OBJECTS=$(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
-all: $(NAME)
+# Check if Homebrew is installed
+BREW_EXISTS := $(shell command -v brew 2> /dev/null)
+GLFW_EXISTS := $(shell brew list glfw 2> /dev/null)
+CMAKE_EXISTS := $(shell brew list cmake 2> /dev/null)
+
+all: check-and-install-deps $(NAME)
+
+# Check and install dependencies automatically
+check-and-install-deps:
+	@echo "🔍 Checking dependencies..."
+ifndef BREW_EXISTS
+	@echo "❌ Error: Homebrew not found!"
+	@echo "📋 Please install Homebrew first: https://brew.sh"
+	@echo "💡 Run: /bin/bash -c \"\$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+	@exit 1
+endif
+ifndef GLFW_EXISTS
+	@echo "📦 Installing GLFW..."
+	@brew install glfw
+endif
+ifndef CMAKE_EXISTS
+	@echo "📦 Installing CMake..."
+	@brew install cmake
+endif
+	@echo "✅ All dependencies ready!"
 
 clean:
 	rm -rf $(OBJ_DIR)
@@ -74,7 +116,7 @@ fclean: clean
 re:	fclean all
 
 $(NAME): $(LIBFT) $(GETNEXTLINE) $(LIBMLX) $(OBJECTS) $(HEADER)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJECTS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJECTS) $(LIBS)
 
 $(LIBFT):
 	make -C libft
@@ -93,4 +135,4 @@ $(OBJ_DIR)/%.o: %.c $(HEADER)
 	@mkdir -p $(dir $@)
 	$(CC) -c $(CFLAGS) $< -o $@
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re check-and-install-deps

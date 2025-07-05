@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:01:02 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/24 16:56:24 by psenko           ###   ########.fr       */
+/*   Updated: 2025/07/06 01:03:44 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,17 @@ static void	keys_actions(mlx_key_data_t keydata, t_vars *vars)
 	if (keydata.key == MLX_KEY_S)
 		zoom(vars->scene.camera, -1.0f);
 	if (keydata.key == MLX_KEY_UP)
-		rotate_camera_vert(vars->scene.camera, ROTATE_ANGLE);
+		rotate_camera_vert(vars, ROTATE_ANGLE);
 	if (keydata.key == MLX_KEY_DOWN)
-		rotate_camera_vert(vars->scene.camera, -ROTATE_ANGLE);
+		rotate_camera_vert(vars, -ROTATE_ANGLE);
 	if (keydata.key == MLX_KEY_LEFT)
-		rotate_camera_hor(vars->scene.camera, -ROTATE_ANGLE);
+		rotate_camera_hor(vars, -ROTATE_ANGLE);
 	if (keydata.key == MLX_KEY_RIGHT)
-		rotate_camera_hor(vars->scene.camera, ROTATE_ANGLE);
+		rotate_camera_hor(vars, ROTATE_ANGLE);
 	if (keydata.key == MLX_KEY_A)
-		move_camera_side(vars->scene.camera, -MOVE_DISTANCE);
+		move_camera_side(vars, -MOVE_DISTANCE);
 	if (keydata.key == MLX_KEY_D)
-		move_camera_side(vars->scene.camera, MOVE_DISTANCE);
+		move_camera_side(vars, MOVE_DISTANCE);
 	if (keydata.key == MLX_KEY_M)
 		vars->mouse_rotate ^= 1;
 }

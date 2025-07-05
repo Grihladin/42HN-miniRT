@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_hooks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:11:22 by psenko            #+#    #+#             */
-/*   Updated: 2025/04/30 10:05:46 by psenko           ###   ########.fr       */
+/*   Updated: 2025/07/06 01:03:44 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	scroll_hook(double xdelta, double ydelta, void *param)
 	else if (ydelta < 0)
 		zoom(vars->scene.camera, -3.0f);
 	if (xdelta > 0)
-		move_camera_side(vars->scene.camera, MOVE_DISTANCE);
+		move_camera_side(vars, MOVE_DISTANCE);
 	else if (xdelta < 0)
-		move_camera_side(vars->scene.camera, -MOVE_DISTANCE);
+		move_camera_side(vars, -MOVE_DISTANCE);
 	vars->need_redraw = 1;
 }
 
@@ -42,13 +42,13 @@ void	cursor_hook(double xpos, double ypos, void *param)
 			&& (ypos <= vars->height) && (ypos >= 0))
 		{
 			if ((ypos - vars->cursor_ypos) < 0)
-				rotate_camera_vert(vars->scene.camera, MOUSE_ROTATE_ANGLE);
+				rotate_camera_vert(vars, MOUSE_ROTATE_ANGLE);
 			else
-				rotate_camera_vert(vars->scene.camera, -MOUSE_ROTATE_ANGLE);
+				rotate_camera_vert(vars, -MOUSE_ROTATE_ANGLE);
 			if ((xpos - vars->cursor_xpos) > 0)
-				rotate_camera_hor(vars->scene.camera, MOUSE_ROTATE_ANGLE);
+				rotate_camera_hor(vars, MOUSE_ROTATE_ANGLE);
 			else
-				rotate_camera_hor(vars->scene.camera, -MOUSE_ROTATE_ANGLE);
+				rotate_camera_hor(vars, -MOUSE_ROTATE_ANGLE);
 			vars->cursor_xpos = xpos;
 			vars->cursor_ypos = ypos;
 			vars->need_redraw = 1;

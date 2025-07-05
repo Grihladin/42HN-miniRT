@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_body.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 20:05:59 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/29 19:26:25 by psenko           ###   ########.fr       */
+/*   Updated: 2025/07/06 01:12:49 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,67 +19,61 @@ static bool	cylinder_equation(t_ray ray, t_cylinder *cylinder, float *t0,
 	t_vec3		axis;
 	t_vec3		ray_dir_prep;
 	t_vec3		oc_prep;
-	t_params	p;
+	t_vec3		oc;
+	float		a, b, c;
+	float		discriminant;
+	float		sqrt_discriminant;
+	float		dot_ray_axis;
+	float		dot_oc_axis;
 
 	axis = cylinder->norm_vec_axis_cyl;
-	radius = cylinder->diameter / 2.0f;
-	p.oc = vec3_substract(ray.origin, cylinder->coord_center);
-	ray_dir_prep = vec3_substract(ray.dir, vec3_multiply(axis,
-				vec3_dot(ray.dir, axis)));
-	oc_prep = vec3_substract(p.oc, vec3_multiply(axis, vec3_dot(p.oc, axis)));
-	p.a = vec3_dot(ray_dir_prep, ray_dir_prep);
-	p.b = 2.0f * vec3_dot(oc_prep, ray_dir_prep);
-	p.c = vec3_dot(oc_prep, oc_prep) - radius * radius;
-	if (fabsf(p.a) < 0.001f)
+	radius = cylinder->diameter * 0.5f;
+	oc = vec3_substract(ray.origin, cylinder->coord_center);
+	dot_ray_axis = vec3_dot(ray.dir, axis);
+	dot_oc_axis = vec3_dot(oc, axis);
+	ray_dir_prep = vec3_substract(ray.dir, vec3_multiply(axis, dot_ray_axis));
+	oc_prep = vec3_substract(oc, vec3_multiply(axis, dot_oc_axis));
+	a = vec3_dot(ray_dir_prep, ray_dir_prep);
+	if (a < EPSILON)
 		return (false);
-	p.discriminant = p.b * p.b - 4.0f * p.a * p.c;
-	if (p.discriminant < 0)
+	b = 2.0f * vec3_dot(oc_prep, ray_dir_prep);
+	c = vec3_dot(oc_prep, oc_prep) - radius * radius;
+	discriminant = b * b - 4.0f * a * c;
+	if (discriminant < 0.0f)
 		return (false);
-	*t0 = (-p.b - sqrt(p.discriminant)) / (2.0f * p.a);
-	*t1 = (-p.b + sqrt(p.discriminant)) / (2.0f * p.a);
+	sqrt_discriminant = sqrtf(discriminant);
+	*t0 = (-b - sqrt_discriminant) / (2.0f * a);
+	*t1 = (-b + sqrt_discriminant) / (2.0f * a);
 	return (true);
 }
 
-static float	analyze_roots(float hit0_valid, float hit1_valid, float t0,
-		float t1)
-{
-	float	t_body;
-
-	t_body = INFINITY;
-	if (hit0_valid && hit1_valid)
-		t_body = fminf(t0, t1);
-	else if (hit0_valid)
-		t_body = t0;
-	else if (hit1_valid)
-		t_body = t1;
-	return (t_body);
-}
 
 static float	calculate_body_distance(t_cylinder *cylinder, t_ray ray,
 		float t0, float t1)
 {
-	float		t_body;
-	t_point3	p0;
-	t_point3	p1;
-	bool		hit0_valid;
-	bool		hit1_valid;
-
-	hit0_valid = false;
-	hit1_valid = false;
-	if (t0 > 0.001f)
+	t_point3	p0, p1;
+	bool		hit0_valid = false;
+	bool		hit1_valid = false;
+	
+	if (t0 > EPSILON)
 	{
 		p0 = vec3_sum(ray.origin, vec3_multiply(ray.dir, t0));
-		if (is_in_bounds(cylinder, p0))
-			hit0_valid = true;
+		hit0_valid = is_in_bounds(cylinder, p0);
 	}
-	if (t1 > 0.001f)
+	if (t1 > EPSILON)
 	{
 		p1 = vec3_sum(ray.origin, vec3_multiply(ray.dir, t1));
-		if (is_in_bounds(cylinder, p1))
-			hit1_valid = true;
+		hit1_valid = is_in_bounds(cylinder, p1);
 	}
-	t_body = analyze_roots(hit0_valid, hit1_valid, t0, t1);
-	return (t_body);
+
+	if (hit0_valid && hit1_valid)
+		return (fminf(t0, t1));
+	else if (hit0_valid)
+		return (t0);
+	else if (hit1_valid)
+		return (t1);
+	
+	return (INFINITY);
 }
 
 static t_hit_info	calculate_body_vector(t_hit_info hit_info, float t_body,
@@ -104,20 +98,18 @@ static t_hit_info	calculate_body_vector(t_hit_info hit_info, float t_body,
 t_hit_info	intersect_cylinder_body(t_ray ray, t_cylinder *cylinder)
 {
 	t_hit_info	hit_info;
-	float		t0;
-	float		t1;
+	float		t0, t1;
 	float		t_body;
 
 	hit_info.hit = false;
 	hit_info.t = INFINITY;
+	
 	if (!cylinder_equation(ray, cylinder, &t0, &t1))
-	{
 		return (hit_info);
-	}
+	
 	t_body = calculate_body_distance(cylinder, ray, t0, t1);
 	if (t_body < INFINITY)
-	{
 		hit_info = calculate_body_vector(hit_info, t_body, ray, cylinder);
-	}
+	
 	return (hit_info);
 }

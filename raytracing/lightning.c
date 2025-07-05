@@ -3,39 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   lightning.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 19:39:49 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/29 19:26:35 by psenko           ###   ########.fr       */
+/*   Updated: 2025/07/06 01:15:16 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../miniRT.h"
 
-static t_color3	color_calculation(t_vars *vars, t_lightning_calc l_v,
-		t_material material, t_color3 color)
+static t_color3	color_calculation(t_vars *vars, t_hit_info hit,
+		t_material material, t_color3 color, t_vec3 light_dir,
+		float light_distance, t_ray view_ray)
 {
-	if (!is_in_shadow(l_v.shadow_ray, vars->elements,
-			l_v.light_distance))
+	float		diffuse_factor;
+	float		specular_factor;
+	float		attenuation;
+	float		dot_normal_light;
+	t_vec3		reflection_dir;
+	t_vec3		view_dir;
+	t_color3	diffuse;
+	t_color3	specular;
+	t_ray		shadow_ray;
+
+	shadow_ray.origin = hit.point;
+	shadow_ray.dir = light_dir;
+	if (is_in_shadow(shadow_ray, vars->elements, light_distance))
+		return (color);
+	dot_normal_light = vec3_dot(hit.normal, light_dir);
+	diffuse_factor = fmaxf(0.0f, dot_normal_light);
+	if (diffuse_factor > 0.0f)
 	{
-		l_v.diffuse_factor = fmaxf(0.0f, vec3_dot(l_v.hit.normal,
-					l_v.light_dir));
-		l_v.reflection_dir = vec3_substract(vec3_multiply(l_v.hit.normal,
-					2.0f * vec3_dot(l_v.hit.normal,
-						l_v.light_dir)), l_v.light_dir);
-		l_v.view_dir = vec3_norm(vec3_multiply(l_v.view_ray.dir, -1.0f));
-		l_v.specular_factor = powf(fmaxf(0.0f,
-					vec3_dot(l_v.view_dir, l_v.reflection_dir)),
-				20.0f);
-		l_v.attenuation = l_v.light.brightness
-			/ (l_v.light_distance * l_v.light_distance);
-		l_v.diffuse = color_scale(color_multiply(l_v.light.color,
-					material.color), l_v.diffuse_factor
-				* l_v.attenuation);
-		l_v.specular = color_scale(l_v.light.color,
-				l_v.specular_factor * l_v.attenuation * 0.5f);
-		color = color_sum(color, color_sum(l_v.diffuse,
-					l_v.specular));
+		attenuation = vars->scene.light->brightness / (light_distance * light_distance);
+		reflection_dir = vec3_substract(vec3_multiply(hit.normal, 
+					2.0f * dot_normal_light), light_dir);
+		view_dir = vec3_norm(vec3_multiply(view_ray.dir, -1.0f));
+		float spec_dot = fmaxf(0.0f, vec3_dot(view_dir, reflection_dir));
+		specular_factor = spec_dot * spec_dot * spec_dot * spec_dot * spec_dot;
+		diffuse = color_scale(color_multiply(vars->scene.light->color,
+					material.color), diffuse_factor * attenuation);
+		specular = color_scale(vars->scene.light->color,
+				specular_factor * attenuation * 0.5f);
+		color = color_sum(color, color_sum(diffuse, specular));
 	}
 	return (color);
 }
@@ -43,18 +52,14 @@ static t_color3	color_calculation(t_vars *vars, t_lightning_calc l_v,
 t_color3	calculate_lighting(t_vars *vars, t_hit_info hit,
 		t_material material, t_ray view_ray)
 {
-	t_color3			color;
-	t_lightning_calc	light_vars;
-
-	light_vars.hit = hit;
-	light_vars.view_ray = view_ray;
+	t_color3	color;
+	t_vec3		light_dir;
+	float		light_distance;
 	color = color_scale(vars->scene.amb_light->color, 0.1f);
-	light_vars.light = *(vars->scene.light);
-	light_vars.light_dir = vec3_substract(light_vars.light.position, hit.point);
-	light_vars.light_distance = vec3_length(light_vars.light_dir);
-	light_vars.light_dir = vec3_norm(light_vars.light_dir);
-	light_vars.shadow_ray.origin = hit.point;
-	light_vars.shadow_ray.dir = light_vars.light_dir;
-	color = color_calculation(vars, light_vars, material, color);
+	light_dir = vec3_substract(vars->scene.light->position, hit.point);
+	light_distance = vec3_length(light_dir);
+	light_dir = vec3_norm(light_dir);
+	color = color_calculation(vars, hit, material, color, light_dir,
+			light_distance, view_ray);
 	return (color);
 }

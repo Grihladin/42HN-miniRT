@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_cap.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psenko <psenko@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 20:02:51 by mratke            #+#    #+#             */
-/*   Updated: 2025/04/29 19:26:25 by psenko           ###   ########.fr       */
+/*   Updated: 2025/07/06 01:13:03 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,10 @@ static bool	intersect_plane_cyl(t_ray ray, t_point3 plane_point,
 	float	denom;
 
 	denom = vec3_dot(ray.dir, plane_normal);
-	if (fabsf(denom) < 0.001f)
-	{
+	if (fabsf(denom) < EPSILON)
 		return (false);
-	}
-	*t = vec3_dot(vec3_substract(plane_point, ray.origin), plane_normal)
-		/ denom;
-	if (*t < 0.001f)
-	{
-		return (false);
-	}
-	return (true);
+	*t = vec3_dot(vec3_substract(plane_point, ray.origin), plane_normal) / denom;
+	return (*t > EPSILON);
 }
 
 static t_hit_info	calculate_cap_vector(t_ray ray, t_cylinder *cylinder,

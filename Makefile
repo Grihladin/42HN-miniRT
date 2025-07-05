@@ -6,23 +6,8 @@
 #    By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/07/06 01:03:44 by mratke           ###   ########.fr        #
+#    Updated: 2025/07/06 01:36:02 by mratke           ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
-#
-# 🚀 miniRT - High Performance Ray Tracer
-# 
-# Quick Start:
-#   make        - Automatically install dependencies and build
-#
-# This Makefile automatically handles:
-#   ✅ Dependency checking and installation
-#   ✅ GLFW library detection and linking
-#   ✅ Optimized compilation flags for performance
-#   ✅ MLX42 submodule management
-#
-# Requirements: Homebrew (https://brew.sh)
-#
 # **************************************************************************** #
 
 CC=cc

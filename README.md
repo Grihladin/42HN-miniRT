@@ -4,7 +4,7 @@
 
 </div>
 
-miniRT - high-performance ray tracer built in C with [MLX42](https://github.com/codam-coding-college/MLX42), featuring real-time rendering, interactive camera controls, and support for multiple geometric primitives with realistic lighting.
+miniRT ([42Heilbronn](https://www.42heilbronn.de/en/) project)- high-performance ray tracer built in C with [MLX42](https://github.com/codam-coding-college/MLX42), featuring real-time rendering, interactive camera controls, and support for multiple geometric primitives with realistic lighting.
 
 ## ✨ Features
 

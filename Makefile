@@ -6,7 +6,7 @@
 #    By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 10:03:19 by psenko            #+#    #+#              #
-#    Updated: 2025/07/06 10:16:08 by mratke           ###   ########.fr        #
+#    Updated: 2025/07/06 10:36:44 by mratke           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,6 +93,23 @@ ifndef CMAKE_EXISTS
 endif
 	@echo "🔄 Initializing git submodules..."
 	@git submodule update --init --recursive
+	@echo "🔍 Verifying submodules are properly initialized..."
+	@if [ ! -f "libft/Makefile" ]; then \
+		echo "⚠️  libft not properly initialized, retrying..."; \
+		git submodule update --init libft; \
+	fi
+	@if [ ! -f "ft_printf/Makefile" ]; then \
+		echo "⚠️  ft_printf not properly initialized, retrying..."; \
+		git submodule update --init ft_printf; \
+	fi
+	@if [ ! -f "get_next_line/src/get_next_line.c" ]; then \
+		echo "⚠️  get_next_line not properly initialized, retrying..."; \
+		git submodule update --init get_next_line; \
+	fi
+	@if [ ! -d "MLX42/src" ]; then \
+		echo "⚠️  MLX42 not properly initialized, retrying..."; \
+		git submodule update --init MLX42; \
+	fi
 	@echo "✅ All dependencies ready!"
 
 clean:
@@ -112,18 +129,18 @@ $(NAME): $(LIBFT) $(FTPRINTF) $(GETNEXTLINE) $(LIBMLX) $(OBJECTS) $(HEADER)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJECTS) $(LIBS)
 	@echo "\033[0;32m🎉 $(NAME) built successfully!\033[0m"
 
-$(LIBFT):
+$(LIBFT): check-and-install-deps
 	@if [ -f libft/Makefile ]; then make -C libft; fi
 	@if [ -f libft/Makefile ]; then make -C libft bonus; fi
 
-$(FTPRINTF):
+$(FTPRINTF): check-and-install-deps
 	@if [ -f ft_printf/Makefile ]; then make -C ft_printf; fi
 
-$(GETNEXTLINE): $(GNL_OBJECTS)
+$(GETNEXTLINE): check-and-install-deps $(GNL_OBJECTS)
 	ar -rs $(GETNEXTLINE) $(GNL_OBJECTS)
 
 # Delete Debug options after
-$(LIBMLX):
+$(LIBMLX): check-and-install-deps
 	@cmake MLX42 -B MLX42/build && make -C MLX42/build -j4
 # -DDEBUG=1 -DGLFW_FETCH=0
 
@@ -133,7 +150,7 @@ $(OBJ_DIR)/%.o: %.c $(HEADER)
 	$(CC) -c $(CFLAGS) $< -o $@
 
 # Rule to compile get_next_line object files
-get_next_line/src/%.o: get_next_line/src/%.c
+get_next_line/src/%.o: get_next_line/src/%.c get_next_line/inc/get_next_line.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 .PHONY: all clean fclean re check-and-install-deps

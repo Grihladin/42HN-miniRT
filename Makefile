@@ -18,7 +18,7 @@ GETNEXTLINE=get_next_line/get_next_line.a
 LIBFT=libft/libft.a
 FTPRINTF=ft_printf/ft_printf.a
 GLFW_PATH = $(shell brew --prefix glfw)
-CFLAGS=-Wall -Wextra -Werror -Ofast -ffast-math -march=native
+CFLAGS=-Wall -Wextra -Werror -O3 -ffast-math -march=native -fno-finite-math-only
 CFLAGS += -I$(GLFW_PATH)/include -Ilibft/inc -Iget_next_line/inc -Ift_printf/inc -Iinc
 LDFLAGS += -L$(GLFW_PATH)/lib -lglfw
 # -g -fsanitize=address

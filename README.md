@@ -1,6 +1,6 @@
 <div align="center">
 
-# <img src="https://github.com/Grihladin/42-project-badges/blob/main/badges/minirte.png" width="60" height="60"> 
+# <img src="https://github.com/Grihladin/42-project-badges/blob/main/badges/minirte.png" width="150" height="150"> 
 
 # miniRT
 </div>

@@ -2,10 +2,9 @@
 
 # <img src="https://github.com/Grihladin/42-project-badges/blob/main/badges/minirte.png" width="150" height="150"> 
 
-# miniRT
 </div>
 
-A high-performance ray tracer built in C, featuring real-time rendering, interactive camera controls, and support for multiple geometric primitives with realistic lighting.
+miniRT - high-performance ray tracer built in C, featuring real-time rendering, interactive camera controls, and support for multiple geometric primitives with realistic lighting.
 
 ## ✨ Features
 

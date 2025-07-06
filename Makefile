@@ -108,6 +108,7 @@ re:	fclean all
 
 $(NAME): $(LIBFT) $(FTPRINTF) $(GETNEXTLINE) $(LIBMLX) $(OBJECTS) $(HEADER)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJECTS) $(LIBS)
+	@echo "\033[0;32m🎉 $(NAME) built successfully!\033[0m"
 
 $(LIBFT):
 	git submodule update --init --recursive

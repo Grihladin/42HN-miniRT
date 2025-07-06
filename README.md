@@ -33,6 +33,7 @@ miniRT - high-performance ray tracer built in C, featuring real-time rendering, 
 
 ### System Requirements
 - **OS**: macOS (Intel/Apple Silicon)
+- **Homebrew**: Required for dependency management
 
 ### Dependencies (Auto-installed)
 - **GLFW** - Window management and input handling

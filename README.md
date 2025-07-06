@@ -1,4 +1,9 @@
-# ![miniRT Badge](https://github.com/Grihladin/42-project-badges/blob/main/badges/minirte.png) miniRT - High Performance Ray Tracer
+<div align="center">
+
+# <img src="https://github.com/Grihladin/42-project-badges/blob/main/badges/minirte.png" width="60" height="60"> 
+
+# miniRT
+</div>
 
 A high-performance ray tracer built in C, featuring real-time rendering, interactive camera controls, and support for multiple geometric primitives with realistic lighting.
 
@@ -73,18 +78,14 @@ make
 ### Keyboard Controls
 | Key | Action |
 |-----|--------|
-| `W` / `↑` | Move camera forward |
-| `S` / `↓` | Move camera backward |
-| `A` / `←` | Move camera left |
-| `D` / `→` | Move camera right |
-| `Q` | Move camera up |
-| `E` | Move camera down |
-| `R` | Rotate camera up |
-| `F` | Rotate camera down |
-| `T` | Rotate camera left |
-| `G` | Rotate camera right |
-| `+` / `=` | Zoom in |
-| `-` | Zoom out |
+| `W` | Move camera forward |
+| `S` | Move camera backward |
+| `A` | Move camera left |
+| `D` | Move camera right |
+| `↑` | Rotate camera up |
+| `↓` | Rotate camera down |
+| `←` | Rotate camera left |
+| `→` | Rotate camera right |
 | `ESC` | Exit |
 
 ### Mouse Controls

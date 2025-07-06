@@ -96,21 +96,24 @@ make
 
 ```
 miniRT/
-├── 📁 drawing/           # Rendering pipeline
-├── 📁 hooks/             # Event handling
-├── 📁 moving/            # Camera controls
-├── 📁 parsing/           # Scene file parsing
-├── 📁 raytracing/        # Core ray tracing algorithms
-├── 📁 utils/             # Utility functions
-├── 📁 vector_operations/ # Vector mathematics
-├── 📁 examples/          # Sample scene files
-├── 📁 libft/             # Custom C library
-├── 📁 get_next_line/     # File reading utilities
-├── 📁 MLX42/             # Graphics library (submodule)
-├── miniRT.c              # Main program
-├── miniRT.h              # Header file
-├── Makefile              # Build system
-└── README.md             # Readme
+├── 📁 inc/                    # Header files
+│   └── miniRT.h               # Main header file
+├── 📁 src/                    # Source code
+│   ├── 📁 drawing/            # Rendering pipeline
+│   ├── 📁 hooks/              # Event handling
+│   ├── 📁 moving/             # Camera controls
+│   ├── 📁 parsing/            # Scene file parsing
+│   ├── 📁 raytracing/         # Core ray tracing algorithms
+│   ├── 📁 utils/              # Utility functions
+│   ├── 📁 vector_operations/  # Vector mathematics
+│   └── miniRT.c               # Main program
+├── 📁 examples/               # Sample scene files
+├── 📁 libft/                  # Custom C library (submodule)
+├── 📁 ft_printf/              # Printf implementation (submodule)
+├── 📁 get_next_line/          # File reading utilities (submodule)
+├── 📁 MLX42/                  # Graphics library (submodule)
+├── Makefile                   # Build system
+└── README.md                  # Documentation
 ```
 ---
 

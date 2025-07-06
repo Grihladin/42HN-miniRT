@@ -1,3 +1,12 @@
 [submodule "MLX42"]
 	path = MLX42
 	url = https://github.com/codam-coding-college/MLX42
+[submodule "libft"]
+	path = libft
+	url = https://github.com/Grihladin/42HN-libft
+[submodule "get_next_line"]
+	path = get_next_line
+	url = https://github.com/Grihladin/42HN-get-next-line
+[submodule "ft_printf"]
+	path = ft_printf
+	url = https://github.com/Grihladin/42HN-ft-printf

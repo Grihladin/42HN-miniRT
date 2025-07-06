@@ -16,13 +16,18 @@ LIBMLX=MLX42/build/libmlx42.a
 HEADER=miniRT.h
 GETNEXTLINE=get_next_line/get_next_line.a
 LIBFT=libft/libft.a
+FTPRINTF=ft_printf/ft_printf.a
 GLFW_PATH = $(shell brew --prefix glfw)
-CFLAGS=-Wall -Wextra -Werror -Ofast -ffast-math -flto -march=native
-CFLAGS += -I$(GLFW_PATH)/include
+CFLAGS=-Wall -Wextra -Werror -Ofast -ffast-math -march=native
+CFLAGS += -I$(GLFW_PATH)/include -Ilibft/include -Iget_next_line -Ift_printf
 LDFLAGS += -L$(GLFW_PATH)/lib -lglfw
 # -g -fsanitize=address
-LIBS=$(LIBFT) $(GETNEXTLINE) MLX42/build/libmlx42.a -ldl -lglfw -pthread -lm
+LIBS=$(GETNEXTLINE) $(FTPRINTF) $(LIBFT) MLX42/build/libmlx42.a -ldl -lglfw -pthread -lm
 # CFLAGS_TEST=-Wall -Wextra -Werror -g -fsanitize=address
+
+# Get next line sources and objects
+GNL_SOURCES=get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
+GNL_OBJECTS=$(GNL_SOURCES:.c=.o)
 
 SOURCES=miniRT.c \
 	hooks/hooks.c \
@@ -91,7 +96,8 @@ endif
 clean:
 	rm -rf $(OBJ_DIR)
 	make -C libft fclean
-	make -C get_next_line fclean
+	make -C ft_printf fclean
+	rm -f $(GNL_OBJECTS) $(GETNEXTLINE)
 	rm -rf MLX42/build
 
 fclean: clean
@@ -100,14 +106,20 @@ fclean: clean
 
 re:	fclean all
 
-$(NAME): $(LIBFT) $(GETNEXTLINE) $(LIBMLX) $(OBJECTS) $(HEADER)
+$(NAME): $(LIBFT) $(FTPRINTF) $(GETNEXTLINE) $(LIBMLX) $(OBJECTS) $(HEADER)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJECTS) $(LIBS)
 
 $(LIBFT):
+	git submodule update --init --recursive
 	make -C libft
+	make -C libft bonus
 
-$(GETNEXTLINE):
-	make -C get_next_line
+$(FTPRINTF):
+	git submodule update --init --recursive
+	make -C ft_printf
+
+$(GETNEXTLINE): $(GNL_OBJECTS)
+	ar -rs $(GETNEXTLINE) $(GNL_OBJECTS)
 
 # Delete Debug options after
 $(LIBMLX):
@@ -118,6 +130,10 @@ $(LIBMLX):
 # Rule to compile .c files into the object directory
 $(OBJ_DIR)/%.o: %.c $(HEADER)
 	@mkdir -p $(dir $@)
+	$(CC) -c $(CFLAGS) $< -o $@
+
+# Rule to compile get_next_line object files
+get_next_line/%.o: get_next_line/%.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
 .PHONY: all clean fclean re check-and-install-deps

@@ -42,7 +42,7 @@ miniRT - high-performance ray tracer built in C, featuring real-time rendering, 
 ### Installation
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/Grihladin/42HN-miniRT.git
 cd 42HN-miniRT
 
 # Build and run (dependencies auto-installed)
@@ -113,6 +113,6 @@ miniRT/
 ```
 ---
 
-### Made with ❤️ by psenko and mratke
+### Made with ❤️ by [psenko](https://github.com/plavik) and [mratke](https://github.com/Grihladin)
 
 *Happy Ray Tracing! 🚀*

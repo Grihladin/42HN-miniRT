@@ -91,6 +91,8 @@ ifndef CMAKE_EXISTS
 	@echo "📦 Installing CMake..."
 	@brew install cmake
 endif
+	@echo "🔄 Initializing git submodules..."
+	@git submodule update --init --recursive
 	@echo "✅ All dependencies ready!"
 
 clean:

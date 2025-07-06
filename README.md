@@ -114,6 +114,6 @@ miniRT/
 ```
 ---
 
-### Made with ❤️ by [psenko](https://github.com/plavik) and [mratke](https://github.com/Grihladin)
+### Made with ❤️ by [psenko](https://github.com/plavik) and [mratke](https://github.com/Grihladin) - 42 Heilbronn
 
 *Happy Ray Tracing! 🚀*
